@@ -95,7 +95,7 @@
     "href": "tidymodels.html",
     "title": "Overview of tidymodels",
     "section": "",
-    "text": "Split data in training and test set.\n\nsplit = initial_split(data, prop); train = training(split), test = testing(split)\n\nPreprocess recipe.\n\nrec = recipe(formula, data = train) %&gt;% step_novel(all_nominal_predictors()) %&gt;% step_dummy(all_nominal_predictors) %&gt;% step_zv(all_predictors()) %&gt;% step_normalize(all_continuous_predictors())\n\nSpecify model.\n\nrf_spec = rand_forest(mtry = tune(), trees = tune()) %&gt;% set_engine(engine = “ranger”) %&gt;% set_mode(“classification)\n\nSpecify workflow.\n\nwf = workflow() %&gt;% add_recipe(rec) %&gt;% add_model(rf_spec)\n\nCross-validation/resampling scheme design.\n\nfolds = vfold_cv(data = train, v = 5, strata = outcome)\n\nTune hyperparameters.\n\nrf_parameters = parameters(mtry(range = c(3, 10)), trees(range = c(100, 5000)))\nrf_res = tune_grid(wf, grid = rf_parameters, resamples = folds, metrics = metric_set(accuracy, roc_auc))\ncollect_metrics(rf_res); show_best(rf_res, metric = “roc_auc”, n = 10)\n\nFinalize workflow with best parameters.\n\nbest_rf = select_best(rf_res, metric = “roc_auc”)\nrf_final_wf = finalize_workflow(rf_wf, best_rf)\n\nFinal test set evaluation.\n\nrf_last = last_fit(rf_final_wf, split = split, metrics = metric_set(roc_auc, accuracy, sens, spec))\n\nFit final model on training data (for interpretation, e.g. variable importance).\n\nrf_fit = fit(rf_final_wf, data = train)\nVariable importance: rf_engine = extract_fit_parsnip(rf_fit)$fit; vip::vip(rf_engine, num_features)"
+    "text": "I made a summary of how to use tidymodels."
   },
   {
     "objectID": "tidymodels.html#random-forest-template",
