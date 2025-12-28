@@ -1,12 +1,5 @@
 [
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "This is Ben’s website.",
-    "section": "",
-    "text": "Just here to learn stuff."
-  },
-  {
     "objectID": "tidymodels.html",
     "href": "tidymodels.html",
     "title": "Overview of tidymodels",
@@ -89,6 +82,13 @@
     "title": "Overview of tidymodels",
     "section": "H. Practical implications / next steps",
     "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "This is Ben’s website.",
+    "section": "",
+    "text": "Just here to learn stuff."
   },
   {
     "objectID": "about.html",
