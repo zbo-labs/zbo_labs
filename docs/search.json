@@ -4,14 +4,14 @@
     "href": "about.html",
     "title": "About Me",
     "section": "",
-    "text": "Ben\n🎓 PhD-Epidemiology)🩺 VMD-Doctor of Veterinary Medicine&lt;br&gt;  📈 Infection Control and Biosecurity Expert 📊 MSE-Applied Mathematics and Statistics"
+    "text": "Ben\n🎓 PhD-Epidemiology 🩺 VMD-Doctor of Veterinary Medicine  📈 Infection Control and Biosecurity Expert 📊 MSE-Applied Mathematics and Statistics\n\nI am an epidemiologist, biostatistician and applied mathematician. Growing up, I was always intrigued but what numbers could tell us. So in university, I chose a major that helped me understand both the theory and application of numbers. I pursued this through graduate school where I obtained my Master’s Degree in Science and Engineering. I realized I needed an area of application. After spending some time working in the cattle industry as a cowboy, I realized that animals were an excellent way to help the world as they supported humans in so many ways. Plus, learning about them provided insight into physiologies both related and beyond human physiology. That’s how I became a veterinarian. After veterinary school, I did a residency in Infection Control and Biosecurity. It was thrilling working with high-risk zoonotic cases as well as directing hospital efforts to manage outbreaks. It was also a perfect way to incorporate my quantitative skills into animal care."
   },
   {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ZBO Labs",
     "section": "",
-    "text": "I am a epidemiologist, biostatistician and veterinarian. My expertise is in biomedical and clinical data science. This is my lab space where I showcase some of the work I’ve done."
+    "text": "This area is a space to showcase some of my work in biomedical data science. Much of my work will be deeply grounded in subject-matter considerations with data science serving as a tool to understand trends and patterns and unveil associations and causal pathways."
   },
   {
     "objectID": "tidymodels.html",
