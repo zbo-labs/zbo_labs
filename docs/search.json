@@ -1,5 +1,19 @@
 [
   {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "This page showcases some of the work I’ve done. Some are formal. Some are informal. Some are completely simulated."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ZBO Labs",
+    "section": "",
+    "text": "Welcome to the homepage of ZBO Labs. This is where I provide outcomes of some of the work I have been doing."
+  },
+  {
     "objectID": "tidymodels.html",
     "href": "tidymodels.html",
     "title": "Overview of tidymodels",
@@ -82,19 +96,5 @@
     "title": "Overview of tidymodels",
     "section": "H. Practical implications / next steps",
     "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ZBO Labs",
-    "section": "",
-    "text": "Welcome to the homepage of ZBO Labs. This is where I provide outcomes of some of the work I have been doing."
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "This page showcases some of the work I’ve done. Some are formal. Some are informal. Some are completely simulated."
   }
 ]
