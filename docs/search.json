@@ -1,5 +1,40 @@
 [
   {
+    "objectID": "portfolio.html",
+    "href": "portfolio.html",
+    "title": "My Data Science Portfolio",
+    "section": "",
+    "text": "NoteWelcome 👋\n\n\n\nI build practical data science—clear explanations, reproducible analysis, and simple tools that help people make better decisions (no deep background required)."
+  },
+  {
+    "objectID": "portfolio.html#what-youll-find-here",
+    "href": "portfolio.html#what-youll-find-here",
+    "title": "My Data Science Portfolio",
+    "section": "What you’ll find here",
+    "text": "What you’ll find here\n\n\n\n🔧 The “Workbench”\nProjects that show how I think: problem framing → clean data → honest evaluation → usable output.\n\n\n\n🧪 The “Lab Notebook”\nWrite-ups that explain ideas plainly: small visuals, clear assumptions, and takeaways you can apply."
+  },
+  {
+    "objectID": "portfolio.html#featured-projects",
+    "href": "portfolio.html#featured-projects",
+    "title": "My Data Science Portfolio",
+    "section": "Featured projects",
+    "text": "Featured projects\n\n\n\n\nProject 1 — Predictive modeling, explained simply\nGoal: A practical prediction task with transparent evaluation and interpretation.\nTools: R / tidymodels / Quarto (swap as needed)\n\nWhat question it answers (in plain language)\nWhat data went in (and what didn’t)\nHow well it works (and where it fails)\n\nRead the write-up →\nView code →\n\n\n\n\n\n\nProject 2 — A dashboard that makes the data tangible\nGoal: An interactive view so non-technical folks can explore patterns.\nTools: Shiny / Observable / Plotly (pick yours)\n\nA few guided questions to explore\nClear labels and plain-language metrics\n“So what?” section at the end\n\nExplore →\nDemo →\n\n\n\n\n\n\nProject 3 — Data cleaning as a craft\nGoal: Turning messy, real-world data into analysis-ready tables.\nTools: SQL / dbt / duckdb / pandas (whatever you use)\n\nData “before and after”\nRepeatable pipeline\nTests / checks\n\nSee the pipeline →\nView code →\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
+  },
+  {
+    "objectID": "portfolio.html#browse-by-type",
+    "href": "portfolio.html#browse-by-type",
+    "title": "My Data Science Portfolio",
+    "section": "Browse by type",
+    "text": "Browse by type\n\n\n\n📌 Case studies\n\nProject A\nProject B\n\n\n\n\n🧰 Tools & templates\n\nReusable Quarto templates\nModel evaluation checklist\n\n\n\n\n✍️ Explain-it-like-I’m-busy\n\nShort explainers\nGlossary"
+  },
+  {
+    "objectID": "portfolio.html#get-in-touch",
+    "href": "portfolio.html#get-in-touch",
+    "title": "My Data Science Portfolio",
+    "section": "Get in touch",
+    "text": "Get in touch\n\n\n\n\n\n\nIf you’re curious about a project, want a quick walkthrough, or have a dataset you’d like to make more tangible, feel free to reach out.\n\nEmail: your@email.com\n\nGitHub: https://github.com/YOURNAME\n\nLinkedIn: https://www.linkedin.com/in/YOURNAME"
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About Me",
@@ -96,5 +131,117 @@
     "title": "Overview of tidymodels",
     "section": "H. Practical implications / next steps",
     "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#total-expenditure-1",
+    "href": "cahealthexpenditure2025.html#total-expenditure-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "Total expenditure",
+    "text": "Total expenditure"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-hospitals-1",
+    "href": "cahealthexpenditure2025.html#on-hospitals-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Hospitals",
+    "text": "On Hospitals"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-physicians-1",
+    "href": "cahealthexpenditure2025.html#on-physicians-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Physicians",
+    "text": "On Physicians"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-medications-1",
+    "href": "cahealthexpenditure2025.html#on-medications-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Medications",
+    "text": "On Medications"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-public-health-1",
+    "href": "cahealthexpenditure2025.html#on-public-health-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Public Health",
+    "text": "On Public Health"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-administration-1",
+    "href": "cahealthexpenditure2025.html#on-administration-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Administration",
+    "text": "On Administration"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-covid-19-response-funding-1",
+    "href": "cahealthexpenditure2025.html#on-covid-19-response-funding-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On COVID-19 Response Funding",
+    "text": "On COVID-19 Response Funding"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-other-professionals-1",
+    "href": "cahealthexpenditure2025.html#on-other-professionals-1",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Other Professionals",
+    "text": "On Other Professionals"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#total-expenditure-2",
+    "href": "cahealthexpenditure2025.html#total-expenditure-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "Total expenditure",
+    "text": "Total expenditure"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-hospitals-2",
+    "href": "cahealthexpenditure2025.html#on-hospitals-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Hospitals",
+    "text": "On Hospitals"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-physicians-2",
+    "href": "cahealthexpenditure2025.html#on-physicians-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Physicians",
+    "text": "On Physicians"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-medications-2",
+    "href": "cahealthexpenditure2025.html#on-medications-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Medications",
+    "text": "On Medications"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-public-health-2",
+    "href": "cahealthexpenditure2025.html#on-public-health-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Public Health",
+    "text": "On Public Health"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-administration-2",
+    "href": "cahealthexpenditure2025.html#on-administration-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Administration",
+    "text": "On Administration"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-covid-19-response-funding-2",
+    "href": "cahealthexpenditure2025.html#on-covid-19-response-funding-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On COVID-19 Response Funding",
+    "text": "On COVID-19 Response Funding"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-other-professionals-2",
+    "href": "cahealthexpenditure2025.html#on-other-professionals-2",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Other Professionals",
+    "text": "On Other Professionals"
   }
 ]
