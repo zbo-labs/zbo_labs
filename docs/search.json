@@ -1,17 +1,24 @@
 [
   {
+    "objectID": "portfolio.html",
+    "href": "portfolio.html",
+    "title": "My Data Science Portfolio",
+    "section": "",
+    "text": "&lt;!—"
+  },
+  {
     "objectID": "portfolio.html#what-youll-find-here",
     "href": "portfolio.html#what-youll-find-here",
     "title": "My Data Science Portfolio",
     "section": "What you’ll find here",
-    "text": "What you’ll find here\n\n\n\n🔧 The “Workbench”\nProjects that show how I think: problem framing → clean data → honest evaluation → usable output.\n\n\n\n🧪 The “Lab Notebook”\nWrite-ups that explain ideas plainly: small visuals, clear assumptions, and takeaways you can apply."
+    "text": "What you’ll find here\n\n\n\n🔧 The “Workbench”\nProjects that show how I think: problem framing → clean data → honest evaluation → clear output.\n\n\n\n🧪 The “Lab Notebook”\nWrite-ups that explain ideas plainly: small visuals and clear assumptions.\n\n\n\n—&gt;"
   },
   {
     "objectID": "portfolio.html#featured-projects",
     "href": "portfolio.html#featured-projects",
     "title": "My Data Science Portfolio",
     "section": "Featured projects",
-    "text": "Featured projects\n\n\n\n\nProject 1 — A look into health expenditure in Canada 2025\nGoal: Visualizing Canadian health expenditure data\nTools: R\n\nProvides an overview of sector spending on various aspects of healthcare\nFrom National Health Expenditure Trends found on CIHI\n\nView trends →\n\n\n\n\n\n\nProject 2 — A dashboard that makes the data tangible\nGoal: An interactive view so non-technical folks can explore patterns.\nTools: Shiny / Observable / Plotly (pick yours)\n\nA few guided questions to explore\nClear labels and plain-language metrics\n“So what?” section at the end\n\nExplore →\nDemo →\n\n\n\n\n\n\nProject 3 — Data cleaning as a craft\nGoal: Turning messy, real-world data into analysis-ready tables.\nTools: SQL / dbt / duckdb / pandas (whatever you use)\n\nData “before and after”\nRepeatable pipeline\nTests / checks\n\nSee the pipeline →\nView code →\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
+    "text": "Featured projects\n\n\n\n\nProject 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian health expenditure data\nTools: R\n\nProvides a limited overview of sector spending on various aspects of healthcare\nFrom National Health Expenditure Trends found on CIHI\n\nView output →\n\n\n\n\n\n\nProject 2 — A dashboard that makes the data tangible\nGoal: An interactive view so non-technical folks can explore patterns.\nTools: Shiny / Observable / Plotly (pick yours)\n\nA few guided questions to explore\nClear labels and plain-language metrics\n“So what?” section at the end\n\nExplore →\nDemo →\n\n\n\n\n\n\nProject 3 — Data cleaning as a craft\nGoal: Turning messy, real-world data into analysis-ready tables.\nTools: SQL / dbt / duckdb / pandas (whatever you use)\n\nData “before and after”\nRepeatable pipeline\nTests / checks\n\nSee the pipeline →\nView code →\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
   },
   {
     "objectID": "portfolio.html#browse-by-type",
