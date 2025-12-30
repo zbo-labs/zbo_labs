@@ -2,21 +2,21 @@
   {
     "objectID": "portfolio.html#featured-projects",
     "href": "portfolio.html#featured-projects",
-    "title": "My Data Science Portfolio",
+    "title": "My Portfolio",
     "section": "Featured projects",
     "text": "Featured projects\n\n\n\n\nProject 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian expenditure on hospitals, physicians, medications, public health, administration, COVID-1 response and other professionals by provincial, public and private sector.\nTools: R\nNotes:\n\nFrom National Health Expenditure Trends found on CIHI.\n\nView output →\n\n\n\n\n\n\nProject 2 — Student lifestyle factors and its influence on school performance: A Kaggle dataset.\nGoal: To provide an exploratory analysis of how student lifestyles affect school performance in Portugal.\nTools: R\nNotes:\n\nOriginal dataset can be found on Kaggle.\nThe dataset is from schools in Portugal. A description of the study design and data collection was not provided. I am also unfamiliar with the rating and grading systems used in Portugal so I did my best to investigate them appropriately. My intention was to present trends that could be meaningful.\n\nView my results→\n\n\n\n\n\n\nProject 3 — Data cleaning as a craft\nGoal: Turning messy, real-world data into analysis-ready tables.\nTools: SQL / dbt / duckdb / pandas (whatever you use)\n\nData “before and after”\nRepeatable pipeline\nTests / checks\n\nSee the pipeline →\nView code →\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
   },
   {
     "objectID": "portfolio.html#browse-by-type",
     "href": "portfolio.html#browse-by-type",
-    "title": "My Data Science Portfolio",
+    "title": "My Portfolio",
     "section": "Browse by type",
     "text": "Browse by type\n\n\n\n📌 Case studies\n\nProject A\nProject B\n\n\n\n\n🧰 Tools & templates\n\nReusable Quarto templates\nModel evaluation checklist\n\n\n\n\n✍️ Explain-it-like-I’m-busy\n\nShort explainers\nGlossary"
   },
   {
     "objectID": "portfolio.html#get-in-touch",
     "href": "portfolio.html#get-in-touch",
-    "title": "My Data Science Portfolio",
+    "title": "My Portfolio",
     "section": "Get in touch",
     "text": "Get in touch\n\n\n\n\n\n\nIf you’re curious about a project, want a quick walkthrough, or have a dataset you’d like to make more tangible, feel free to reach out.\n\nEmail: your@email.com\n\nGitHub: https://github.com/YOURNAME\n\nLinkedIn: https://www.linkedin.com/in/YOURNAME"
   },
