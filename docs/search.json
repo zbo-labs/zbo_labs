@@ -1,24 +1,10 @@
 [
   {
-    "objectID": "portfolio.html",
-    "href": "portfolio.html",
-    "title": "My Data Science Portfolio",
-    "section": "",
-    "text": "&lt;!—"
-  },
-  {
-    "objectID": "portfolio.html#what-youll-find-here",
-    "href": "portfolio.html#what-youll-find-here",
-    "title": "My Data Science Portfolio",
-    "section": "What you’ll find here",
-    "text": "What you’ll find here\n\n\n\n🔧 The “Workbench”\nProjects that show how I think: problem framing → clean data → honest evaluation → clear output.\n\n\n\n🧪 The “Lab Notebook”\nWrite-ups that explain ideas plainly: small visuals and clear assumptions.\n\n\n\n—&gt;"
-  },
-  {
     "objectID": "portfolio.html#featured-projects",
     "href": "portfolio.html#featured-projects",
     "title": "My Data Science Portfolio",
     "section": "Featured projects",
-    "text": "Featured projects\n\n\n\n\nProject 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian health expenditure data\nTools: R\n\nProvides a limited overview of sector spending on various aspects of healthcare\nFrom National Health Expenditure Trends found on CIHI\n\nView output →\n\n\n\n\n\n\nProject 2 — A dashboard that makes the data tangible\nGoal: An interactive view so non-technical folks can explore patterns.\nTools: Shiny / Observable / Plotly (pick yours)\n\nA few guided questions to explore\nClear labels and plain-language metrics\n“So what?” section at the end\n\nExplore →\nDemo →\n\n\n\n\n\n\nProject 3 — Data cleaning as a craft\nGoal: Turning messy, real-world data into analysis-ready tables.\nTools: SQL / dbt / duckdb / pandas (whatever you use)\n\nData “before and after”\nRepeatable pipeline\nTests / checks\n\nSee the pipeline →\nView code →\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
+    "text": "Featured projects\n\n\n\n\nProject 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian expenditure on hospitals, physicians, medications, public health, administration, COVID-1 response and other professionals by provincial, public and private sector.\nTools: R\nNotes:\n\nFrom National Health Expenditure Trends found on CIHI.\n\nView output →\n\n\n\n\n\n\nProject 2 — Student lifestyle factors and its influence on school performance: A Kaggle dataset.\nGoal: To provide an exploratory analysis of how student lifestyles affect school performance in Portugal.\nTools: R\nNotes:\n\nOriginal dataset can be found on Kaggle.\nThe dataset is from schools in Portugal. A description of the study design and data collection was not provided. I am also unfamiliar with the rating and grading systems used in Portugal so I did my best to investigate them appropriately. My intention was to present trends that could be meaningful.\n\nView my results→\n\n\n\n\n\n\nProject 3 — Data cleaning as a craft\nGoal: Turning messy, real-world data into analysis-ready tables.\nTools: SQL / dbt / duckdb / pandas (whatever you use)\n\nData “before and after”\nRepeatable pipeline\nTests / checks\n\nSee the pipeline →\nView code →\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
   },
   {
     "objectID": "portfolio.html#browse-by-type",
@@ -103,6 +89,20 @@
     "title": "Welcome",
     "section": "Say hello",
     "text": "Say hello\n\n\n\n\n\n\nIf you’d like to collaborate, chat about a project, or ask a question:\n\nEmail: your@email.com\n\nGitHub: https://github.com/YOURNAME\n\nLinkedIn: https://www.linkedin.com/in/YOURNAME"
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html",
+    "href": "student_lifestyle_data_kaggle.html",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "",
+    "text": "This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.1\n\nThis dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students’ daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student’s stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes.  This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.\n\nThe purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field."
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html#footnotes",
+    "href": "student_lifestyle_data_kaggle.html#footnotes",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data↩︎"
   },
   {
     "objectID": "lab.html",
@@ -222,6 +222,69 @@
     "title": "Overview of tidymodels",
     "section": "H. Practical implications / next steps",
     "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html",
+    "href": "cahealthexpenditure2025.html",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "",
+    "text": "This page presents a curated set of descriptive visualizations of healthcare spending by sector. Specific expenditures include hospitals, physicians, medications, public health, administration, COVID-19 response and other professionals."
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#total-expenditure",
+    "href": "cahealthexpenditure2025.html#total-expenditure",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "Total expenditure",
+    "text": "Total expenditure"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-hospitals",
+    "href": "cahealthexpenditure2025.html#on-hospitals",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Hospitals",
+    "text": "On Hospitals"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-physicians",
+    "href": "cahealthexpenditure2025.html#on-physicians",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Physicians",
+    "text": "On Physicians"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-medications",
+    "href": "cahealthexpenditure2025.html#on-medications",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Medications",
+    "text": "On Medications"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-public-health",
+    "href": "cahealthexpenditure2025.html#on-public-health",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Public Health",
+    "text": "On Public Health"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-administration",
+    "href": "cahealthexpenditure2025.html#on-administration",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Administration",
+    "text": "On Administration"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-covid-19-response-funding",
+    "href": "cahealthexpenditure2025.html#on-covid-19-response-funding",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On COVID-19 Response Funding",
+    "text": "On COVID-19 Response Funding"
+  },
+  {
+    "objectID": "cahealthexpenditure2025.html#on-other-professionals",
+    "href": "cahealthexpenditure2025.html#on-other-professionals",
+    "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
+    "section": "On Other Professionals",
+    "text": "On Other Professionals"
   },
   {
     "objectID": "cahealthexpenditure2025.html#total-expenditure-1",

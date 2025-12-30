@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025 – ZBO Labs</title>
+<title>Lifestyle factors and their impact on students - Analysis of Kaggle dataset – ZBO Labs</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -118,39 +118,9 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#provincial-government-health-expenditure" id="toc-provincial-government-health-expenditure" class="nav-link active" data-scroll-target="#provincial-government-health-expenditure">Provincial Government health expenditure</a>
-  <ul class="collapse">
-  <li><a href="#total-expenditure" id="toc-total-expenditure" class="nav-link" data-scroll-target="#total-expenditure">Total expenditure</a></li>
-  <li><a href="#on-hospitals" id="toc-on-hospitals" class="nav-link" data-scroll-target="#on-hospitals">On Hospitals</a></li>
-  <li><a href="#on-physicians" id="toc-on-physicians" class="nav-link" data-scroll-target="#on-physicians">On Physicians</a></li>
-  <li><a href="#on-medications" id="toc-on-medications" class="nav-link" data-scroll-target="#on-medications">On Medications</a></li>
-  <li><a href="#on-public-health" id="toc-on-public-health" class="nav-link" data-scroll-target="#on-public-health">On Public Health</a></li>
-  <li><a href="#on-administration" id="toc-on-administration" class="nav-link" data-scroll-target="#on-administration">On Administration</a></li>
-  <li><a href="#on-covid-19-response-funding" id="toc-on-covid-19-response-funding" class="nav-link" data-scroll-target="#on-covid-19-response-funding">On COVID-19 Response Funding</a></li>
-  <li><a href="#on-other-professionals" id="toc-on-other-professionals" class="nav-link" data-scroll-target="#on-other-professionals">On Other Professionals</a></li>
-  </ul></li>
-  <li><a href="#health-expenditure-by-public-sector" id="toc-health-expenditure-by-public-sector" class="nav-link" data-scroll-target="#health-expenditure-by-public-sector">Health expenditure by public sector</a>
-  <ul class="collapse">
-  <li><a href="#total-expenditure-1" id="toc-total-expenditure-1" class="nav-link" data-scroll-target="#total-expenditure-1">Total expenditure</a></li>
-  <li><a href="#on-hospitals-1" id="toc-on-hospitals-1" class="nav-link" data-scroll-target="#on-hospitals-1">On Hospitals</a></li>
-  <li><a href="#on-physicians-1" id="toc-on-physicians-1" class="nav-link" data-scroll-target="#on-physicians-1">On Physicians</a></li>
-  <li><a href="#on-medications-1" id="toc-on-medications-1" class="nav-link" data-scroll-target="#on-medications-1">On Medications</a></li>
-  <li><a href="#on-public-health-1" id="toc-on-public-health-1" class="nav-link" data-scroll-target="#on-public-health-1">On Public Health</a></li>
-  <li><a href="#on-administration-1" id="toc-on-administration-1" class="nav-link" data-scroll-target="#on-administration-1">On Administration</a></li>
-  <li><a href="#on-covid-19-response-funding-1" id="toc-on-covid-19-response-funding-1" class="nav-link" data-scroll-target="#on-covid-19-response-funding-1">On COVID-19 Response Funding</a></li>
-  <li><a href="#on-other-professionals-1" id="toc-on-other-professionals-1" class="nav-link" data-scroll-target="#on-other-professionals-1">On Other Professionals</a></li>
-  </ul></li>
-  <li><a href="#health-expenditure-by-private-sector" id="toc-health-expenditure-by-private-sector" class="nav-link" data-scroll-target="#health-expenditure-by-private-sector">Health expenditure by private sector</a>
-  <ul class="collapse">
-  <li><a href="#total-expenditure-2" id="toc-total-expenditure-2" class="nav-link" data-scroll-target="#total-expenditure-2">Total expenditure</a></li>
-  <li><a href="#on-hospitals-2" id="toc-on-hospitals-2" class="nav-link" data-scroll-target="#on-hospitals-2">On Hospitals</a></li>
-  <li><a href="#on-physicians-2" id="toc-on-physicians-2" class="nav-link" data-scroll-target="#on-physicians-2">On Physicians</a></li>
-  <li><a href="#on-medications-2" id="toc-on-medications-2" class="nav-link" data-scroll-target="#on-medications-2">On Medications</a></li>
-  <li><a href="#on-public-health-2" id="toc-on-public-health-2" class="nav-link" data-scroll-target="#on-public-health-2">On Public Health</a></li>
-  <li><a href="#on-administration-2" id="toc-on-administration-2" class="nav-link" data-scroll-target="#on-administration-2">On Administration</a></li>
-  <li><a href="#on-covid-19-response-funding-2" id="toc-on-covid-19-response-funding-2" class="nav-link" data-scroll-target="#on-covid-19-response-funding-2">On COVID-19 Response Funding</a></li>
-  <li><a href="#on-other-professionals-2" id="toc-on-other-professionals-2" class="nav-link" data-scroll-target="#on-other-professionals-2">On Other Professionals</a></li>
-  </ul></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#limitations" id="toc-limitations" class="nav-link" data-scroll-target="#limitations">Limitations</a></li>
   </ul>
 </nav>
     </div>
@@ -159,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025</h1>
+<h1 class="title">Lifestyle factors and their impact on students - Analysis of Kaggle dataset</h1>
 </div>
 
 
@@ -176,308 +146,97 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This page presents a curated set of descriptive visualizations of healthcare spending by sector. Specific expenditures include hospitals, physicians, medications, public health, administration, COVID-19 response and other professionals.</p>
-<section id="provincial-government-health-expenditure" class="level1 tabset">
-<h1 class="tabset">Provincial Government health expenditure</h1>
-<section id="total-expenditure" class="level2">
-<h2 class="anchored" data-anchor-id="total-expenditure">Total expenditure</h2>
-<div class="cell">
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<blockquote style="margin-left: 2em; margin-right: 2em; padding: 1em; background: #f9f9f9; border-left: 4px solid #ccc; border-right: 4px solid #ccc; font-style: italic; font-size:0.8em" class="blockquote">
+This dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students’ daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student’s stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes. <br><br> This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.
+</blockquote>
+<p>The purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field.</p>
+</section>
+<section id="results" class="level1">
+<h1>Results</h1>
+<p>The dataset includes data on lifestyle factors (extracurricular activity, physical activity, sleep, social activity, study time and stress levels), gender and academic performance. Extracurricular activity, physical activity, sleep, social activity and study time were continuous and measured in hours per day. Lifestyle factors measured in hours per day will be referred to collectively as time-based lifestyle activities. Stress levels were indicated by low, medium and high. Gender was recorded as female and male. Grades ranged from 5.6 to 10. The investigator assumed that grades could be as low as zero and as high as 10.</p>
+<p>There were 2000 students in the dataset. Of these, 984 (49%) and 1016 (51%) were female and male, respectively. Median grades of all female and male students were 7.78 (IQR: 7.25-8.32), 7.75 (IQR: 7.22-8.3) and 7.8 (IQR: 7.25-8.32), respectively. No significant differences (p = 0.54) were found between the grades of female and male students.</p>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<div>
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov total health expenditure-1.png" class="img-fluid figure-img" width="1440"></p>
+<p><img src="student_lifestyle_data_kaggle_files/figure-html/Grade distribution plots for all, female and male students-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The amount of time spent by students in each time-based lifestyle activity is shown below. Students tended to spend the most time in sleep (median: 7.5; IQR: 6.2-8.8) and study (median: 7.4; IQR: 6.3-8.7), followed by physical (median: 4.1; IQR: 2.4-6.1), social (median: 2.6; IQR: 1.2-4.1) and extracurricular activities (median: 2; IQR: 1-3).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="student_lifestyle_data_kaggle_files/figure-html/Time-based lifestyle activities distribution-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Over half of all students (51.45%; n = 1029) reported experiencing high stress, while 33.7% (n = 674), and 14.85% (n = 297) reported experiencing moderate and low stress, respectively.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="student_lifestyle_data_kaggle_files/figure-html/Stress levels-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="480"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Hours spent studying (p &lt; 0.0001) and stress levels (p &lt; 0.0001) were associated with higher grades. For every hour spent studying, grades increased 0.385 points. The median grade for low, moderate and high level stress groups were 7.05 (IQR: 6.7-7.38), 7.55 (IQR: 7.18-7.95) and 8.18 (IQR: 7.72-8.65), respectively. Significant differences in grades between low and moderate (p &lt; 0.0001), moderate and high (p &lt; 0.0001) and low and high (p &lt; 0.0001) stress levels were detected. Time spent in social (p = 0.0001) and physical activities (p &lt; 0.0001) were found to negatively affect grades. For every hour spent in social and physical activities, there was a 0.038 and 0.101 decrease in grades, respectively. Time spent in extracurricular activities (p = 0.1516) and sleep (p = 0.8491) had no effect on grades. The median grade of female and male students were 7.75 (IQR: 7.22-8.3) and 7.8 (IQR: 7.25-8.32), respectively. No associations existed between grades and gender (p = 0.542).</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="student_lifestyle_data_kaggle_files/figure-html/Output- Univariable comparison of all lifestyle factors with grades-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Median hours spent studying among low, moderate and high stress groups were 5.5 (IQR: 5.2-5.7), moderate 7 (IQR: 6.4-7.4) and 8.7 (IQR: 8-9.3). Median hours spent in extracurricular activities were 2 (IQR: 0.9-3), 2 (IQR: 1.1-3) and 2 (IQR: 1-3), respectively. Median hours spent sleeping were 8 (IQR: 7.1-9.1), 7.9 (IQR: 6.9-8.98) and 6.8 (IQR: 5.6-8.4), respectively. Median hours spent in social activity were 3 (IQR: 1.4-4.2), 2.6 (IQR: 1.3-4.2) and 2.4 (IQR: 1.2-4), respectively. Median hours spent in physical activity were 5.3 (IQR: 4-7.4), 4.25 (IQR: 2.6-6) and 3.6 (IQR: 1.8-5.7), respectively. Hours spent studying increased with stress levels (p &lt; 0.0001). Significant differences between study hours were detected among all stress groups (p &lt; 0.0001). Hours in sleep (p &lt; 0.0001), social activity (p = 0.0489) and physical activity (p &lt; 0.0001) decreased with higher stress levels. No differences in extracurricular hours were detected among stress groups (p = 0.898). Significant differences in sleep hours among all stress levels was detected (p &lt; 0.0001). Significant differences between hours spent in social activities were detected between high and low stress groups (p = 0.0472), but not between moderate and low (p = 0.402) and high and moderate (p = 0.374) groups. Significant differences in physical activity hours were detected between moderate and low (p &lt; 0.0001), high and low (p &lt; 0.0001) and high and moderate (p = 0.00574) stress groups.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="student_lifestyle_data_kaggle_files/figure-html/Output - Activities vs. stress levels-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="768"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="on-hospitals" class="level2">
-<h2 class="anchored" data-anchor-id="on-hospitals">On Hospitals</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov spending on hospitals-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-physicians" class="level2">
-<h2 class="anchored" data-anchor-id="on-physicians">On Physicians</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov spending on physicians-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-medications" class="level2">
-<h2 class="anchored" data-anchor-id="on-medications">On Medications</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov spending on medications-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-public-health" class="level2">
-<h2 class="anchored" data-anchor-id="on-public-health">On Public Health</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov spending on public health-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-administration" class="level2">
-<h2 class="anchored" data-anchor-id="on-administration">On Administration</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov spending on admin-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-covid-19-response-funding" class="level2">
-<h2 class="anchored" data-anchor-id="on-covid-19-response-funding">On COVID-19 Response Funding</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov spending on covid-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-other-professionals" class="level2">
-<h2 class="anchored" data-anchor-id="on-other-professionals">On Other Professionals</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/provincial gov spending on other professionals-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="health-expenditure-by-public-sector" class="level1 tabset">
-<h1 class="tabset">Health expenditure by public sector</h1>
-<section id="total-expenditure-1" class="level2">
-<h2 class="anchored" data-anchor-id="total-expenditure-1">Total expenditure</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public total health expenditure-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-hospitals-1" class="level2">
-<h2 class="anchored" data-anchor-id="on-hospitals-1">On Hospitals</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public spending on hospitals-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-physicians-1" class="level2">
-<h2 class="anchored" data-anchor-id="on-physicians-1">On Physicians</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public spending on physicians-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-medications-1" class="level2">
-<h2 class="anchored" data-anchor-id="on-medications-1">On Medications</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public spending on medications-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-public-health-1" class="level2">
-<h2 class="anchored" data-anchor-id="on-public-health-1">On Public Health</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public spending on public health-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-administration-1" class="level2">
-<h2 class="anchored" data-anchor-id="on-administration-1">On Administration</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public spending on admin-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-covid-19-response-funding-1" class="level2">
-<h2 class="anchored" data-anchor-id="on-covid-19-response-funding-1">On COVID-19 Response Funding</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public spending on covid-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-other-professionals-1" class="level2">
-<h2 class="anchored" data-anchor-id="on-other-professionals-1">On Other Professionals</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/public spending on other professionals-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-</section>
-<section id="health-expenditure-by-private-sector" class="level1 tabset">
-<h1 class="tabset">Health expenditure by private sector</h1>
-<section id="total-expenditure-2" class="level2">
-<h2 class="anchored" data-anchor-id="total-expenditure-2">Total expenditure</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private total health expenditure-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-hospitals-2" class="level2">
-<h2 class="anchored" data-anchor-id="on-hospitals-2">On Hospitals</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private spending on hospitals-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-physicians-2" class="level2">
-<h2 class="anchored" data-anchor-id="on-physicians-2">On Physicians</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private spending on physicians-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-medications-2" class="level2">
-<h2 class="anchored" data-anchor-id="on-medications-2">On Medications</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private spending on medications-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-public-health-2" class="level2">
-<h2 class="anchored" data-anchor-id="on-public-health-2">On Public Health</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private spending on public health-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-administration-2" class="level2">
-<h2 class="anchored" data-anchor-id="on-administration-2">On Administration</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private spending on admin-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-covid-19-response-funding-2" class="level2">
-<h2 class="anchored" data-anchor-id="on-covid-19-response-funding-2">On COVID-19 Response Funding</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private spending on covid-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="on-other-professionals-2" class="level2">
-<h2 class="anchored" data-anchor-id="on-other-professionals-2">On Other Professionals</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="cahealthexpenditure2025_files/figure-html/private spending on other professionals-1.png" class="img-fluid figure-img" width="1440"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="limitations" class="level1">
+<h1>Limitations</h1>
+<p>The investigator lacked the necessary background on educational practices in Lisboa to understand grade calculation and notation. Specifically, grades in the dataset ranged from 5.6 to 10. The investigator, insular in view, was unfamiliar with this type of grade notation. In order to proceed with the analysis, for the sake of practice, the investigator assumed that grades were on a scale between zero and 10, with zero being the lowest and 10 the highest.</p>
+<p>No other assumptions about the data were knowingly made by the investigator. However, the investigator acknowledges that there were likely assumptions that were unknowingly in effect.</p>
+<!---
+# Supplemental figures
+--->
+<!--# Study hours per day vs. gender-->
+<!--# Extracurricular hours per day vs. gender-->
+<!--# Sleep hours per day vs. gender-->
+<!--# Social hours per day vs. gender-->
+<!--# Stress levels vs. gender-->
+<!--# Physical activity levels vs. gender-->
+<!--# Social hours per day vs. stress levels-->
+<!--# Physical activity hours per day vs. stress levels-->
+<!--# PHysical activity hours vs. grades-->
+<!--# Physical activity vs. social levels-->
+<!--# Social activity hours vs. grades-->
 
 
 </section>
-</section>
 
-</main> <!-- /main -->
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>https://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
