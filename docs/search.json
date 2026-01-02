@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "I make data science simple, tangible, and honest.\nThis site is built like a small online laboratory: - the Portfolio is for finished work—clean, polished, and ready to use\n- the Lab is for work in progress—drafts, experiments, and ideas taking shape\nIf you don’t have a data background, you’re in the right place. I write to be understood."
+  },
+  {
+    "objectID": "index.html#where-would-you-like-to-start",
+    "href": "index.html#where-would-you-like-to-start",
+    "title": "Welcome",
+    "section": "Where would you like to start?",
+    "text": "Where would you like to start?\n\n\n\n\n✅ Portfolio\nFinished projects with clear write-ups, methods, and takeaways.\n\nCase studies\nReproducible workflows\nPractical visuals and plain-language conclusions\n\nEnter the Portfolio →\n\n\n\n\n\n\n🧪 Lab\nActive builds, prototypes, and notes—shared early so the thinking is visible.\n\nExperiments\nDrafts & notebooks\nOpen questions and next steps\n\nStep into the Lab →"
+  },
+  {
+    "objectID": "index.html#what-i-care-about",
+    "href": "index.html#what-i-care-about",
+    "title": "Welcome",
+    "section": "What I care about",
+    "text": "What I care about\n\n\n\nClarity\nIf it can’t be explained simply, it isn’t done yet.\n\n\n\nUsefulness\nI build outputs people can actually act on—checklists, tools, dashboards, decisions.\n\n\n\nIntegrity\nTransparent assumptions, honest uncertainty, and evaluations that don’t oversell."
+  },
+  {
+    "objectID": "index.html#a-quick-snapshot",
+    "href": "index.html#a-quick-snapshot",
+    "title": "Welcome",
+    "section": "A quick snapshot",
+    "text": "A quick snapshot\n\n\n\nWhat you’ll see here\n\nPrediction and classification projects\nReal-world evaluation and evidence work\nVisual storytelling and dashboards\nReusable templates for analysis\n\n\n\n\nHow I work\n\nStart with the question, not the model\nMake the data pipeline repeatable\nValidate with appropriate baselines\nCommunicate results in plain language"
+  },
+  {
+    "objectID": "index.html#say-hello",
+    "href": "index.html#say-hello",
+    "title": "Welcome",
+    "section": "Say hello",
+    "text": "Say hello\n\n\n\n\n\n\nIf you’d like to collaborate, chat about a project, or ask a question:\n\nEmail: your@email.com\n\nGitHub: https://github.com/YOURNAME\n\nLinkedIn: https://www.linkedin.com/in/YOURNAME"
+  }
+]
