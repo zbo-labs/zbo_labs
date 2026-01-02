@@ -139,15 +139,14 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>The figure illustrates accuracies for differing values of the major hyperparameters (through grid search) of the random forest method: number of trees and number of variables to sample.</p>
-<div class="scroll-x">
-<p>```{r, eval = TRUE, include = TRUE, echo = FALSE, fig.width = 16, fig.height = 7} #| fig.width: 20 #| fig.height: 5</p>
+```{
+<div style="overflow-x:auto; max-width:100%;">
+<p>} {r, eval = TRUE, include = TRUE, echo = FALSE, fig.width = 16, fig.height = 7}</p>
 <p>ggplot( output_df_final[sample(seq(1, dim(output_df_final)[1]), size = 10000), ], aes( x = mtry, y = accuracy, # color = ntree, group = mtry )</p>
-<p>) + # geom_boxplot(width = 0.1, outlier.shape = NA) + # geom_violin(width = 0.25, aes(group = mtry)) + geom_jitter(width = 1, alpha = 0.01, size = 15, shape = 21, fill = “grey”, color = “grey”) + geom_smooth(method = “loess”, se = FALSE, aes(group = ntree)) + scale_x_continuous( breaks = seq(0, 10) ) + # scale_y_continuous( # limits = c(0.65, 0.1), # breaks = seq(0.65, 1, 0.02) # ) + labs( x = “mtry”, y = “Accuracy”, title = “Accuracy vs.&nbsp;number of candidate predictors sampled at each split (mtry)” ) + facet_wrap(~ntree_labels, nrow = 2) + theme( text = element_text(face = “bold”, size = 20), plot.title = element_text(hjust = 0.5), plot.caption = element_text(hjust = 1), axis.text.x = element_text(size = 8, angle = 45, hjust = 1), panel.background = element_rect(fill = NA, color = “black”), panel.border = element_rect(fill = NA, color = “black”), strip.background = element_rect(fill = NA, color = NA), strip.text = element_text(size = 12) )</p>
-<p>library(ggplot2)</p>
-<p>ggplot(mtcars, aes(wt, mpg)) + geom_point(size = 2) + theme_minimal()</p>
+<p>) + # geom_boxplot(width = 0.1, outlier.shape = NA) + # geom_violin(width = 0.25, aes(group = mtry)) + geom_jitter(width = 1, alpha = 0.01, size = 15, shape = 21, fill = “grey”, color = “grey”) + geom_smooth(method = “loess”, se = FALSE, aes(group = ntree)) + scale_x_continuous( breaks = seq(0, 10) ) + # scale_y_continuous( # limits = c(0.65, 0.1), # breaks = seq(0.65, 1, 0.02) # ) + labs( x = “mtry”, y = “Accuracy”, title = “Accuracy vs.&nbsp;number of candidate predictors sampled at each split (mtry)” ) + facet_wrap(~ntree_labels, nrow = 2) + theme( text = element_text(face = “bold”, size = 20), plot.title = element_text(hjust = 0.5), plot.caption = element_text(hjust = 1), axis.text.x = element_text(size = 8, angle = 45, hjust = 1), panel.background = element_rect(fill = NA, color = “black”), panel.border = element_rect(fill = NA, color = “black”), strip.background = element_rect(fill = NA, color = NA), strip.text = element_text(size = 12) ) ```</p>
+
+
 </div>
-
-
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
