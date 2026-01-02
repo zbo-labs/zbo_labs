@@ -4,7 +4,7 @@
     "href": "portfolio.html#featured-projects",
     "title": "My Portfolio",
     "section": "Featured projects",
-    "text": "Featured projects\n\n\n\n\nProject 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian expenditure on hospitals, physicians, medications, public health, administration, COVID-1 response and other professionals by provincial, public and private sector.\nNotes:\n\nFrom National Health Expenditure Trends found on CIHI.\n\nView output →\n\n\n\n\n\n\nProject 2 — Student lifestyle factors and its influence on school performance: A Kaggle dataset.\nGoal: To provide an exploratory analysis of how student lifestyles affect school performance in Portugal.\nNotes:\n\nOriginal dataset can be found on Kaggle.\nThe dataset is from schools in Portugal. A description of the study design and data collection was not provided. I am also unfamiliar with the rating and grading systems used in Portugal so I did my best to investigate them appropriately. My intention was to present trends that could be meaningful.\n\nView results→\n\n\n\n\n\n\nProject 3 — Tuning a machine learning algorithm on Cleveland dataset\nGoal: Visualize optimal hyperparameter values for a random forest model.\nNotes:\n\nThe original dataset can be found at UC Irvine’s Machine Learning Repository.\n\nView results→\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
+    "text": "Featured projects\n\n\n\n\nProject 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian expenditure on hospitals, physicians, medications, public health, administration, COVID-1 response and other professionals by provincial, public and private sector.\nNotes:\n\nFrom National Health Expenditure Trends found on CIHI.\n\nView output →\n\n\n\n\n\n\nProject 2 — Student lifestyle factors and its influence on school performance: A Kaggle dataset.\nGoal: To provide an exploratory analysis of how student lifestyles affect school performance in Portugal.\nNotes:\n\nOriginal dataset can be found on Kaggle.\n\nView results→\n\n\n\n\n\n\nProject 3 — Tuning a machine learning algorithm on Cleveland dataset\nGoal: Visualize optimal hyperparameter values for a random forest model.\nNotes:\n\nThe original dataset can be found at UC Irvine’s Machine Learning Repository.\n\nView results→\n\n\n\n\n\n\nProject 4 — A plain-English explainer\nGoal: Teaching-oriented post that makes a concept intuitive.\nExamples: bias/variance, calibration, confounding, uplift, etc.\n\nA simple analogy\nA tiny example\nPractical takeaway\n\nRead →"
   },
   {
     "objectID": "portfolio.html#browse-by-type",
@@ -18,7 +18,7 @@
     "href": "portfolio.html#get-in-touch",
     "title": "My Portfolio",
     "section": "Get in touch",
-    "text": "Get in touch\n\n\n\n\n\n\nIf you’re curious about a project, want a quick walkthrough, or have a dataset you’d like to make more tangible, feel free to reach out.\n\nEmail: your@email.com\n\nGitHub: https://github.com/YOURNAME\n\nLinkedIn: https://www.linkedin.com/in/YOURNAME"
+    "text": "Get in touch\n\n\n\n\n\n\nIf you’re curious about a project, want a quick walkthrough, or have a dataset you’d like to make more tangible, feel free to reach out.\n\nEmail: zbolabs@gmail.com"
   },
   {
     "objectID": "about.html#hi-im-ben",
