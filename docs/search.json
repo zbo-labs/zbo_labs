@@ -11,14 +11,7 @@
     "href": "portfolio.html",
     "title": "My Portfolio",
     "section": "",
-    "text": "NoteWelcome 👋\n\n\n\nHere are my finished data science projects. I focus on generating output that is clear and easy to understand."
-  },
-  {
-    "objectID": "portfolio.html#featured-projects",
-    "href": "portfolio.html#featured-projects",
-    "title": "My Portfolio",
-    "section": "Featured projects",
-    "text": "Featured projects\n\n\n\n\nProject 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian expenditure on hospitals, physicians, medications, public health, administration, COVID-1 response and other professionals by provincial, public and private sector.\nNotes:\n\nFrom National Health Expenditure Trends found on CIHI.\n\nView output →\n\n\n\n\n\n\nProject 2 — Student lifestyle factors and its influence on school performance: A Kaggle dataset.\nGoal: To provide an exploratory analysis of how student lifestyles affect school performance in Portugal.\nNotes:\n\nOriginal dataset can be found on Kaggle.\n\nView results→\n\n\n\n\n\n\nProject 3 — Tuning a machine learning algorithm on Cleveland dataset\nGoal: Visualize optimal hyperparameter values for a random forest model.\nNotes:\n\nThe original dataset can be found at UC Irvine’s Machine Learning Repository.\n\nView results→\n\n\n\n\n\n\nProject 4 — Diagnostic performance using generative art\nSummary: A reproduction of an analysis inspired by generative art.\n\nNotes: I have found it useful to borrow tools from artists to help describe complex data.\nView output →\n\n\n\n\n\n\nProject 5 — Overview of the tidymodels R-package and sample code\nSummary: The tidymodels package is designed to optimize the prevention of data leakage when training and testing machine learning models. I outline the package here.\n\nView output→"
+    "text": "This is where I share finished data science projects."
   },
   {
     "objectID": "portfolio.html#get-in-touch",
@@ -291,14 +284,7 @@
     "href": "lab.html",
     "title": "The Bench",
     "section": "",
-    "text": "The Bench is where I work on prototypes, drafts, and experiments shared early so the thinking is visible."
-  },
-  {
-    "objectID": "lab.html#now-brewing",
-    "href": "lab.html#now-brewing",
-    "title": "The Bench",
-    "section": "Now brewing ☕️",
-    "text": "Now brewing ☕️\n\n\n\n\n\n\nNoteProject 1: Modelling changing attitudes\n\n\n\nStatus: Active experimentation\nFocus: Practice with stochastic compartment modelling.\nExploration of how attitudes change in the presence of social media influence.\nOpen notebook →"
+    "text": "Below is list of prototypes ane experiments shared as I work on them."
   },
   {
     "objectID": "lab.html#experiment-log",
