@@ -284,14 +284,14 @@
     "href": "lab.html",
     "title": "My Lab",
     "section": "",
-    "text": "NoteWelcome to My Lab\n\n\n\nThe Portfolio is for finished, polished projects.\nThe Lab is where I work in public: prototypes, drafts, and experiments—shared early so the thinking is visible."
+    "text": "NoteWelcome to My Lab\n\n\n\n\nThe Portfolio is for finished, polished projects.\nThe Lab is where I work in public: prototypes, drafts, and experiments—shared early so the thinking is visible."
   },
   {
     "objectID": "lab.html#now-brewing",
     "href": "lab.html#now-brewing",
     "title": "My Lab",
     "section": "Now brewing ☕️",
-    "text": "Now brewing ☕️\n\n\n\n\nProject: Modeling changing attitudes\nStatus: In-progress\nWhy I’m doing it: This is a fun project where I combine a couple things that I learned to show what my own mental models are with regard to changing attitudes in society.\nView my progress\n\n\n\n\n\n\nProject: Modeling social media virality as a contagion\nStatus: Model complete. Deciding best way to partition parameters for mining insights.\nWhy I’m doing it: It is inevitable that without introspection, we will project our assumptions onto people, our research and our work. This is an opportunity to understand where my assumptions regarding this topic might take me."
+    "text": "Now brewing ☕️\n\n\n\n\n\n\nNoteProject 1: Modelling changing attitudes\n\n\n\nStatus: Active experimentation\nFocus: Practice with stochastic compartment modelling.\nExploration of how attitudes change in the presence of social media influence.\nOpen notebook →"
   },
   {
     "objectID": "lab.html#experiment-log",
@@ -338,28 +338,28 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Welcome To My Lab",
+    "title": "Welcome",
     "section": "",
-    "text": "I make data science simple, tangible, and honest.\nThis site is built like a small online laboratory: - the Portfolio is for snapshots of finished work: clean and polished\n- the Lab is for work in progress—drafts, experiments, and ideas taking shape"
+    "text": "Hi, welcome to my online data science laboratory where I focus on simple, tangible and transparent outputs.\n- the Portfolio is for snapshots of finished work: clean and polished\n- the Lab is for works in progress—drafts, experiments, and ideas taking shape"
   },
   {
     "objectID": "index.html#where-would-you-like-to-start",
     "href": "index.html#where-would-you-like-to-start",
-    "title": "Welcome To My Lab",
+    "title": "Welcome",
     "section": "Where would you like to start?",
     "text": "Where would you like to start?\n\n\n\n\n✅ Portfolio\nSnapshots of finished projects.\n\nCase studies\nPractical visuals and plain-language conclusions\n\nEnter the Portfolio →\n\n\n\n\n\n\n🧪 Lab\nActive builds and prototypes.\n\nExperiments\nOpen questions and next steps\n\nStep into the Lab →"
   },
   {
     "objectID": "index.html#what-i-aim-for",
     "href": "index.html#what-i-aim-for",
-    "title": "Welcome To My Lab",
+    "title": "Welcome",
     "section": "What I aim for",
     "text": "What I aim for\n\n\n\nClarity\nIf it can’t be explained simply, it isn’t done yet.\n\n\n\nIntegrity\nTransparent assumptions, honest uncertainty, and evaluations that don’t oversell.\n\n\n\n\n\nImpactful\nOutput framed for clarity and the potential for decision-readiness (assuming data is valid).\n\n\n:::"
   },
   {
     "objectID": "index.html#say-hello",
     "href": "index.html#say-hello",
-    "title": "Welcome To My Lab",
+    "title": "Welcome",
     "section": "Say hello",
     "text": "Say hello\n\n\n\n\n\n\nIf you’d like to collaborate, chat about a project, or ask a question:\n\nEmail: zbolabs@gmail.com"
   },
