@@ -7,13 +7,6 @@
     "text": "2026.01.15 Thursday\n(09:00 am) Spent some time learning about file naming systems. These are super important if you want your work to be reproducible or utilized. I have been very lucky to be a part of organizations that valued innovation in every aspect of the job. That even included file naming systems that scaled beyond our team, several levels wider into our ecosystem.\nBut there were limits to this scalability. Once the system was introduced beyond our ecosystem (e.g. another department, expert discipline or even another company), it took a tremendous amount of work to get teams aligned on the file naming system. I imagine this will be a challenge with any file naming system, but perhaps it’s possible to scale it another few levels to save ourselves some time or to increase the intuitiveness to make it easier to decode.\nA cool tool I discovered in R today is the “targets” package. Allegedly, it allows you to create and follow lineages of iterations and transformations of data. I use the word “allegedly” because I have not tested it yet. But I’m about to right now. Here goes… (This is also why today’s blog will have time stamped components to track my progress on figuring out this package).\n(10:20 am) I was able to run one of the examples provided in the targets package user manual. It is impressive. Basically, targets allows you to specify what you are trying to track. It will then track any changes made to these targets and provide an illustration or a list of objects that need to be updated. It also provides a diagram of the lineage of these tracked objects. I think it’s a very handy tool.\n\n\n2026.01.14 Wednesday\nOver and over again, I find that the biggest barrier to learning new things is not what I don’t know, but what I do know. The closer I get to mastering something (and I don’t have to get that close), the more it impedes my learning of new things. For example, I’ve known about parquets in R for a long time because I needed them a long time ago. But I never took the time to learn how to use them. Why? Because I already had ways of dealing with large datasets, clunky as they may be. While it’s true that it would have taken more time to learn how to use parquets than implementing my clunky methods, the payoff long term would have been much higher. I guess it’s important to remind ourselves to take the time and to take the risk (make sure you do a risk analysis first, obviously), to abandon what we know, temporarily and even permanently, to learn new and better ways of doing things."
   },
   {
-    "objectID": "portfolio.html",
-    "href": "portfolio.html",
-    "title": "My Portfolio",
-    "section": "",
-    "text": "This is where I share finished data science projects."
-  },
-  {
     "objectID": "portfolio.html#get-in-touch",
     "href": "portfolio.html#get-in-touch",
     "title": "My Portfolio",
@@ -280,13 +273,6 @@
     "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
   },
   {
-    "objectID": "lab.html",
-    "href": "lab.html",
-    "title": "The Bench",
-    "section": "",
-    "text": "Below is list of prototypes ane experiments shared as I work on them."
-  },
-  {
     "objectID": "lab.html#experiment-log",
     "href": "lab.html#experiment-log",
     "title": "The Bench",
@@ -331,21 +317,21 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "About",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
     "section": "",
-    "text": "Hi, I’m Ben.\nI’m a biostatistician, epidemiologist, and applied mathematician with a background in veterinary medicine. My work focuses on using statistical and computational tools to examine social, institutional, and policy-driven phenomena—especially where measured outcomes diverge from stated intentions.\n\n\n\nPhD, Epidemiology — Quantitative methods, study design, statistical inference\n\nMSE, Applied Mathematics & Statistics — Probability, modeling, computation, AI/ML\nVMD, Veterinary Medicine — Clinical reasoning, population health, biosecurity\n\nThis site is an evolving workspace for observational studies, simulation models, and methodological experiments."
+    "text": "I’m a biostatistician, epidemiologist, applied mathematician and veterinarian. My work focuses on using statistical and computational tools to uncover trends in veterinary, medical and health data.\n\n\n\nPhD, Epidemiology — Quantitative methods, study design, statistical inference\n\nMSE, Applied Mathematics & Statistics — Probability, modeling, computation, AI/ML\nVMD, Veterinary Medicine — Clinical reasoning, population health, biosecurity\n\nThis site is an evolving workspace for observational studies, simulation models, and methodological experiments."
   },
   {
     "objectID": "index.html#where-would-you-like-to-start",
     "href": "index.html#where-would-you-like-to-start",
-    "title": "About",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
     "section": "Where would you like to start?",
     "text": "Where would you like to start?\n\n\n\n\n✅ Portfolio\nSnapshots of finished projects.\n\nCase studies\nPractical visuals and plain-language conclusions\n\nEnter the Portfolio →\n\n\n\n\n\n\n🧪 Lab\nActive builds and prototypes.\n\nExperiments\nOpen questions and next steps\n\nStep into the Lab →"
   },
   {
     "objectID": "index.html#what-i-aim-for",
     "href": "index.html#what-i-aim-for",
-    "title": "About",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
     "section": "What I aim for",
     "text": "What I aim for\n\n\n\nClarity\nIf it can’t be explained simply, it isn’t done yet.\n\n\n\nIntegrity\nTransparent assumptions, honest uncertainty, and evaluations that don’t oversell.\n\n\n\n\n\nImpactful\nOutput framed for clarity and the potential for decision-readiness (assuming data is valid).\n\n\n:::\n\n\n\n\n\n\n\nIf you’d like to collaborate, chat about a project, or ask a question:\n\nEmail: zbolabs@gmail.com"
   },
