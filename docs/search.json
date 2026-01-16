@@ -277,7 +277,7 @@
     "href": "lab.html#experiment-log",
     "title": "The Bench",
     "section": "Experiment log",
-    "text": "Experiment log\n\n\n\nRecent experiments\n\n\n\nBacklog"
+    "text": "Experiment log\n\n\n\nRecent experiments\n\n\n\nBacklog\n\n\n\n\n\n\n\n\n\n\nIf you’re curious about any of these projects—or you notice something I should reconsider—feedback is welcome. I’m especially interested in comments on: clarity, assumptions, and whether the output feels usable.\nEmail: zbolabs@gmail.com"
   },
   {
     "objectID": "lab.html#collaboration-feedback",
@@ -460,5 +460,12 @@
     "title": "We all use models. But, epidemiologists write them down. A look at why prevailing attitudes change.",
     "section": "",
     "text": "Introduction\nThis is a fun project for me. It’s allowing me to take pieces I learned from risk communication and perception, specifically cognitive maps, and combine them with what I learned from stochastic compartment modeling. I also had a professor, back in the day, say, “We all use models. Epidemiologists write them down”. And so here I am putting my intuition into a mathematical model to describe my experience with why prevailing attitudes change.\nA good example of things changing… I remember when Taylor Swift first hit the scene. She was different and not everyone liked her music. Fast forward to today, she’s a hit across the board. Even I like her!!\nSo, how does my intuition process her rise to stardom? Take a look below.\n\n\nMy cognitive map\n\n\n\n\n\n\n\nMy compartment model output"
+  },
+  {
+    "objectID": "portfolio.html",
+    "href": "portfolio.html",
+    "title": "My Portfolio",
+    "section": "",
+    "text": "Project 1 — A cursory look into health expenditure in Canada 2025\nGoal: Visualizing Canadian expenditure on hospitals, physicians, medications, public health, administration, COVID-1 response and other professionals by provincial, public and private sector.\nNotes:\n\nFrom National Health Expenditure Trends found on CIHI.\n\nView output →\n\n\n\n\n\n\nProject 2 — Student lifestyle factors and its influence on school performance: A Kaggle dataset.\nGoal: To provide an exploratory analysis of how student lifestyles affect school performance in Portugal.\nNotes:\n\nOriginal dataset can be found on Kaggle.\n\nView results→\n\n\n\n\n\n\nProject 3 — Tuning a machine learning algorithm on Cleveland dataset\nGoal: Visualize optimal hyperparameter values for a random forest model.\nNotes:\n\nThe original dataset can be found at UC Irvine’s Machine Learning Repository.\n\nView results→\n\n\n\n\n\n\nProject 4 — Diagnostic performance using generative art\nSummary: A reproduction of an analysis inspired by generative art.\n\nNotes: I have found it useful to borrow tools from artists to help describe complex data.\nView output →\n\n\n\n\n\n\nProject 5 — Overview of the tidymodels R-package and sample code\nSummary: The tidymodels package is designed to optimize the prevention of data leakage when training and testing machine learning models. I outline the package here.\n\nView output→\n\n\n\n\n\n\n\n\n\n\n\nIf you’re curious about a project, want a quick walkthrough, or have a dataset you’d like to make more tangible, feel free to reach out.\n\nEmail: zbolabs@gmail.com"
   }
 ]
