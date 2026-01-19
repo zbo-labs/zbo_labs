@@ -189,6 +189,90 @@
     "text": "On Other Professionals"
   },
   {
+    "objectID": "about.html#hi-im-ben",
+    "href": "about.html#hi-im-ben",
+    "title": "About Me",
+    "section": "Hi — I’m Ben",
+    "text": "Hi — I’m Ben\nI’m a biostatistician, epidemiologist, and data scientist who focuses on making complex data understandable, honest, and useful — especially for people who don’t live in statistics every day.\nI work at the intersection of health, science, and decision-making, where the goal isn’t just a model that runs, but insight someone can actually use."
+  },
+  {
+    "objectID": "about.html#how-i-think-about-data",
+    "href": "about.html#how-i-think-about-data",
+    "title": "About Me",
+    "section": "How I think about data",
+    "text": "How I think about data\nI treat data work like a workshop:\n\nstart by understanding the material\n\ntake messy things apart carefully\n\nrebuild them into something simpler and stronger\n\nexplain the result in plain language\n\nThat means transparent assumptions, clear visuals, and an emphasis on what the results mean — not just how clever the method was."
+  },
+  {
+    "objectID": "about.html#credentials-at-a-glance",
+    "href": "about.html#credentials-at-a-glance",
+    "title": "About Me",
+    "section": "Credentials (at a glance)",
+    "text": "Credentials (at a glance)\n\n\nTraining - PhD — Epidemiology\n- MSc — Applied Mathematics & Statistics\n- Doctor of Veterinary Medicine (DVM)\nCore methods - Statistical modeling & inference\n- Machine learning (applied, not buzzword-driven)\n- Study design & evaluation\n\nDomains - Public & population health\n- Clinical & real-world evidence\n- Diagnostics & infection control\nTools - R, Python, SQL\n- Quarto, Shiny, GitHub\n- Reproducible research workflows"
+  },
+  {
+    "objectID": "about.html#what-youll-see-on-this-site",
+    "href": "about.html#what-youll-see-on-this-site",
+    "title": "About Me",
+    "section": "What you’ll see on this site",
+    "text": "What you’ll see on this site\n\nCase studies showing how I approach real problems\n\nExplain-it-clearly posts for tricky concepts\n\nTools & templates you can reuse\n\nOccasional experiments and side projects\n\nEverything here is meant to be practical, readable, and honest."
+  },
+  {
+    "objectID": "about.html#get-in-touch",
+    "href": "about.html#get-in-touch",
+    "title": "About Me",
+    "section": "Get in touch",
+    "text": "Get in touch\nIf something here resonates, or you’d like a walkthrough of a project:\n\n📧 Email: your@email.com\n\n💻 GitHub: https://github.com/YOURNAME\n\n🔗 LinkedIn: https://linkedin.com/in/YOURNAME"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
+    "section": "",
+    "text": "I generate salient statistical insights to empower health and medical experts by orienting intuition, resolving cognitive dissonance, and aligning findings with scientific knowledge. By synergizing epidemiologic and statistical methodology with subject-matter expertise, I refine intent and motivation into well-defined research objectives that efficiently drive study design and analysis.\n\n\n\n\nPhD, Epidemiology — Study design, statistical inference, population health\nMSE, Applied Mathematics & Statistics — Probability, statistics, modeling, computation, AI/ML\nVMD, Veterinary Medicine — Clinical reasoning, comparative medicine, outbreak management"
+  },
+  {
+    "objectID": "index.html#my-lab",
+    "href": "index.html#my-lab",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
+    "section": "My Lab",
+    "text": "My Lab\nThis is my online data science laboratory. Please use the links below or at the top of the page to look around.\n\n\n\n\n\nPortfolio\nSnapshots of finished projects.\nStep inside →\n\n\n\n\n\n\nBench\nIn-progress projects.\nTake a look →\n\n\n\n\n\n\nLearning Blog\nA record of things I’ve learned.\nRead all about it →\n\n\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html",
+    "href": "student_lifestyle_data_kaggle.html",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "",
+    "text": "This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.1\n\nThis dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students’ daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student’s stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes.  This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.\n\nThe purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field."
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html#footnotes",
+    "href": "student_lifestyle_data_kaggle.html#footnotes",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data↩︎"
+  },
+  {
+    "objectID": "biomarker_slopes.html",
+    "href": "biomarker_slopes.html",
+    "title": "Investigation of the diagnostic performance of a biomarker (simulated reproduction)",
+    "section": "",
+    "text": "Introduction\nThe following is a reproduction of a set of visualizations I produced for a study and subsequent publication. These were particularly helpful when collaborating with our clinical team whose expertise were in non-statistical fields. It helped us achieve and maintain alignment, helping us efficiently achieve our goals.\nWe were investigating a biomarker and its behavior over time in healthy (controls) and diseased (exposed) subjects. The hypothesis was that biomarker values that increased over time indicated disease, while biomarkers that stayed constant through time indicated health. Furthermore, in order for clinicians to adopt this biomarker, the diagnostic performance of this biomarker needed to be highly accurate with near-zero misclassifications. The following visualizations were produced from a simplified simulation of the data.\nThe progression of each patient’s biomarker progression through time is presented below. A visual inspection shows us that increases in biomarker values tended to occur more often with sick than with healthy patients. We can also see that the data is unbalanced.\n\n\n\n\n\n\n\n\n\n\n\nBoxplots of slopes help us understand the diagnostic performance of the data\nIn order to diagnose disease, we must see an increase in biomarker values over time. Using linear regression, we can calculate the slope of each patient’s biomarker values over time. We can compare the slopes of healthy patients against the slopes of sick patients.\nIn the plot below, we can see that the biomarker slopes of sick patients tends to be higher than those of healthy patients. However, with regards to diagnostic performance, there was still a chance of misclassifications that was unacceptable to our clinicians.\n\n\n\n\n\n\n\n\n\n\n\nRadial plots help us assess diagnostic performance with data completeness in mind.\nIn order to better understand the cause of this, I created another visualization tool, called radial plots. For each patient, lines were generated using the slope calculated from linear regression originating from a common intercept.\nThe radial plot below illustrates each patient’s slope of biomarker values. The dotted red and blue lines indicated patients correctly classified as sick and healthy, respectively. The solid blue line indicated a healthy patient misclassified as sick. The solid red line indicated sick patients misclassified as healthy. One thing to note is that misclassified patients had shorter follow-up periods compared to correctly classified patients. This information allowed our clincial team to look more closely into the cause of shorter follow-up periods providing explanations for misclassifications and helping us investigate the diagnostic performance of this biomarker more thoroughly."
+  },
+  {
+    "objectID": "rf_tuning_cleveland.html",
+    "href": "rf_tuning_cleveland.html",
+    "title": "Grid search accuracy results for random forest hyperparameters fit on Cleveland dataset",
+    "section": "",
+    "text": "The figure illustrates accuracies for differing values of the major hyperparameters (through grid search) of the random forest method: number of trees and number of variables to sample."
+  },
+  {
+    "objectID": "lab.html",
+    "href": "lab.html",
+    "title": "The Bench",
+    "section": "",
+    "text": "NoteProject 1: Modelling changing attitudes\n\n\n\nStatus: Active experimentation\nFocus: Practice with stochastic compartment modelling.\nExploration of how attitudes change in the presence of social media influence.\nOpen notebook →\n\n\n\n\n\n\n\n\nNoteProject 2: Gas prices in Ontario, Canada\n\n\n\nStatus: In progress\nFocus: Generating potential confirmatory insights into public sentiment\nVisualizing trends in gas prices.\nOpen notebook →\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+  },
+  {
     "objectID": "tidymodels.html",
     "href": "tidymodels.html",
     "title": "Overview of tidymodels",
@@ -273,88 +357,11 @@
     "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
   },
   {
-    "objectID": "lab.html",
-    "href": "lab.html",
-    "title": "The Bench",
+    "objectID": "gas_prices_canada.html",
+    "href": "gas_prices_canada.html",
+    "title": "Gas prices in Ontario, Canada",
     "section": "",
-    "text": "NoteProject 1: Modelling changing attitudes\n\n\n\nStatus: Active experimentation\nFocus: Practice with stochastic compartment modelling.\nExploration of how attitudes change in the presence of social media influence.\nOpen notebook →\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
-  },
-  {
-    "objectID": "rf_tuning_cleveland.html",
-    "href": "rf_tuning_cleveland.html",
-    "title": "Grid search accuracy results for random forest hyperparameters fit on Cleveland dataset",
-    "section": "",
-    "text": "The figure illustrates accuracies for differing values of the major hyperparameters (through grid search) of the random forest method: number of trees and number of variables to sample."
-  },
-  {
-    "objectID": "biomarker_slopes.html",
-    "href": "biomarker_slopes.html",
-    "title": "Investigation of the diagnostic performance of a biomarker (simulated reproduction)",
-    "section": "",
-    "text": "Introduction\nThe following is a reproduction of a set of visualizations I produced for a study and subsequent publication. These were particularly helpful when collaborating with our clinical team whose expertise were in non-statistical fields. It helped us achieve and maintain alignment, helping us efficiently achieve our goals.\nWe were investigating a biomarker and its behavior over time in healthy (controls) and diseased (exposed) subjects. The hypothesis was that biomarker values that increased over time indicated disease, while biomarkers that stayed constant through time indicated health. Furthermore, in order for clinicians to adopt this biomarker, the diagnostic performance of this biomarker needed to be highly accurate with near-zero misclassifications. The following visualizations were produced from a simplified simulation of the data.\nThe progression of each patient’s biomarker progression through time is presented below. A visual inspection shows us that increases in biomarker values tended to occur more often with sick than with healthy patients. We can also see that the data is unbalanced.\n\n\n\n\n\n\n\n\n\n\n\nBoxplots of slopes help us understand the diagnostic performance of the data\nIn order to diagnose disease, we must see an increase in biomarker values over time. Using linear regression, we can calculate the slope of each patient’s biomarker values over time. We can compare the slopes of healthy patients against the slopes of sick patients.\nIn the plot below, we can see that the biomarker slopes of sick patients tends to be higher than those of healthy patients. However, with regards to diagnostic performance, there was still a chance of misclassifications that was unacceptable to our clinicians.\n\n\n\n\n\n\n\n\n\n\n\nRadial plots help us assess diagnostic performance with data completeness in mind.\nIn order to better understand the cause of this, I created another visualization tool, called radial plots. For each patient, lines were generated using the slope calculated from linear regression originating from a common intercept.\nThe radial plot below illustrates each patient’s slope of biomarker values. The dotted red and blue lines indicated patients correctly classified as sick and healthy, respectively. The solid blue line indicated a healthy patient misclassified as sick. The solid red line indicated sick patients misclassified as healthy. One thing to note is that misclassified patients had shorter follow-up periods compared to correctly classified patients. This information allowed our clincial team to look more closely into the cause of shorter follow-up periods providing explanations for misclassifications and helping us investigate the diagnostic performance of this biomarker more thoroughly."
-  },
-  {
-    "objectID": "student_lifestyle_data_kaggle.html",
-    "href": "student_lifestyle_data_kaggle.html",
-    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
-    "section": "",
-    "text": "This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.1\n\nThis dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students’ daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student’s stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes.  This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.\n\nThe purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field."
-  },
-  {
-    "objectID": "student_lifestyle_data_kaggle.html#footnotes",
-    "href": "student_lifestyle_data_kaggle.html#footnotes",
-    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nhttps://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data↩︎"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Ben Ouyang VMD, MSE, MS, BS",
-    "section": "",
-    "text": "I generate salient statistical insights to empower health and medical experts by orienting intuition, resolving cognitive dissonance, and aligning findings with scientific knowledge. By synergizing epidemiologic and statistical methodology with subject-matter expertise, I refine intent and motivation into well-defined research objectives that efficiently drive study design and analysis.\n\n\n\n\nPhD, Epidemiology — Study design, statistical inference, population health\nMSE, Applied Mathematics & Statistics — Probability, statistics, modeling, computation, AI/ML\nVMD, Veterinary Medicine — Clinical reasoning, comparative medicine, outbreak management"
-  },
-  {
-    "objectID": "index.html#my-lab",
-    "href": "index.html#my-lab",
-    "title": "Ben Ouyang VMD, MSE, MS, BS",
-    "section": "My Lab",
-    "text": "My Lab\nThis is my online data science laboratory. Please use the links below or at the top of the page to look around.\n\n\n\n\n\nPortfolio\nSnapshots of finished projects.\nStep inside →\n\n\n\n\n\n\nBench\nIn-progress projects.\nTake a look →\n\n\n\n\n\n\nLearning Blog\nA record of things I’ve learned.\nRead all about it →\n\n\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
-  },
-  {
-    "objectID": "about.html#hi-im-ben",
-    "href": "about.html#hi-im-ben",
-    "title": "About Me",
-    "section": "Hi — I’m Ben",
-    "text": "Hi — I’m Ben\nI’m a biostatistician, epidemiologist, and data scientist who focuses on making complex data understandable, honest, and useful — especially for people who don’t live in statistics every day.\nI work at the intersection of health, science, and decision-making, where the goal isn’t just a model that runs, but insight someone can actually use."
-  },
-  {
-    "objectID": "about.html#how-i-think-about-data",
-    "href": "about.html#how-i-think-about-data",
-    "title": "About Me",
-    "section": "How I think about data",
-    "text": "How I think about data\nI treat data work like a workshop:\n\nstart by understanding the material\n\ntake messy things apart carefully\n\nrebuild them into something simpler and stronger\n\nexplain the result in plain language\n\nThat means transparent assumptions, clear visuals, and an emphasis on what the results mean — not just how clever the method was."
-  },
-  {
-    "objectID": "about.html#credentials-at-a-glance",
-    "href": "about.html#credentials-at-a-glance",
-    "title": "About Me",
-    "section": "Credentials (at a glance)",
-    "text": "Credentials (at a glance)\n\n\nTraining - PhD — Epidemiology\n- MSc — Applied Mathematics & Statistics\n- Doctor of Veterinary Medicine (DVM)\nCore methods - Statistical modeling & inference\n- Machine learning (applied, not buzzword-driven)\n- Study design & evaluation\n\nDomains - Public & population health\n- Clinical & real-world evidence\n- Diagnostics & infection control\nTools - R, Python, SQL\n- Quarto, Shiny, GitHub\n- Reproducible research workflows"
-  },
-  {
-    "objectID": "about.html#what-youll-see-on-this-site",
-    "href": "about.html#what-youll-see-on-this-site",
-    "title": "About Me",
-    "section": "What you’ll see on this site",
-    "text": "What you’ll see on this site\n\nCase studies showing how I approach real problems\n\nExplain-it-clearly posts for tricky concepts\n\nTools & templates you can reuse\n\nOccasional experiments and side projects\n\nEverything here is meant to be practical, readable, and honest."
-  },
-  {
-    "objectID": "about.html#get-in-touch",
-    "href": "about.html#get-in-touch",
-    "title": "About Me",
-    "section": "Get in touch",
-    "text": "Get in touch\nIf something here resonates, or you’d like a walkthrough of a project:\n\n📧 Email: your@email.com\n\n💻 GitHub: https://github.com/YOURNAME\n\n🔗 LinkedIn: https://linkedin.com/in/YOURNAME"
+    "text": "The illustration below shows how gas prices in Ontario, Canada changed from 1990 to today. It is easy to see that the prices have climbed over the years. However, prices are not adjusted for inflation. Thus, it is possible that the increase in gas prices may have been due to increase in prices for all products, across the board. See next section for an inflation-adjusted version.\n\nBelow is a graph of Ontario gas prices with adjustment for inflation. Specifically, these prices are in 2025 dollars. It looks like prices overall remained steady with some fluctuations occurring throughout. One interpretation of inflation-adjusted is that although the dollar number associated with gas did increase over time (previous graph), it didn’t change much with respect to other products. That does not mean the pressures were not felt. This analysis has not yet explored how gas prices changed with respect to wages.\n\n\nNext steps\nIt would be interesting to see how gas prices changed with respected to wages. While gas prices may have increased with respect to other products, it is possible that they did so without a concomitant increase in wages."
   },
   {
     "objectID": "tidymodels_overview.html",
