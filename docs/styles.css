@@ -1,6 +1,132 @@
 /* Custom site styles */
 
 
+/* ===== Portfolio section framing ===== */
+.portfolio-section {
+  margin: 2rem 0;
+}
+
+.portfolio-subtitle {
+  margin-top: -0.5rem;
+  opacity: 0.85;
+}
+
+/* ===== Horizontal strip container ===== */
+.portfolio-strip {
+  display: flex;
+  gap: 1.25rem;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  padding: 1rem 0.25rem 1.25rem 0.25rem;
+
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: 0.25rem;
+
+  -webkit-overflow-scrolling: touch; /* momentum scrolling on iOS */
+}
+
+/* Optional: make wheel feel nicer on trackpads/mice */
+.portfolio-strip:focus {
+  outline: none;
+}
+
+/* ===== Card ===== */
+.project-card {
+  /* Fixed card sizing */
+  flex: 0 0 340px;
+  width: 340px;
+  max-width: 340px;
+
+  /* IMPORTANT: flexbox min-width bug fix */
+  min-width: 0;
+
+  padding: 1rem;
+
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 14px;
+  background: white;
+
+  scroll-snap-align: start;
+
+  /* Force wrapping at the card level */
+  white-space: normal !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+
+  box-sizing: border-box;
+}
+
+/* ===== NUCLEAR OPTION: prevent theme nowrap anywhere inside ===== */
+.project-card,
+.project-card * {
+  white-space: normal !important;
+  max-width: 100%;
+}
+
+/* Make sure long links/tokens will break instead of forcing width */
+.project-card a,
+.project-card code,
+.project-card pre,
+.project-card kbd,
+.project-card samp {
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+}
+
+/* ===== Typography inside card ===== */
+.project-title {
+  margin: 0 0 0.5rem 0;
+  line-height: 1.15;
+}
+
+.project-desc {
+  margin: 0 0 0.75rem 0;
+  line-height: 1.35;
+}
+
+/* ===== Badges ===== */
+.project-meta {
+  margin: 0 0 0.75rem 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  margin: 0 0.35rem 0.35rem 0;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,0.12);
+  font-size: 0.85em;
+}
+
+/* ===== Links ===== */
+.project-links {
+  margin: 0;
+}
+
+.project-link {
+  display: inline;
+  text-decoration: none;
+}
+
+.project-link:hover {
+  text-decoration: underline;
+}
+
+/* ===== Optional responsiveness ===== */
+@media (max-width: 600px) {
+  .project-card {
+    flex: 0 0 280px;
+    width: 280px;
+    max-width: 280px;
+  }
+}
+
+
+
+
+
 /* About section layout */
 .about-wrap{
   display: flex;
