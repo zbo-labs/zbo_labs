@@ -46,7 +46,8 @@
 .project-card .card-link {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 3;
+  display: block;
 }
 
 /* Keep content above overlay link visually (and selectable) */
