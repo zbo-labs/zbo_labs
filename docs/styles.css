@@ -44,6 +44,14 @@
 }
 
 
+.project-subtitle {
+  font-weight: 400;
+  font-size: 0.95em;
+  color: #555;
+}
+
+
+
 @media (max-width: 640px) {
   .project-card {
     flex: 0 0 85%;
