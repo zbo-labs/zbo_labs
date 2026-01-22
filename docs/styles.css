@@ -73,3 +73,55 @@
     min-height: 260px;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* About section layout */
+.about-wrap{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+/* Headshot */
+.about-photo img{
+  width: 160px;
+  height: auto;
+  border-radius: 16px;
+  object-fit: cover;
+}
+
+/* Text */
+.about-text{
+  line-height: 1.4;
+  max-width: 720px;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 800px){
+  .about-wrap{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .about-photo img{
+    width: 140px;
+  }
+}
