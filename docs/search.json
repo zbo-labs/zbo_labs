@@ -105,6 +105,83 @@
     "text": "The illustration below shows how gas prices in Ontario, Canada changed from 1990 to today. It is easy to see that the prices have climbed over the years. However, prices are not adjusted for inflation. Thus, it is possible that the increase in gas prices may have been due to increase in prices for all products, across the board. See next figure for an inflation-adjusted version.\n\nBelow is a graph of Ontario gas prices with adjustment for inflation. Specifically, these prices are in 2025 dollars. It looks like prices overall remained steady with some fluctuations occurring throughout. One interpretation of inflation-adjusted is that although the dollar number associated with gas did increase over time (previous graph), it didn’t change much with respect to other products. That does not mean the pressures were not felt. This analysis has not yet explored how gas prices changed with respect to wages.\n\nTo get a better understanding how gas prices changed with respect to wages, the next figure will show how wages (in 2025 dollars), on average, progressed over time.\n\nThe figure below shows how many hours of work is needed to buy 60 litres (average tank volume, approximately) of gas. It appears that the hours of work needed tends to trend downward over the years. This does not take into account the cost of other goods and needs (e.g. rent) or how wages behaved within each industry."
   },
   {
+    "objectID": "book_blog.html",
+    "href": "book_blog.html",
+    "title": "Book Blog",
+    "section": "",
+    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpen notes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpen notes"
+  },
+  {
+    "objectID": "book_blog.html#currently-reading",
+    "href": "book_blog.html#currently-reading",
+    "title": "Book Blog",
+    "section": "",
+    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpen notes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpen notes"
+  },
+  {
+    "objectID": "learning_blog.html",
+    "href": "learning_blog.html",
+    "title": "Learning blog",
+    "section": "",
+    "text": "2026.01.15 Thursday\n(09:00 am) Spent some time learning about file naming systems. These are super important if you want your work to be reproducible or utilized. I have been very lucky to be a part of organizations that valued innovation in every aspect of the job. That even included file naming systems that scaled beyond our team, several levels wider into our ecosystem.\nBut there were limits to this scalability. Once the system was introduced beyond our ecosystem (e.g. another department, expert discipline or even another company), it took a tremendous amount of work to get teams aligned on the file naming system. I imagine this will be a challenge with any file naming system, but perhaps it’s possible to scale it another few levels to save ourselves some time or to increase the intuitiveness to make it easier to decode.\nA cool tool I discovered in R today is the “targets” package. Allegedly, it allows you to create and follow lineages of iterations and transformations of data. I use the word “allegedly” because I have not tested it yet. But I’m about to right now. Here goes… (This is also why today’s blog will have time stamped components to track my progress on figuring out this package).\n(10:20 am) I was able to run one of the examples provided in the targets package user manual. It is impressive. Basically, targets allows you to specify what you are trying to track. It will then track any changes made to these targets and provide an illustration or a list of objects that need to be updated. It also provides a diagram of the lineage of these tracked objects. I think it’s a very handy tool.\n\n\n2026.01.14 Wednesday\nOver and over again, I find that the biggest barrier to learning new things is not what I don’t know, but what I do know. The closer I get to mastering something (and I don’t have to get that close), the more it impedes my learning of new things. For example, I’ve known about parquets in R for a long time because I needed them a long time ago. But I never took the time to learn how to use them. Why? Because I already had ways of dealing with large datasets, clunky as they may be. While it’s true that it would have taken more time to learn how to use parquets than implementing my clunky methods, the payoff long term would have been much higher. I guess it’s important to remind ourselves to take the time and to take the risk (make sure you do a risk analysis first, obviously), to abandon what we know, temporarily and even permanently, to learn new and better ways of doing things."
+  },
+  {
+    "objectID": "lab.html",
+    "href": "lab.html",
+    "title": "The Bench",
+    "section": "",
+    "text": "NoteProject 1: Modelling changing attitudes\n\n\n\nStatus: Active experimentation\nFocus: Practice with stochastic compartment modelling.\nOpen notebook →\n\n\n\n\n\n\n\n\nNoteProject 2: Gas prices in Ontario, Canada\n\n\n\nStatus: In progress\nFocus: Generating potential confirmatory insights into public sentiment\nOpen notebook →\n\n\n\n\n\n\n\n\nNoteProject 3: Cost of living in Canada\n\n\n\nStatus: In progress\nFocus: Understanding cost-of-living in terms of workdays needed.\nOpen notebook →\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html",
+    "href": "student_lifestyle_data_kaggle.html",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "",
+    "text": "This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.1\n\nThis dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students’ daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student’s stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes.  This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.\n\nThe purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field."
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html#footnotes",
+    "href": "student_lifestyle_data_kaggle.html#footnotes",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data↩︎"
+  },
+  {
+    "objectID": "biomarker_slopes.html",
+    "href": "biomarker_slopes.html",
+    "title": "Investigation of the diagnostic performance of a biomarker (simulated reproduction)",
+    "section": "",
+    "text": "Introduction\nThe following is a reproduction of a set of visualizations I produced for a study and subsequent publication. These were particularly helpful when collaborating with our clinical team whose expertise were in non-statistical fields. It helped us achieve and maintain alignment, helping us efficiently achieve our goals.\nWe were investigating a biomarker and its behavior over time in healthy (controls) and diseased (exposed) subjects. The hypothesis was that biomarker values that increased over time indicated disease, while biomarkers that stayed constant through time indicated health. Furthermore, in order for clinicians to adopt this biomarker, the diagnostic performance of this biomarker needed to be highly accurate with near-zero misclassifications. The following visualizations were produced from a simplified simulation of the data.\nThe progression of each patient’s biomarker progression through time is presented below. A visual inspection shows us that increases in biomarker values tended to occur more often with sick than with healthy patients. We can also see that the data is unbalanced.\n\n\n\n\n\n\n\n\n\n\n\nBoxplots of slopes help us understand the diagnostic performance of the data\nIn order to diagnose disease, we must see an increase in biomarker values over time. Using linear regression, we can calculate the slope of each patient’s biomarker values over time. We can compare the slopes of healthy patients against the slopes of sick patients.\nIn the plot below, we can see that the biomarker slopes of sick patients tends to be higher than those of healthy patients. However, with regards to diagnostic performance, there was still a chance of misclassifications that was unacceptable to our clinicians.\n\n\n\n\n\n\n\n\n\n\n\nRadial plots help us assess diagnostic performance with data completeness in mind.\nIn order to better understand the cause of this, I created another visualization tool, called radial plots. For each patient, lines were generated using the slope calculated from linear regression originating from a common intercept.\nThe radial plot below illustrates each patient’s slope of biomarker values. The dotted red and blue lines indicated patients correctly classified as sick and healthy, respectively. The solid blue line indicated a healthy patient misclassified as sick. The solid red line indicated sick patients misclassified as healthy. One thing to note is that misclassified patients had shorter follow-up periods compared to correctly classified patients. This information allowed our clincial team to look more closely into the cause of shorter follow-up periods providing explanations for misclassifications and helping us investigate the diagnostic performance of this biomarker more thoroughly."
+  },
+  {
+    "objectID": "rf_tuning_cleveland.html",
+    "href": "rf_tuning_cleveland.html",
+    "title": "Grid search accuracy results for random forest hyperparameters fit on Cleveland dataset",
+    "section": "",
+    "text": "The figure illustrates accuracies for differing values of the major hyperparameters (through grid search) of the random forest method: number of trees and number of variables to sample."
+  },
+  {
+    "objectID": "smartphone_nation_notes.html",
+    "href": "smartphone_nation_notes.html",
+    "title": "Notes: Smartphone Nation by Dr. Kaitlyn Regehr",
+    "section": "",
+    "text": "Why I’m reading this book\nI wanted to learn more about the effects of this pull that our digital devices have on us. I’m sure we’ve all experienced this not so mild seduction. This is something that affects the health of people on so many levels, and we’re only beginning to understand this. I thought this book might be a good introduction for me into the work done on this.\n\n\nIntroduction\nI thought the Introduction was quite poignant. It described this industry of digital devices and social media as on that profits off of our attention, or the attention economy. Thus far, moderation has been how we have safeguarded our mental faculties. But the author states that we will need a few levels more protection. This includes understanding more about the content and the creators behind the content that pull so effectively at our attention. And finally, regulation."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
+    "section": "",
+    "text": "I generate salient statistical insights to empower health and medical experts by orienting intuition, resolving cognitive dissonance, and aligning findings with scientific knowledge. By synergizing epidemiologic and statistical methodology with subject-matter expertise, I refine intent and motivation into well-defined research objectives that efficiently drive study design and analysis.\n\n\n\n\nPhD, Epidemiology — Study design, statistical inference, population health\nMSE, Applied Mathematics & Statistics — Probability, statistics, modeling, computation, AI/ML\nVMD, Veterinary Medicine — Clinical reasoning, comparative medicine, outbreak management"
+  },
+  {
+    "objectID": "index.html#my-lab",
+    "href": "index.html#my-lab",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
+    "section": "My Lab",
+    "text": "My Lab\nThis is my online data science laboratory. Please use the links below or at the top of the page to look around.\n\n\n\n\n\nPortfolio\nSnapshots of finished projects.\nStep inside →\n\n\n\n\n\n\nBench\nIn-progress projects.\nTake a look →\n\n\n\n\n\n\nLearning Blog\nA record of things I’ve learned.\nRead all about it →\n\n\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+  },
+  {
     "objectID": "tidymodels.html",
     "href": "tidymodels.html",
     "title": "Overview of tidymodels",
@@ -187,55 +264,6 @@
     "title": "Overview of tidymodels",
     "section": "H. Practical implications / next steps",
     "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
-  },
-  {
-    "objectID": "lab.html",
-    "href": "lab.html",
-    "title": "The Bench",
-    "section": "",
-    "text": "NoteProject 1: Modelling changing attitudes\n\n\n\nStatus: Active experimentation\nFocus: Practice with stochastic compartment modelling.\nOpen notebook →\n\n\n\n\n\n\n\n\nNoteProject 2: Gas prices in Ontario, Canada\n\n\n\nStatus: In progress\nFocus: Generating potential confirmatory insights into public sentiment\nOpen notebook →\n\n\n\n\n\n\n\n\nNoteProject 3: Cost of living in Canada\n\n\n\nStatus: In progress\nFocus: Understanding cost-of-living in terms of workdays needed.\nOpen notebook →\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
-  },
-  {
-    "objectID": "rf_tuning_cleveland.html",
-    "href": "rf_tuning_cleveland.html",
-    "title": "Grid search accuracy results for random forest hyperparameters fit on Cleveland dataset",
-    "section": "",
-    "text": "The figure illustrates accuracies for differing values of the major hyperparameters (through grid search) of the random forest method: number of trees and number of variables to sample."
-  },
-  {
-    "objectID": "biomarker_slopes.html",
-    "href": "biomarker_slopes.html",
-    "title": "Investigation of the diagnostic performance of a biomarker (simulated reproduction)",
-    "section": "",
-    "text": "Introduction\nThe following is a reproduction of a set of visualizations I produced for a study and subsequent publication. These were particularly helpful when collaborating with our clinical team whose expertise were in non-statistical fields. It helped us achieve and maintain alignment, helping us efficiently achieve our goals.\nWe were investigating a biomarker and its behavior over time in healthy (controls) and diseased (exposed) subjects. The hypothesis was that biomarker values that increased over time indicated disease, while biomarkers that stayed constant through time indicated health. Furthermore, in order for clinicians to adopt this biomarker, the diagnostic performance of this biomarker needed to be highly accurate with near-zero misclassifications. The following visualizations were produced from a simplified simulation of the data.\nThe progression of each patient’s biomarker progression through time is presented below. A visual inspection shows us that increases in biomarker values tended to occur more often with sick than with healthy patients. We can also see that the data is unbalanced.\n\n\n\n\n\n\n\n\n\n\n\nBoxplots of slopes help us understand the diagnostic performance of the data\nIn order to diagnose disease, we must see an increase in biomarker values over time. Using linear regression, we can calculate the slope of each patient’s biomarker values over time. We can compare the slopes of healthy patients against the slopes of sick patients.\nIn the plot below, we can see that the biomarker slopes of sick patients tends to be higher than those of healthy patients. However, with regards to diagnostic performance, there was still a chance of misclassifications that was unacceptable to our clinicians.\n\n\n\n\n\n\n\n\n\n\n\nRadial plots help us assess diagnostic performance with data completeness in mind.\nIn order to better understand the cause of this, I created another visualization tool, called radial plots. For each patient, lines were generated using the slope calculated from linear regression originating from a common intercept.\nThe radial plot below illustrates each patient’s slope of biomarker values. The dotted red and blue lines indicated patients correctly classified as sick and healthy, respectively. The solid blue line indicated a healthy patient misclassified as sick. The solid red line indicated sick patients misclassified as healthy. One thing to note is that misclassified patients had shorter follow-up periods compared to correctly classified patients. This information allowed our clincial team to look more closely into the cause of shorter follow-up periods providing explanations for misclassifications and helping us investigate the diagnostic performance of this biomarker more thoroughly."
-  },
-  {
-    "objectID": "student_lifestyle_data_kaggle.html",
-    "href": "student_lifestyle_data_kaggle.html",
-    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
-    "section": "",
-    "text": "This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.1\n\nThis dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students’ daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student’s stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes.  This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.\n\nThe purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field."
-  },
-  {
-    "objectID": "student_lifestyle_data_kaggle.html#footnotes",
-    "href": "student_lifestyle_data_kaggle.html#footnotes",
-    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
-    "section": "Footnotes",
-    "text": "Footnotes\n\n\nhttps://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data↩︎"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Ben Ouyang VMD, MSE, MS, BS",
-    "section": "",
-    "text": "I generate salient statistical insights to empower health and medical experts by orienting intuition, resolving cognitive dissonance, and aligning findings with scientific knowledge. By synergizing epidemiologic and statistical methodology with subject-matter expertise, I refine intent and motivation into well-defined research objectives that efficiently drive study design and analysis.\n\n\n\n\nPhD, Epidemiology — Study design, statistical inference, population health\nMSE, Applied Mathematics & Statistics — Probability, statistics, modeling, computation, AI/ML\nVMD, Veterinary Medicine — Clinical reasoning, comparative medicine, outbreak management"
-  },
-  {
-    "objectID": "index.html#my-lab",
-    "href": "index.html#my-lab",
-    "title": "Ben Ouyang VMD, MSE, MS, BS",
-    "section": "My Lab",
-    "text": "My Lab\nThis is my online data science laboratory. Please use the links below or at the top of the page to look around.\n\n\n\n\n\nPortfolio\nSnapshots of finished projects.\nStep inside →\n\n\n\n\n\n\nBench\nIn-progress projects.\nTake a look →\n\n\n\n\n\n\nLearning Blog\nA record of things I’ve learned.\nRead all about it →\n\n\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
   },
   {
     "objectID": "about.html#hi-im-ben",
@@ -460,47 +488,5 @@
     "title": "We all use models. But, epidemiologists write them down. A look at why prevailing attitudes change.",
     "section": "",
     "text": "Introduction\nThis is a fun project for me. It’s allowing me to take pieces I learned from risk communication and perception, specifically cognitive maps, and combine them with what I learned from stochastic compartment modeling. I also had a professor, back in the day, say, “We all use models. Epidemiologists write them down”. And so here I am putting my intuition into a mathematical model to describe my experience with why prevailing attitudes change.\nA good example of things changing… I remember when Taylor Swift first hit the scene. She was different and not everyone liked her music. Fast forward to today, she’s a hit across the board. Even I like her!!\nSo, how does my intuition process her rise to stardom? Take a look below.\n\n\nMy cognitive map\n\n\n\n\n\n\n\nMy compartment model output"
-  },
-  {
-    "objectID": "book_blog.html",
-    "href": "book_blog.html",
-    "title": "Book Blog",
-    "section": "",
-    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpen notes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpen notes"
-  },
-  {
-    "objectID": "portfolio.html#currently-reading",
-    "href": "portfolio.html#currently-reading",
-    "title": "My Portfolio",
-    "section": "",
-    "text": "Status: In progress • Angle: political philosophy + sci-fi worldbuilding\n\n\nA running log of themes, quotes, and “wait… that’s brilliant” moments.\n\n\n\n\n\n\nStatus: In progress • Angle: behavior from neurons to society\n\n\nNotes on what surprised me and what I want to follow up on.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n:::::::::\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
-  },
-  {
-    "objectID": "blog.html#currently-reading",
-    "href": "blog.html#currently-reading",
-    "title": "Learning blog",
-    "section": "",
-    "text": "A place to record things I learn.\n\n\n\n\n\n\nNotes on books I read."
-  },
-  {
-    "objectID": "book_blog.html#currently-reading",
-    "href": "book_blog.html#currently-reading",
-    "title": "Book Blog",
-    "section": "",
-    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpen notes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpen notes"
-  },
-  {
-    "objectID": "smartphone_nation_notes.html",
-    "href": "smartphone_nation_notes.html",
-    "title": "Notes: Smartphone Nation by Dr. Kaitlyn Regehr",
-    "section": "",
-    "text": "Introduction"
-  },
-  {
-    "objectID": "learning_blog.html",
-    "href": "learning_blog.html",
-    "title": "Learning blog",
-    "section": "",
-    "text": "2026.01.15 Thursday\n(09:00 am) Spent some time learning about file naming systems. These are super important if you want your work to be reproducible or utilized. I have been very lucky to be a part of organizations that valued innovation in every aspect of the job. That even included file naming systems that scaled beyond our team, several levels wider into our ecosystem.\nBut there were limits to this scalability. Once the system was introduced beyond our ecosystem (e.g. another department, expert discipline or even another company), it took a tremendous amount of work to get teams aligned on the file naming system. I imagine this will be a challenge with any file naming system, but perhaps it’s possible to scale it another few levels to save ourselves some time or to increase the intuitiveness to make it easier to decode.\nA cool tool I discovered in R today is the “targets” package. Allegedly, it allows you to create and follow lineages of iterations and transformations of data. I use the word “allegedly” because I have not tested it yet. But I’m about to right now. Here goes… (This is also why today’s blog will have time stamped components to track my progress on figuring out this package).\n(10:20 am) I was able to run one of the examples provided in the targets package user manual. It is impressive. Basically, targets allows you to specify what you are trying to track. It will then track any changes made to these targets and provide an illustration or a list of objects that need to be updated. It also provides a diagram of the lineage of these tracked objects. I think it’s a very handy tool.\n\n\n2026.01.14 Wednesday\nOver and over again, I find that the biggest barrier to learning new things is not what I don’t know, but what I do know. The closer I get to mastering something (and I don’t have to get that close), the more it impedes my learning of new things. For example, I’ve known about parquets in R for a long time because I needed them a long time ago. But I never took the time to learn how to use them. Why? Because I already had ways of dealing with large datasets, clunky as they may be. While it’s true that it would have taken more time to learn how to use parquets than implementing my clunky methods, the payoff long term would have been much higher. I guess it’s important to remind ourselves to take the time and to take the risk (make sure you do a risk analysis first, obviously), to abandon what we know, temporarily and even permanently, to learn new and better ways of doing things."
   }
 ]
