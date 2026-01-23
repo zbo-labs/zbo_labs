@@ -1,5 +1,117 @@
 [
   {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blogs",
+    "section": "",
+    "text": "Learning Blog\n\n\nA place to record things I learn.\n\n\n\n\n\nBook Blog\n\n\nNotes on books I read."
+  },
+  {
+    "objectID": "book_blog/mathematics_lovers.html",
+    "href": "book_blog/mathematics_lovers.html",
+    "title": "The Mathematics Lover’s Companion: Masterpieces For Everyone",
+    "section": "",
+    "text": "Why I’m reading this book\nI love math. I’m not good at it. But I do love it. And I love the idea of presenting mathematics as art. Art reminds me that it’s okay to appreciate something for what it is, not for what it can do. And so while this book talks about what math can do, its main focus seems to be conveying what math is and teaching us to appreciate it too.\n\n\nPreface\nThe preface has me hooked already. Everything from talking about that we know for certain there are an infinite number of primes to the fact that you can cover a room in square, hexagonal and even pentagons. And it mentions how the pattern on the cover of the book was created. If I have time, I may try to generate it myself."
+  },
+  {
+    "objectID": "portfolio.html",
+    "href": "portfolio.html",
+    "title": "My Portfolio",
+    "section": "",
+    "text": "Project 1 A cursory look into health expenditure in Canada 2025\n\n\n\n\n\nProject 2 Student lifestyle factors and school performance\n\n\n\n\n\nProject 3 Tuning a machine learning algorithm on Cleveland dataset\n\n\n\n\n\nProject 4 Diagnostic performance using generative art\n\n\n\n\n\nProject 5 Overview of the tidymodels R-package and sample code\n\n\n\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+  },
+  {
+    "objectID": "tidymodels_overview.html",
+    "href": "tidymodels_overview.html",
+    "title": "Overview of tidymodels",
+    "section": "",
+    "text": "Split data in training and test set.\n\nsplit = initial_split(data, prop); train = training(split), test = testing(split)\n\nPreprocess recipe.\n\nrec = recipe(formula, data = train) %&gt;% step_novel(all_nominal_predictors()) %&gt;% step_dummy(all_nominal_predictors) %&gt;% step_zv(all_predictors()) %&gt;% step_normalize(all_continuous_predictors())\n\nSpecify model.\n\nrf_spec = rand_forest(mtry = tune(), trees = tune()) %&gt;% set_engine(engine = “ranger”) %&gt;% set_mode(“classification)\n\nSpecify workflow.\n\nwf = workflow() %&gt;% add_recipe(rec) %&gt;% add_model(rf_spec)\n\nCross-validation/resampling scheme design.\n\nfolds = vfold_cv(data = train, v = 5, strata = outcome)\n\nTune hyperparameters.\n\nrf_parameters = parameters(mtry(range = c(3, 10)), trees(range = c(100, 5000)))\nrf_res = tune_grid(wf, grid = rf_parameters, resamples = folds, metrics = metric_set(accuracy, roc_auc))\ncollect_metrics(rf_res); show_best(rf_res, metric = “roc_auc”, n = 10)\n\nFinalize workflow with best parameters.\n\nbest_rf = select_best(rf_res, metric = “roc_auc”)\nrf_final_wf = finalize_workflow(rf_wf, best_rf)\n\nFinal test set evaluation.\n\nrf_last = last_fit(rf_final_wf, split = split, metrics = metric_set(roc_auc, accuracy, sens, spec))\n\nFit final model on training data (for interpretation, e.g. variable importance).\n\nrf_fit = fit(rf_final_wf, data = train)\nVariable importance: rf_engine = extract_fit_parsnip(rf_fit)$fit; vip::vip(rf_engine, num_features)"
+  },
+  {
+    "objectID": "tidymodels_overview.html#random-forest-template",
+    "href": "tidymodels_overview.html#random-forest-template",
+    "title": "Overview of tidymodels",
+    "section": "Random forest template",
+    "text": "Random forest template\n\n# ============================================================\n# Random Forest (tidymodels): End-to-End Workflow\n# Using `parameters()` + grid generation (no expand.grid)\n# ============================================================\n\n\n# ------------------------------------------------------------\n# Assumptions\n# ------------------------------------------------------------\n# df      : your data frame\n# outcome : factor outcome variable for classification\n# Event   : second factor level is treated as the \"event\" by yardstick\n\n# ------------------------------------------------------------\n# 1. Train / Test Split\n# ------------------------------------------------------------\nsplit &lt;- initial_split(df, prop = 0.80, strata = outcome)\ntrain &lt;- training(split)\ntest  &lt;- testing(split)\n\n# ------------------------------------------------------------\n# 2. Preprocessing Recipe\n# ------------------------------------------------------------\nrf_rec &lt;- recipe(outcome ~ ., data = train) %&gt;%\n  step_novel(all_nominal_predictors()) %&gt;%     # handle unseen levels\n  step_dummy(all_nominal_predictors()) %&gt;%     # one-hot encode factors\n  step_zv(all_predictors())                    # remove zero-variance predictors\n\n# ------------------------------------------------------------\n# 3. Random Forest Model Spec (tunable params declared via tune())\n# ------------------------------------------------------------\nrf_spec &lt;- rand_forest(\n  mtry  = tune(),\n  min_n = tune(),\n  trees = tune()\n) %&gt;%\n  set_engine(\"ranger\", importance = \"permutation\") %&gt;%\n  set_mode(\"classification\")\n\n# ------------------------------------------------------------\n# 4. Workflow\n# ------------------------------------------------------------\nrf_wf &lt;- workflow() %&gt;%\n  add_recipe(rf_rec) %&gt;%\n  add_model(rf_spec)\n\n# ------------------------------------------------------------\n# 5. Cross-Validation\n# ------------------------------------------------------------\nfolds &lt;- vfold_cv(train, v = 5, strata = outcome)\n\n# ------------------------------------------------------------\n# 6. Define parameter ranges with `parameters()`\n# ------------------------------------------------------------\n# NOTE: mtry() is data-dependent (post-recipe predictor count), so tidymodels may\n# finalize it after prepping the recipe. You can optionally set a range too.\nrf_params &lt;- parameters(\n  mtry(range = c(2, 30)),          # adjust upper bound if you expect many dummies\n  min_n(range = c(2, 40)),\n  trees(range = c(500, 2000))\n)\n\n# Build a grid from those parameter definitions\n# Option A: random grid (often better for 3+ params)\nrf_grid &lt;- grid_random(rf_params, size = 25)\n\n# Option B: regular grid (can explode quickly: levels^(#params))\n# rf_grid &lt;- grid_regular(rf_params, levels = 5)\n\n# ------------------------------------------------------------\n# 7. Hyperparameter Tuning\n# ------------------------------------------------------------\nrf_res &lt;- tune_grid(\n  rf_wf,\n  resamples = folds,\n  grid = rf_grid,\n  metrics = metric_set(roc_auc, accuracy),\n  control = control_grid(save_pred = TRUE)\n)\n\n# Examine tuning results\ncollect_metrics(rf_res)\nshow_best(rf_res, metric = \"roc_auc\", n = 10)\n\n# ------------------------------------------------------------\n# 8. Finalize Workflow with Best Parameters\n# ------------------------------------------------------------\nbest_rf &lt;- select_best(rf_res, metric = \"roc_auc\")\nrf_final_wf &lt;- finalize_workflow(rf_wf, best_rf)\n\n# ------------------------------------------------------------\n# 9. Final Test-Set Evaluation (honest performance)\n# ------------------------------------------------------------\nrf_last &lt;- last_fit(\n  rf_final_wf,\n  split = split,\n  metrics = metric_set(roc_auc, accuracy, sens, spec)\n)\n\ncollect_metrics(rf_last)\n\nrf_test_preds &lt;- collect_predictions(rf_last)\n\n# ROC curve\nrf_test_preds %&gt;%\n  roc_curve(outcome, .pred_2) %&gt;%   # replace .pred_2 with your event class column if needed\n  autoplot()\n\n# ------------------------------------------------------------\n# 10. Fit Final Model on Training Data (for interpretation)\n# ------------------------------------------------------------\nrf_fit &lt;- fit(rf_final_wf, data = train)\n\n# Variable importance (since ranger importance = \"permutation\")\nrf_engine &lt;- extract_fit_parsnip(rf_fit)$fit\nvip::vip(rf_engine, num_features = 20)\n\n# ------------------------------------------------------------\n# (Optional) Partial Dependence Plot via DALEX (workflow-safe)\n# ------------------------------------------------------------\nlibrary(DALEX)\nlibrary(DALEXtra)\n\nexplainer &lt;- explain_tidymodels(\n  rf_fit,\n  data = train,\n  y = train$outcome,\n  verbose = FALSE\n)\n\nmodel_profile(explainer, variables = \"age\") %&gt;% plot()"
+  },
+  {
+    "objectID": "tidymodels_overview.html#knn-template",
+    "href": "tidymodels_overview.html#knn-template",
+    "title": "Overview of tidymodels",
+    "section": "kNN template",
+    "text": "kNN template\n\n# ============================================================\n# k-Nearest Neighbors (tidymodels): End-to-End Workflow\n# ============================================================\n\nlibrary(tidymodels)\nset.seed(123)\n\n# ------------------------------------------------------------\n# Assumptions\n# ------------------------------------------------------------\n# df        : your data frame\n# outcome   : factor outcome variable for classification\n# NOTE: k-NN is distance-based -&gt; normalization is essential.\n\n# ------------------------------------------------------------\n# 1. Train / Test Split\n# ------------------------------------------------------------\nsplit &lt;- initial_split(df, prop = 0.80, strata = outcome)\ntrain &lt;- training(split)\ntest  &lt;- testing(split)\n\n# ------------------------------------------------------------\n# 2. Preprocessing Recipe (important for k-NN!)\n# ------------------------------------------------------------\nknn_rec &lt;- recipe(outcome ~ ., data = train) %&gt;%\n  step_novel(all_nominal_predictors()) %&gt;%     # handle unseen levels\n  step_dummy(all_nominal_predictors()) %&gt;%     # one-hot encode factors\n  step_zv(all_predictors()) %&gt;%                # remove zero-variance predictors\n  step_normalize(all_numeric_predictors())     # SCALE for distances\n\n# ------------------------------------------------------------\n# 3. k-NN Model Specification (with tuning)\n# ------------------------------------------------------------\nknn_spec &lt;- nearest_neighbor(\n  neighbors   = tune(),     # k\n  dist_power  = tune(),     # 1 = Manhattan, 2 = Euclidean\n  weight_func = tune()      # how neighbors are weighted\n) %&gt;%\n  set_engine(\"kknn\") %&gt;%\n  set_mode(\"classification\")\n\n# ------------------------------------------------------------\n# 4. Workflow\n# ------------------------------------------------------------\nknn_wf &lt;- workflow() %&gt;%\n  add_recipe(knn_rec) %&gt;%\n  add_model(knn_spec)\n\n# ------------------------------------------------------------\n# 5. Cross-Validation\n# ------------------------------------------------------------\nfolds &lt;- vfold_cv(train, v = 5, strata = outcome)\n\n# ------------------------------------------------------------\n# 6. Parameter Ranges + Grid\n# ------------------------------------------------------------\nknn_params &lt;- parameters(\n  neighbors(range = c(3, 35)),\n  dist_power(range = c(1, 2)),\n  weight_func(values = c(\"rectangular\", \"triangular\", \"gaussian\"))\n)\n\nknn_grid &lt;- grid_regular(knn_params, levels = 5)\n# If this is too big (levels^#params), use a random grid instead:\n# knn_grid &lt;- grid_random(knn_params, size = 30)\n\n# ------------------------------------------------------------\n# 7. Hyperparameter Tuning\n# ------------------------------------------------------------\nknn_res &lt;- tune_grid(\n  knn_wf,\n  resamples = folds,\n  grid = knn_grid,\n  metrics = metric_set(roc_auc, accuracy),\n  control = control_grid(save_pred = TRUE)\n)\n\n# Examine tuning results\ncollect_metrics(knn_res)\nshow_best(knn_res, metric = \"roc_auc\", n = 10)\n\n# ------------------------------------------------------------\n# 8. Finalize Workflow with Best Parameters\n# ------------------------------------------------------------\nbest_knn &lt;- select_best(knn_res, metric = \"roc_auc\")\n\nknn_final_wf &lt;- finalize_workflow(knn_wf, best_knn)\n\n# ------------------------------------------------------------\n# 9. Final Test-Set Evaluation (honest performance)\n# ------------------------------------------------------------\nknn_last &lt;- last_fit(\n  knn_final_wf,\n  split = split,\n  metrics = metric_set(roc_auc, accuracy, sens, spec)\n)\n\ncollect_metrics(knn_last)\n\nknn_test_preds &lt;- collect_predictions(knn_last)\n\n# ROC curve\nknn_test_preds %&gt;%\n  roc_curve(outcome, .pred_2) %&gt;%   # replace .pred_2 with your event class column if needed\n  autoplot()\n\n# ------------------------------------------------------------\n# 10. Fit Final Model on Training Data (for interpretation/usage)\n# ------------------------------------------------------------\nknn_fit &lt;- fit(knn_final_wf, data = train)\n\n# (Optional) Confusion matrix at threshold 0.5\nknn_test_preds %&gt;%\n  mutate(.pred_class = factor(if_else(.pred_2 &gt;= 0.5, levels(train$outcome)[2], levels(train$outcome)[1]),\n                              levels = levels(train$outcome))) %&gt;%\n  conf_mat(outcome, .pred_class)"
+  },
+  {
+    "objectID": "tidymodels_overview.html#neural-networks",
+    "href": "tidymodels_overview.html#neural-networks",
+    "title": "Overview of tidymodels",
+    "section": "Neural networks",
+    "text": "Neural networks\n\n# ============================================================\n# Neural Net (tidymodels): End-to-End Workflow\n# Using `mlp()` + `parameters()` + tuning + test evaluation\n# Engine: nnet (lightweight, good for portfolios)\n# ============================================================\n\nlibrary(tidymodels)\nlibrary(dials)\nlibrary(rlang)\n\nset.seed(123)\n\n# ------------------------------------------------------------\n# Assumptions\n# ------------------------------------------------------------\n# df      : your data frame\n# outcome : factor outcome variable for classification\n# NOTE: Neural nets are scale-sensitive -&gt; normalization is essential.\n\n# ------------------------------------------------------------\n# 1. Train / Test Split\n# ------------------------------------------------------------\nsplit &lt;- initial_split(df, prop = 0.80, strata = outcome)\ntrain &lt;- training(split)\ntest  &lt;- testing(split)\n\n# Identify the \"event\" class (tidymodels/yardstick default is the 2nd level)\nevent_level &lt;- levels(train$outcome)[2]\nprob_col &lt;- paste0(\".pred_\", event_level)\n\n# ------------------------------------------------------------\n# 2. Preprocessing Recipe (important for neural nets!)\n# ------------------------------------------------------------\nnn_rec &lt;- recipe(outcome ~ ., data = train) %&gt;%\n  step_novel(all_nominal_predictors()) %&gt;%      # handle unseen levels\n  step_dummy(all_nominal_predictors()) %&gt;%      # one-hot encode factors\n  step_zv(all_predictors()) %&gt;%                 # remove zero-variance predictors\n  step_normalize(all_numeric_predictors())      # SCALE numeric predictors\n\n# ------------------------------------------------------------\n# 3. Neural Net Model Spec (tunable params declared via tune())\n# ------------------------------------------------------------\n# `mlp()` = multilayer perceptron\n# hidden_units: size of hidden layer\n# penalty     : weight decay (regularization)\n# epochs      : training iterations\nnn_spec &lt;- mlp(\n  hidden_units = tune(),\n  penalty      = tune(),\n  epochs       = tune()\n) %&gt;%\n  set_engine(\"nnet\") %&gt;%\n  set_mode(\"classification\")\n\n# ------------------------------------------------------------\n# 4. Workflow\n# ------------------------------------------------------------\nnn_wf &lt;- workflow() %&gt;%\n  add_recipe(nn_rec) %&gt;%\n  add_model(nn_spec)\n\n# ------------------------------------------------------------\n# 5. Cross-Validation\n# ------------------------------------------------------------\nfolds &lt;- vfold_cv(train, v = 5, strata = outcome)\n\n# ------------------------------------------------------------\n# 6. Define parameter ranges with `parameters()`\n# ------------------------------------------------------------\n# Notes:\n# - penalty() is on a log10 scale internally (dials handles that)\n# - epochs can be modest; too high can overfit and waste time\nnn_params &lt;- parameters(\n  hidden_units(range = c(1L, 50L)),\n  penalty(range = c(-6, -1)),          # 10^-6 to 10^-1 (log10 scale)\n  epochs(range = c(50L, 400L))\n)\n\n# Random grid is usually better than regular for 3 parameters\nnn_grid &lt;- grid_random(nn_params, size = 25)\n\n# ------------------------------------------------------------\n# 7. Hyperparameter Tuning\n# ------------------------------------------------------------\nnn_res &lt;- tune_grid(\n  nn_wf,\n  resamples = folds,\n  grid = nn_grid,\n  metrics = metric_set(roc_auc, accuracy),\n  control = control_grid(save_pred = TRUE)\n)\n\n# Examine tuning results\ncollect_metrics(nn_res)\nshow_best(nn_res, metric = \"roc_auc\", n = 10)\n\n# ------------------------------------------------------------\n# 8. Finalize Workflow with Best Parameters\n# ------------------------------------------------------------\nbest_nn &lt;- select_best(nn_res, metric = \"roc_auc\")\nnn_final_wf &lt;- finalize_workflow(nn_wf, best_nn)\n\n# ------------------------------------------------------------\n# 9. Final Test-Set Evaluation (honest performance)\n# ------------------------------------------------------------\nnn_last &lt;- last_fit(\n  nn_final_wf,\n  split = split,\n  metrics = metric_set(roc_auc, accuracy, sens, spec)\n)\n\ncollect_metrics(nn_last)\n\nnn_test_preds &lt;- collect_predictions(nn_last)\n\n# ROC curve (uses the event class probability column dynamically)\nnn_test_preds %&gt;%\n  roc_curve(outcome, !!sym(prob_col)) %&gt;%\n  autoplot()\n\n# Optional: confusion matrix at 0.5 threshold (you can choose a better threshold later)\nnn_test_preds %&gt;%\n  mutate(\n    .pred_class = factor(\n      if_else(!!sym(prob_col) &gt;= 0.5, event_level, levels(train$outcome)[1]),\n      levels = levels(train$outcome)\n    )\n  ) %&gt;%\n  conf_mat(outcome, .pred_class)\n\n# ------------------------------------------------------------\n# 10. Fit Final Model on Training Data (for interpretation/usage)\n# ------------------------------------------------------------\nnn_fit &lt;- fit(nn_final_wf, data = train)\n\n# Inspect finalized model specification\nextract_spec_parsnip(nn_fit)"
+  },
+  {
+    "objectID": "tidymodels_overview.html#a.-objective-prediction-task-always-first",
+    "href": "tidymodels_overview.html#a.-objective-prediction-task-always-first",
+    "title": "Overview of tidymodels",
+    "section": "A. Objective & prediction task (always first)",
+    "text": "A. Objective & prediction task (always first)\nAnswer:\nWhat problem is the model solving?\nInclude: - Outcome definition - Population - Prediction vs explanation - Unit of prediction (patient, visit, image, etc.)\nExample:\n“We developed a machine learning model to predict 30-day mortality among hospitalized patients using routinely collected clinical variables.”\n🚫 Don’t start with algorithms. Start with the problem."
+  },
+  {
+    "objectID": "tidymodels_overview.html#b.-data-study-design",
+    "href": "tidymodels_overview.html#b.-data-study-design",
+    "title": "Overview of tidymodels",
+    "section": "B. Data & study design",
+    "text": "B. Data & study design\nAnswer:\nWhere did the data come from, and how were they used?\nInclude: - Sample size - Outcome prevalence - Train/test split - Cross-validation strategy - Any stratification or grouping\nExample:\n“The dataset consisted of 4,812 patients, of whom 9.6% experienced the outcome. Data were split into training (80%) and test (20%) sets, stratified by outcome. Hyperparameters were optimized using 5-fold cross-validation on the training data.”\nThis signals methodological literacy."
+  },
+  {
+    "objectID": "tidymodels_overview.html#c.-preprocessing-this-matters-more-than-people-think",
+    "href": "tidymodels_overview.html#c.-preprocessing-this-matters-more-than-people-think",
+    "title": "Overview of tidymodels",
+    "section": "C. Preprocessing (this matters more than people think)",
+    "text": "C. Preprocessing (this matters more than people think)\nAnswer:\nHow was the data prepared, and was leakage avoided?\nInclude: - Handling of categorical variables - Scaling (if applicable) - Missingness handling - Zero-variance filtering - Where preprocessing occurred (inside CV!)\nExample:\n“Categorical predictors were dummy-encoded, and predictors with zero variance were removed using a recipe-based preprocessing pipeline. All preprocessing steps were estimated within resampling folds to prevent information leakage.”\nThat last sentence is very important!"
+  },
+  {
+    "objectID": "tidymodels_overview.html#d.-model-specification-tuning",
+    "href": "tidymodels_overview.html#d.-model-specification-tuning",
+    "title": "Overview of tidymodels",
+    "section": "D. Model specification & tuning",
+    "text": "D. Model specification & tuning\nAnswer:\nWhat model was fit, and how were hyperparameters chosen?\nInclude: - Algorithm - Engine/library - Tuned parameters - Optimization metric\nRandom forest example:\n“A random forest classifier was implemented using the ranger engine. The number of candidate predictors at each split (mtry) and the minimum node size (min_n) were optimized via grid search, selecting hyperparameters that maximized cross-validated ROC AUC.”\n🚫 Don’t just say “we fit a random forest.”"
+  },
+  {
+    "objectID": "tidymodels_overview.html#e.-performance-evaluation-this-is-the-core",
+    "href": "tidymodels_overview.html#e.-performance-evaluation-this-is-the-core",
+    "title": "Overview of tidymodels",
+    "section": "E. Performance evaluation (this is the core)",
+    "text": "E. Performance evaluation (this is the core)\nAnswer:\nHow well does the model perform on unseen data?\nAlways include: - Held-out test set results - Primary metric - Secondary metrics - Confidence intervals if possible\nExample:\n“On the held-out test set, the model achieved an ROC AUC of 0.82, with sensitivity of 0.74 and specificity of 0.79 at a probability threshold of 0.5.”\nOptional (but impressive): - Calibration - Decision curves - Class imbalance handling"
+  },
+  {
+    "objectID": "tidymodels_overview.html#f.-model-interpretation-with-restraint",
+    "href": "tidymodels_overview.html#f.-model-interpretation-with-restraint",
+    "title": "Overview of tidymodels",
+    "section": "F. Model interpretation (with restraint)",
+    "text": "F. Model interpretation (with restraint)\nAnswer:\nHow does the model behave, and what drives predictions?\nInclude: - Variable importance (with caveats) - Partial dependence / ALE / SHAP (if used) - Clear disclaimer about causality\nExample:\n“Permutation-based variable importance indicated that age, baseline creatinine, and oxygen saturation contributed most strongly to predictive performance. Partial dependence plots suggested nonlinear risk increases at advanced ages; however, these plots reflect model behavior rather than causal effects.”\nThis shows statistical maturity."
+  },
+  {
+    "objectID": "tidymodels_overview.html#g.-limitations-this-builds-trust",
+    "href": "tidymodels_overview.html#g.-limitations-this-builds-trust",
+    "title": "Overview of tidymodels",
+    "section": "G. Limitations (this builds trust)",
+    "text": "G. Limitations (this builds trust)\nAnswer:\nWhat could go wrong or limit generalization?\nAlways include: - Observational data limitations - External validation status - Model interpretability limits\nExample:\n“This analysis used retrospective single-source data, and external validation was not performed. Variable importance reflects predictive contribution rather than causal relevance.”\nReviewers expect this."
+  },
+  {
+    "objectID": "tidymodels_overview.html#h.-practical-implications-next-steps",
+    "href": "tidymodels_overview.html#h.-practical-implications-next-steps",
+    "title": "Overview of tidymodels",
+    "section": "H. Practical implications / next steps",
+    "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
+  },
+  {
+    "objectID": "gas_prices_canada.html",
+    "href": "gas_prices_canada.html",
+    "title": "Gas prices in Ontario, Canada",
+    "section": "",
+    "text": "The illustration below shows how gas prices in Ontario, Canada changed from 1990 to today. It is easy to see that the prices have climbed over the years. However, prices are not adjusted for inflation. Thus, it is possible that the increase in gas prices may have been due to increase in prices for all products, across the board. See next figure for an inflation-adjusted version.\n\nBelow is a graph of Ontario gas prices with adjustment for inflation. Specifically, these prices are in 2025 dollars. It looks like prices overall remained steady with some fluctuations occurring throughout. One interpretation of inflation-adjusted is that although the dollar number associated with gas did increase over time (previous graph), it didn’t change much with respect to other products. That does not mean the pressures were not felt. This analysis has not yet explored how gas prices changed with respect to wages.\n\nTo get a better understanding how gas prices changed with respect to wages, the next figure will show how wages (in 2025 dollars), on average, progressed over time.\n\nThe figure below shows how many hours of work is needed to buy 60 litres (average tank volume, approximately) of gas. It appears that the hours of work needed tends to trend downward over the years. This does not take into account the cost of other goods and needs (e.g. rent) or how wages behaved within each industry."
+  },
+  {
     "objectID": "book_blog.html",
     "href": "book_blog.html",
     "title": "Book Blog",
@@ -14,27 +126,6 @@
     "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpennotes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpennotes"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blogs",
-    "section": "",
-    "text": "Learning Blog\n\n\nA place to record things I learn.\n\n\n\n\n\nBook Blog\n\n\nNotes on books I read."
-  },
-  {
-    "objectID": "book_blog/smartphone_nation_notes.html",
-    "href": "book_blog/smartphone_nation_notes.html",
-    "title": "Smartphone Nation by Dr. Kaitlyn Regehr",
-    "section": "",
-    "text": "Why I’m reading this book\nI wanted to learn more about the effects of this pull that our digital devices have on us. I’m sure we’ve all experienced this not so mild seduction. This is something that affects the health of people on so many levels, and we’re only beginning to understand this. I thought this book might be a good introduction for me into the work done on this.\n\n\nIntroduction\nI thought the Introduction was quite poignant. It described this industry of digital devices and social media as on that profits off of our attention, or the attention economy. Thus far, moderation has been how we have safeguarded our mental faculties. But the author states that we will need a few levels more protection. This includes understanding more about the content and the creators behind the content that pull so effectively at our attention. And finally, regulation.\n\n\nChapter 1: The Digital Supermarket\nThe author expands on the idea that in today’s digital world, people on the internet via browsing, social media and other apps are not the consumer, but rather the product. The true consumers are the advertisers, and our minds, our attentions, are the product. The advertisers spend a tremendous amount of resources to capture our attention. They shape our minds and suggest that we behave in certain ways, perhaps to spend money on something we don’t actually need. The term that’s used to describe us is “users”, and it’s a term used by only one other industry: the illegal drug trade."
-  },
-  {
-    "objectID": "book_blog/mathematics_lovers.html",
-    "href": "book_blog/mathematics_lovers.html",
-    "title": "The Mathematics Lover’s Companion: Masterpieces For Everyone",
-    "section": "",
-    "text": "Why I’m reading this book\nI love math. I’m not good at it. But I do love it. And I love the idea of presenting mathematics as art. Art reminds me that it’s okay to appreciate something for what it is, not for what it can do. And so while this book talks about what math can do, its main focus seems to be conveying what math is and teaching us to appreciate it too.\n\n\nPreface\nThe preface has me hooked already. Everything from talking about that we know for certain there are an infinite number of primes to the fact that you can cover a room in square, hexagonal and even pentagons. And it mentions how the pattern on the cover of the book was created. If I have time, I may try to generate it myself."
-  },
-  {
     "objectID": "learning_blog.html",
     "href": "learning_blog.html",
     "title": "Learning blog",
@@ -42,11 +133,172 @@
     "text": "2026.01.15 Thursday\n(09:00 am) Spent some time learning about file naming systems. These are super important if you want your work to be reproducible or utilized. I have been very lucky to be a part of organizations that valued innovation in every aspect of the job. That even included file naming systems that scaled beyond our team, several levels wider into our ecosystem.\nBut there were limits to this scalability. Once the system was introduced beyond our ecosystem (e.g. another department, expert discipline or even another company), it took a tremendous amount of work to get teams aligned on the file naming system. I imagine this will be a challenge with any file naming system, but perhaps it’s possible to scale it another few levels to save ourselves some time or to increase the intuitiveness to make it easier to decode.\nA cool tool I discovered in R today is the “targets” package. Allegedly, it allows you to create and follow lineages of iterations and transformations of data. I use the word “allegedly” because I have not tested it yet. But I’m about to right now. Here goes… (This is also why today’s blog will have time stamped components to track my progress on figuring out this package).\n(10:20 am) I was able to run one of the examples provided in the targets package user manual. It is impressive. Basically, targets allows you to specify what you are trying to track. It will then track any changes made to these targets and provide an illustration or a list of objects that need to be updated. It also provides a diagram of the lineage of these tracked objects. I think it’s a very handy tool.\n\n\n2026.01.14 Wednesday\nOver and over again, I find that the biggest barrier to learning new things is not what I don’t know, but what I do know. The closer I get to mastering something (and I don’t have to get that close), the more it impedes my learning of new things. For example, I’ve known about parquets in R for a long time because I needed them a long time ago. But I never took the time to learn how to use them. Why? Because I already had ways of dealing with large datasets, clunky as they may be. While it’s true that it would have taken more time to learn how to use parquets than implementing my clunky methods, the payoff long term would have been much higher. I guess it’s important to remind ourselves to take the time and to take the risk (make sure you do a risk analysis first, obviously), to abandon what we know, temporarily and even permanently, to learn new and better ways of doing things."
   },
   {
-    "objectID": "portfolio.html",
-    "href": "portfolio.html",
-    "title": "My Portfolio",
+    "objectID": "lab.html",
+    "href": "lab.html",
+    "title": "The Bench",
     "section": "",
-    "text": "Project 1 A cursory look into health expenditure in Canada 2025\n\n\n\n\n\nProject 2 Student lifestyle factors and school performance\n\n\n\n\n\nProject 3 Tuning a machine learning algorithm on Cleveland dataset\n\n\n\n\n\nProject 4 Diagnostic performance using generative art\n\n\n\n\n\nProject 5 Overview of the tidymodels R-package and sample code\n\n\n\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+    "text": "NoteProject 1: Modelling changing attitudes\n\n\n\nStatus: Active experimentation\nFocus: Practice with stochastic compartment modelling.\nOpen notebook →\n\n\n\n\n\n\n\n\nNoteProject 2: Gas prices in Ontario, Canada\n\n\n\nStatus: In progress\nFocus: Generating potential confirmatory insights into public sentiment\nOpen notebook →\n\n\n\n\n\n\n\n\nNoteProject 3: Cost of living in Canada\n\n\n\nStatus: In progress\nFocus: Understanding cost-of-living in terms of workdays needed.\nOpen notebook →\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+  },
+  {
+    "objectID": "rf_tuning_cleveland.html",
+    "href": "rf_tuning_cleveland.html",
+    "title": "Grid search accuracy results for random forest hyperparameters fit on Cleveland dataset",
+    "section": "",
+    "text": "The figure illustrates accuracies for differing values of the major hyperparameters (through grid search) of the random forest method: number of trees and number of variables to sample."
+  },
+  {
+    "objectID": "biomarker_slopes.html",
+    "href": "biomarker_slopes.html",
+    "title": "Investigation of the diagnostic performance of a biomarker (simulated reproduction)",
+    "section": "",
+    "text": "Introduction\nThe following is a reproduction of a set of visualizations I produced for a study and subsequent publication. These were particularly helpful when collaborating with our clinical team whose expertise were in non-statistical fields. It helped us achieve and maintain alignment, helping us efficiently achieve our goals.\nWe were investigating a biomarker and its behavior over time in healthy (controls) and diseased (exposed) subjects. The hypothesis was that biomarker values that increased over time indicated disease, while biomarkers that stayed constant through time indicated health. Furthermore, in order for clinicians to adopt this biomarker, the diagnostic performance of this biomarker needed to be highly accurate with near-zero misclassifications. The following visualizations were produced from a simplified simulation of the data.\nThe progression of each patient’s biomarker progression through time is presented below. A visual inspection shows us that increases in biomarker values tended to occur more often with sick than with healthy patients. We can also see that the data is unbalanced.\n\n\n\n\n\n\n\n\n\n\n\nBoxplots of slopes help us understand the diagnostic performance of the data\nIn order to diagnose disease, we must see an increase in biomarker values over time. Using linear regression, we can calculate the slope of each patient’s biomarker values over time. We can compare the slopes of healthy patients against the slopes of sick patients.\nIn the plot below, we can see that the biomarker slopes of sick patients tends to be higher than those of healthy patients. However, with regards to diagnostic performance, there was still a chance of misclassifications that was unacceptable to our clinicians.\n\n\n\n\n\n\n\n\n\n\n\nRadial plots help us assess diagnostic performance with data completeness in mind.\nIn order to better understand the cause of this, I created another visualization tool, called radial plots. For each patient, lines were generated using the slope calculated from linear regression originating from a common intercept.\nThe radial plot below illustrates each patient’s slope of biomarker values. The dotted red and blue lines indicated patients correctly classified as sick and healthy, respectively. The solid blue line indicated a healthy patient misclassified as sick. The solid red line indicated sick patients misclassified as healthy. One thing to note is that misclassified patients had shorter follow-up periods compared to correctly classified patients. This information allowed our clincial team to look more closely into the cause of shorter follow-up periods providing explanations for misclassifications and helping us investigate the diagnostic performance of this biomarker more thoroughly."
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html",
+    "href": "student_lifestyle_data_kaggle.html",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "",
+    "text": "This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.1\n\nThis dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students’ daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student’s stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes.  This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.\n\nThe purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field."
+  },
+  {
+    "objectID": "student_lifestyle_data_kaggle.html#footnotes",
+    "href": "student_lifestyle_data_kaggle.html#footnotes",
+    "title": "Lifestyle factors and their impact on students - Analysis of Kaggle dataset",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nhttps://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data↩︎"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
+    "section": "",
+    "text": "I generate salient statistical insights to empower health and medical experts by orienting intuition, resolving cognitive dissonance, and aligning findings with scientific knowledge. By synergizing epidemiologic and statistical methodology with subject-matter expertise, I refine intent and motivation into well-defined research objectives that efficiently drive study design and analysis.\n\n\n\n\nPhD, Epidemiology — Study design, statistical inference, population health\nMSE, Applied Mathematics & Statistics — Probability, statistics, modeling, computation, AI/ML\nVMD, Veterinary Medicine — Clinical reasoning, comparative medicine, outbreak management"
+  },
+  {
+    "objectID": "index.html#my-lab",
+    "href": "index.html#my-lab",
+    "title": "Ben Ouyang VMD, MSE, MS, BS",
+    "section": "My Lab",
+    "text": "My Lab\nThis is my online data science laboratory. Please use the links below or at the top of the page to look around.\n\n\n\n\n\nPortfolio\nSnapshots of finished projects.\nStep inside →\n\n\n\n\n\n\nBench\nIn-progress projects.\nTake a look →\n\n\n\n\n\n\nLearning Blog\nA record of things I’ve learned.\nRead all about it →\n\n\n\n\n\n\n\n\n\n\n\nEmail me at zbolabs@gmail.com if you’d like to collaborate, chat about a project, or ask a question."
+  },
+  {
+    "objectID": "tidymodels.html",
+    "href": "tidymodels.html",
+    "title": "Overview of tidymodels",
+    "section": "",
+    "text": "I made a summary of how to use tidymodels."
+  },
+  {
+    "objectID": "tidymodels.html#random-forest-template",
+    "href": "tidymodels.html#random-forest-template",
+    "title": "Overview of tidymodels",
+    "section": "Random forest template",
+    "text": "Random forest template\n\n# ============================================================\n# Random Forest (tidymodels): End-to-End Workflow\n# Using `parameters()` + grid generation (no expand.grid)\n# ============================================================\n\n\n# ------------------------------------------------------------\n# Assumptions\n# ------------------------------------------------------------\n# df      : your data frame\n# outcome : factor outcome variable for classification\n# Event   : second factor level is treated as the \"event\" by yardstick\n\n# ------------------------------------------------------------\n# 1. Train / Test Split\n# ------------------------------------------------------------\nsplit &lt;- initial_split(df, prop = 0.80, strata = outcome)\ntrain &lt;- training(split)\ntest  &lt;- testing(split)\n\n# ------------------------------------------------------------\n# 2. Preprocessing Recipe\n# ------------------------------------------------------------\nrf_rec &lt;- recipe(outcome ~ ., data = train) %&gt;%\n  step_novel(all_nominal_predictors()) %&gt;%     # handle unseen levels\n  step_dummy(all_nominal_predictors()) %&gt;%     # one-hot encode factors\n  step_zv(all_predictors())                    # remove zero-variance predictors\n\n# ------------------------------------------------------------\n# 3. Random Forest Model Spec (tunable params declared via tune())\n# ------------------------------------------------------------\nrf_spec &lt;- rand_forest(\n  mtry  = tune(),\n  min_n = tune(),\n  trees = tune()\n) %&gt;%\n  set_engine(\"ranger\", importance = \"permutation\") %&gt;%\n  set_mode(\"classification\")\n\n# ------------------------------------------------------------\n# 4. Workflow\n# ------------------------------------------------------------\nrf_wf &lt;- workflow() %&gt;%\n  add_recipe(rf_rec) %&gt;%\n  add_model(rf_spec)\n\n# ------------------------------------------------------------\n# 5. Cross-Validation\n# ------------------------------------------------------------\nfolds &lt;- vfold_cv(train, v = 5, strata = outcome)\n\n# ------------------------------------------------------------\n# 6. Define parameter ranges with `parameters()`\n# ------------------------------------------------------------\n# NOTE: mtry() is data-dependent (post-recipe predictor count), so tidymodels may\n# finalize it after prepping the recipe. You can optionally set a range too.\nrf_params &lt;- parameters(\n  mtry(range = c(2, 30)),          # adjust upper bound if you expect many dummies\n  min_n(range = c(2, 40)),\n  trees(range = c(500, 2000))\n)\n\n# Build a grid from those parameter definitions\n# Option A: random grid (often better for 3+ params)\nrf_grid &lt;- grid_random(rf_params, size = 25)\n\n# Option B: regular grid (can explode quickly: levels^(#params))\n# rf_grid &lt;- grid_regular(rf_params, levels = 5)\n\n# ------------------------------------------------------------\n# 7. Hyperparameter Tuning\n# ------------------------------------------------------------\nrf_res &lt;- tune_grid(\n  rf_wf,\n  resamples = folds,\n  grid = rf_grid,\n  metrics = metric_set(roc_auc, accuracy),\n  control = control_grid(save_pred = TRUE)\n)\n\n# Examine tuning results\ncollect_metrics(rf_res)\nshow_best(rf_res, metric = \"roc_auc\", n = 10)\n\n# ------------------------------------------------------------\n# 8. Finalize Workflow with Best Parameters\n# ------------------------------------------------------------\nbest_rf &lt;- select_best(rf_res, metric = \"roc_auc\")\nrf_final_wf &lt;- finalize_workflow(rf_wf, best_rf)\n\n# ------------------------------------------------------------\n# 9. Final Test-Set Evaluation (honest performance)\n# ------------------------------------------------------------\nrf_last &lt;- last_fit(\n  rf_final_wf,\n  split = split,\n  metrics = metric_set(roc_auc, accuracy, sens, spec)\n)\n\ncollect_metrics(rf_last)\n\nrf_test_preds &lt;- collect_predictions(rf_last)\n\n# ROC curve\nrf_test_preds %&gt;%\n  roc_curve(outcome, .pred_2) %&gt;%   # replace .pred_2 with your event class column if needed\n  autoplot()\n\n# ------------------------------------------------------------\n# 10. Fit Final Model on Training Data (for interpretation)\n# ------------------------------------------------------------\nrf_fit &lt;- fit(rf_final_wf, data = train)\n\n# Variable importance (since ranger importance = \"permutation\")\nrf_engine &lt;- extract_fit_parsnip(rf_fit)$fit\nvip::vip(rf_engine, num_features = 20)\n\n# ------------------------------------------------------------\n# (Optional) Partial Dependence Plot via DALEX (workflow-safe)\n# ------------------------------------------------------------\nlibrary(DALEX)\nlibrary(DALEXtra)\n\nexplainer &lt;- explain_tidymodels(\n  rf_fit,\n  data = train,\n  y = train$outcome,\n  verbose = FALSE\n)\n\nmodel_profile(explainer, variables = \"age\") %&gt;% plot()"
+  },
+  {
+    "objectID": "tidymodels.html#knn-template",
+    "href": "tidymodels.html#knn-template",
+    "title": "Overview of tidymodels",
+    "section": "kNN template",
+    "text": "kNN template\n\n# ============================================================\n# k-Nearest Neighbors (tidymodels): End-to-End Workflow\n# ============================================================\n\nlibrary(tidymodels)\nset.seed(123)\n\n# ------------------------------------------------------------\n# Assumptions\n# ------------------------------------------------------------\n# df        : your data frame\n# outcome   : factor outcome variable for classification\n# NOTE: k-NN is distance-based -&gt; normalization is essential.\n\n# ------------------------------------------------------------\n# 1. Train / Test Split\n# ------------------------------------------------------------\nsplit &lt;- initial_split(df, prop = 0.80, strata = outcome)\ntrain &lt;- training(split)\ntest  &lt;- testing(split)\n\n# ------------------------------------------------------------\n# 2. Preprocessing Recipe (important for k-NN!)\n# ------------------------------------------------------------\nknn_rec &lt;- recipe(outcome ~ ., data = train) %&gt;%\n  step_novel(all_nominal_predictors()) %&gt;%     # handle unseen levels\n  step_dummy(all_nominal_predictors()) %&gt;%     # one-hot encode factors\n  step_zv(all_predictors()) %&gt;%                # remove zero-variance predictors\n  step_normalize(all_numeric_predictors())     # SCALE for distances\n\n# ------------------------------------------------------------\n# 3. k-NN Model Specification (with tuning)\n# ------------------------------------------------------------\nknn_spec &lt;- nearest_neighbor(\n  neighbors   = tune(),     # k\n  dist_power  = tune(),     # 1 = Manhattan, 2 = Euclidean\n  weight_func = tune()      # how neighbors are weighted\n) %&gt;%\n  set_engine(\"kknn\") %&gt;%\n  set_mode(\"classification\")\n\n# ------------------------------------------------------------\n# 4. Workflow\n# ------------------------------------------------------------\nknn_wf &lt;- workflow() %&gt;%\n  add_recipe(knn_rec) %&gt;%\n  add_model(knn_spec)\n\n# ------------------------------------------------------------\n# 5. Cross-Validation\n# ------------------------------------------------------------\nfolds &lt;- vfold_cv(train, v = 5, strata = outcome)\n\n# ------------------------------------------------------------\n# 6. Parameter Ranges + Grid\n# ------------------------------------------------------------\nknn_params &lt;- parameters(\n  neighbors(range = c(3, 35)),\n  dist_power(range = c(1, 2)),\n  weight_func(values = c(\"rectangular\", \"triangular\", \"gaussian\"))\n)\n\nknn_grid &lt;- grid_regular(knn_params, levels = 5)\n# If this is too big (levels^#params), use a random grid instead:\n# knn_grid &lt;- grid_random(knn_params, size = 30)\n\n# ------------------------------------------------------------\n# 7. Hyperparameter Tuning\n# ------------------------------------------------------------\nknn_res &lt;- tune_grid(\n  knn_wf,\n  resamples = folds,\n  grid = knn_grid,\n  metrics = metric_set(roc_auc, accuracy),\n  control = control_grid(save_pred = TRUE)\n)\n\n# Examine tuning results\ncollect_metrics(knn_res)\nshow_best(knn_res, metric = \"roc_auc\", n = 10)\n\n# ------------------------------------------------------------\n# 8. Finalize Workflow with Best Parameters\n# ------------------------------------------------------------\nbest_knn &lt;- select_best(knn_res, metric = \"roc_auc\")\n\nknn_final_wf &lt;- finalize_workflow(knn_wf, best_knn)\n\n# ------------------------------------------------------------\n# 9. Final Test-Set Evaluation (honest performance)\n# ------------------------------------------------------------\nknn_last &lt;- last_fit(\n  knn_final_wf,\n  split = split,\n  metrics = metric_set(roc_auc, accuracy, sens, spec)\n)\n\ncollect_metrics(knn_last)\n\nknn_test_preds &lt;- collect_predictions(knn_last)\n\n# ROC curve\nknn_test_preds %&gt;%\n  roc_curve(outcome, .pred_2) %&gt;%   # replace .pred_2 with your event class column if needed\n  autoplot()\n\n# ------------------------------------------------------------\n# 10. Fit Final Model on Training Data (for interpretation/usage)\n# ------------------------------------------------------------\nknn_fit &lt;- fit(knn_final_wf, data = train)\n\n# (Optional) Confusion matrix at threshold 0.5\nknn_test_preds %&gt;%\n  mutate(.pred_class = factor(if_else(.pred_2 &gt;= 0.5, levels(train$outcome)[2], levels(train$outcome)[1]),\n                              levels = levels(train$outcome))) %&gt;%\n  conf_mat(outcome, .pred_class)"
+  },
+  {
+    "objectID": "tidymodels.html#neural-networks",
+    "href": "tidymodels.html#neural-networks",
+    "title": "Overview of tidymodels",
+    "section": "Neural networks",
+    "text": "Neural networks\n\n# ============================================================\n# Neural Net (tidymodels): End-to-End Workflow\n# Using `mlp()` + `parameters()` + tuning + test evaluation\n# Engine: nnet (lightweight, good for portfolios)\n# ============================================================\n\nlibrary(tidymodels)\nlibrary(dials)\nlibrary(rlang)\n\nset.seed(123)\n\n# ------------------------------------------------------------\n# Assumptions\n# ------------------------------------------------------------\n# df      : your data frame\n# outcome : factor outcome variable for classification\n# NOTE: Neural nets are scale-sensitive -&gt; normalization is essential.\n\n# ------------------------------------------------------------\n# 1. Train / Test Split\n# ------------------------------------------------------------\nsplit &lt;- initial_split(df, prop = 0.80, strata = outcome)\ntrain &lt;- training(split)\ntest  &lt;- testing(split)\n\n# Identify the \"event\" class (tidymodels/yardstick default is the 2nd level)\nevent_level &lt;- levels(train$outcome)[2]\nprob_col &lt;- paste0(\".pred_\", event_level)\n\n# ------------------------------------------------------------\n# 2. Preprocessing Recipe (important for neural nets!)\n# ------------------------------------------------------------\nnn_rec &lt;- recipe(outcome ~ ., data = train) %&gt;%\n  step_novel(all_nominal_predictors()) %&gt;%      # handle unseen levels\n  step_dummy(all_nominal_predictors()) %&gt;%      # one-hot encode factors\n  step_zv(all_predictors()) %&gt;%                 # remove zero-variance predictors\n  step_normalize(all_numeric_predictors())      # SCALE numeric predictors\n\n# ------------------------------------------------------------\n# 3. Neural Net Model Spec (tunable params declared via tune())\n# ------------------------------------------------------------\n# `mlp()` = multilayer perceptron\n# hidden_units: size of hidden layer\n# penalty     : weight decay (regularization)\n# epochs      : training iterations\nnn_spec &lt;- mlp(\n  hidden_units = tune(),\n  penalty      = tune(),\n  epochs       = tune()\n) %&gt;%\n  set_engine(\"nnet\") %&gt;%\n  set_mode(\"classification\")\n\n# ------------------------------------------------------------\n# 4. Workflow\n# ------------------------------------------------------------\nnn_wf &lt;- workflow() %&gt;%\n  add_recipe(nn_rec) %&gt;%\n  add_model(nn_spec)\n\n# ------------------------------------------------------------\n# 5. Cross-Validation\n# ------------------------------------------------------------\nfolds &lt;- vfold_cv(train, v = 5, strata = outcome)\n\n# ------------------------------------------------------------\n# 6. Define parameter ranges with `parameters()`\n# ------------------------------------------------------------\n# Notes:\n# - penalty() is on a log10 scale internally (dials handles that)\n# - epochs can be modest; too high can overfit and waste time\nnn_params &lt;- parameters(\n  hidden_units(range = c(1L, 50L)),\n  penalty(range = c(-6, -1)),          # 10^-6 to 10^-1 (log10 scale)\n  epochs(range = c(50L, 400L))\n)\n\n# Random grid is usually better than regular for 3 parameters\nnn_grid &lt;- grid_random(nn_params, size = 25)\n\n# ------------------------------------------------------------\n# 7. Hyperparameter Tuning\n# ------------------------------------------------------------\nnn_res &lt;- tune_grid(\n  nn_wf,\n  resamples = folds,\n  grid = nn_grid,\n  metrics = metric_set(roc_auc, accuracy),\n  control = control_grid(save_pred = TRUE)\n)\n\n# Examine tuning results\ncollect_metrics(nn_res)\nshow_best(nn_res, metric = \"roc_auc\", n = 10)\n\n# ------------------------------------------------------------\n# 8. Finalize Workflow with Best Parameters\n# ------------------------------------------------------------\nbest_nn &lt;- select_best(nn_res, metric = \"roc_auc\")\nnn_final_wf &lt;- finalize_workflow(nn_wf, best_nn)\n\n# ------------------------------------------------------------\n# 9. Final Test-Set Evaluation (honest performance)\n# ------------------------------------------------------------\nnn_last &lt;- last_fit(\n  nn_final_wf,\n  split = split,\n  metrics = metric_set(roc_auc, accuracy, sens, spec)\n)\n\ncollect_metrics(nn_last)\n\nnn_test_preds &lt;- collect_predictions(nn_last)\n\n# ROC curve (uses the event class probability column dynamically)\nnn_test_preds %&gt;%\n  roc_curve(outcome, !!sym(prob_col)) %&gt;%\n  autoplot()\n\n# Optional: confusion matrix at 0.5 threshold (you can choose a better threshold later)\nnn_test_preds %&gt;%\n  mutate(\n    .pred_class = factor(\n      if_else(!!sym(prob_col) &gt;= 0.5, event_level, levels(train$outcome)[1]),\n      levels = levels(train$outcome)\n    )\n  ) %&gt;%\n  conf_mat(outcome, .pred_class)\n\n# ------------------------------------------------------------\n# 10. Fit Final Model on Training Data (for interpretation/usage)\n# ------------------------------------------------------------\nnn_fit &lt;- fit(nn_final_wf, data = train)\n\n# Inspect finalized model specification\nextract_spec_parsnip(nn_fit)"
+  },
+  {
+    "objectID": "tidymodels.html#a.-objective-prediction-task-always-first",
+    "href": "tidymodels.html#a.-objective-prediction-task-always-first",
+    "title": "Overview of tidymodels",
+    "section": "A. Objective & prediction task (always first)",
+    "text": "A. Objective & prediction task (always first)\nAnswer:\nWhat problem is the model solving?\nInclude: - Outcome definition - Population - Prediction vs explanation - Unit of prediction (patient, visit, image, etc.)\nExample:\n“We developed a machine learning model to predict 30-day mortality among hospitalized patients using routinely collected clinical variables.”\n🚫 Don’t start with algorithms. Start with the problem."
+  },
+  {
+    "objectID": "tidymodels.html#b.-data-study-design",
+    "href": "tidymodels.html#b.-data-study-design",
+    "title": "Overview of tidymodels",
+    "section": "B. Data & study design",
+    "text": "B. Data & study design\nAnswer:\nWhere did the data come from, and how were they used?\nInclude: - Sample size - Outcome prevalence - Train/test split - Cross-validation strategy - Any stratification or grouping\nExample:\n“The dataset consisted of 4,812 patients, of whom 9.6% experienced the outcome. Data were split into training (80%) and test (20%) sets, stratified by outcome. Hyperparameters were optimized using 5-fold cross-validation on the training data.”\nThis signals methodological literacy."
+  },
+  {
+    "objectID": "tidymodels.html#c.-preprocessing-this-matters-more-than-people-think",
+    "href": "tidymodels.html#c.-preprocessing-this-matters-more-than-people-think",
+    "title": "Overview of tidymodels",
+    "section": "C. Preprocessing (this matters more than people think)",
+    "text": "C. Preprocessing (this matters more than people think)\nAnswer:\nHow was the data prepared, and was leakage avoided?\nInclude: - Handling of categorical variables - Scaling (if applicable) - Missingness handling - Zero-variance filtering - Where preprocessing occurred (inside CV!)\nExample:\n“Categorical predictors were dummy-encoded, and predictors with zero variance were removed using a recipe-based preprocessing pipeline. All preprocessing steps were estimated within resampling folds to prevent information leakage.”\nThat last sentence is very important!"
+  },
+  {
+    "objectID": "tidymodels.html#d.-model-specification-tuning",
+    "href": "tidymodels.html#d.-model-specification-tuning",
+    "title": "Overview of tidymodels",
+    "section": "D. Model specification & tuning",
+    "text": "D. Model specification & tuning\nAnswer:\nWhat model was fit, and how were hyperparameters chosen?\nInclude: - Algorithm - Engine/library - Tuned parameters - Optimization metric\nRandom forest example:\n“A random forest classifier was implemented using the ranger engine. The number of candidate predictors at each split (mtry) and the minimum node size (min_n) were optimized via grid search, selecting hyperparameters that maximized cross-validated ROC AUC.”\n🚫 Don’t just say “we fit a random forest.”"
+  },
+  {
+    "objectID": "tidymodels.html#e.-performance-evaluation-this-is-the-core",
+    "href": "tidymodels.html#e.-performance-evaluation-this-is-the-core",
+    "title": "Overview of tidymodels",
+    "section": "E. Performance evaluation (this is the core)",
+    "text": "E. Performance evaluation (this is the core)\nAnswer:\nHow well does the model perform on unseen data?\nAlways include: - Held-out test set results - Primary metric - Secondary metrics - Confidence intervals if possible\nExample:\n“On the held-out test set, the model achieved an ROC AUC of 0.82, with sensitivity of 0.74 and specificity of 0.79 at a probability threshold of 0.5.”\nOptional (but impressive): - Calibration - Decision curves - Class imbalance handling"
+  },
+  {
+    "objectID": "tidymodels.html#f.-model-interpretation-with-restraint",
+    "href": "tidymodels.html#f.-model-interpretation-with-restraint",
+    "title": "Overview of tidymodels",
+    "section": "F. Model interpretation (with restraint)",
+    "text": "F. Model interpretation (with restraint)\nAnswer:\nHow does the model behave, and what drives predictions?\nInclude: - Variable importance (with caveats) - Partial dependence / ALE / SHAP (if used) - Clear disclaimer about causality\nExample:\n“Permutation-based variable importance indicated that age, baseline creatinine, and oxygen saturation contributed most strongly to predictive performance. Partial dependence plots suggested nonlinear risk increases at advanced ages; however, these plots reflect model behavior rather than causal effects.”\nThis shows statistical maturity."
+  },
+  {
+    "objectID": "tidymodels.html#g.-limitations-this-builds-trust",
+    "href": "tidymodels.html#g.-limitations-this-builds-trust",
+    "title": "Overview of tidymodels",
+    "section": "G. Limitations (this builds trust)",
+    "text": "G. Limitations (this builds trust)\nAnswer:\nWhat could go wrong or limit generalization?\nAlways include: - Observational data limitations - External validation status - Model interpretability limits\nExample:\n“This analysis used retrospective single-source data, and external validation was not performed. Variable importance reflects predictive contribution rather than causal relevance.”\nReviewers expect this."
+  },
+  {
+    "objectID": "tidymodels.html#h.-practical-implications-next-steps",
+    "href": "tidymodels.html#h.-practical-implications-next-steps",
+    "title": "Overview of tidymodels",
+    "section": "H. Practical implications / next steps",
+    "text": "H. Practical implications / next steps\nAnswer:\nWhat would you do next if this mattered?\nExample:\n“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”\nThis signals real-world thinking."
+  },
+  {
+    "objectID": "about.html#hi-im-ben",
+    "href": "about.html#hi-im-ben",
+    "title": "About Me",
+    "section": "Hi — I’m Ben",
+    "text": "Hi — I’m Ben\nI’m a biostatistician, epidemiologist, and data scientist who focuses on making complex data understandable, honest, and useful — especially for people who don’t live in statistics every day.\nI work at the intersection of health, science, and decision-making, where the goal isn’t just a model that runs, but insight someone can actually use."
+  },
+  {
+    "objectID": "about.html#how-i-think-about-data",
+    "href": "about.html#how-i-think-about-data",
+    "title": "About Me",
+    "section": "How I think about data",
+    "text": "How I think about data\nI treat data work like a workshop:\n\nstart by understanding the material\n\ntake messy things apart carefully\n\nrebuild them into something simpler and stronger\n\nexplain the result in plain language\n\nThat means transparent assumptions, clear visuals, and an emphasis on what the results mean — not just how clever the method was."
+  },
+  {
+    "objectID": "about.html#credentials-at-a-glance",
+    "href": "about.html#credentials-at-a-glance",
+    "title": "About Me",
+    "section": "Credentials (at a glance)",
+    "text": "Credentials (at a glance)\n\n\nTraining - PhD — Epidemiology\n- MSc — Applied Mathematics & Statistics\n- Doctor of Veterinary Medicine (DVM)\nCore methods - Statistical modeling & inference\n- Machine learning (applied, not buzzword-driven)\n- Study design & evaluation\n\nDomains - Public & population health\n- Clinical & real-world evidence\n- Diagnostics & infection control\nTools - R, Python, SQL\n- Quarto, Shiny, GitHub\n- Reproducible research workflows"
+  },
+  {
+    "objectID": "about.html#what-youll-see-on-this-site",
+    "href": "about.html#what-youll-see-on-this-site",
+    "title": "About Me",
+    "section": "What you’ll see on this site",
+    "text": "What you’ll see on this site\n\nCase studies showing how I approach real problems\n\nExplain-it-clearly posts for tricky concepts\n\nTools & templates you can reuse\n\nOccasional experiments and side projects\n\nEverything here is meant to be practical, readable, and honest."
+  },
+  {
+    "objectID": "about.html#get-in-touch",
+    "href": "about.html#get-in-touch",
+    "title": "About Me",
+    "section": "Get in touch",
+    "text": "Get in touch\nIf something here resonates, or you’d like a walkthrough of a project:\n\n📧 Email: your@email.com\n\n💻 GitHub: https://github.com/YOURNAME\n\n🔗 LinkedIn: https://linkedin.com/in/YOURNAME"
   },
   {
     "objectID": "cahealthexpenditure2025.html",
@@ -222,5 +474,26 @@
     "title": "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025",
     "section": "On Other Professionals",
     "text": "On Other Professionals"
+  },
+  {
+    "objectID": "cost_of_living_ca.html",
+    "href": "cost_of_living_ca.html",
+    "title": "Cost of living in Canada",
+    "section": "",
+    "text": "This project is a continuation of the gas prices project. It looks at the purchasing power of Canadian wages for cost of living instead of only gas. Below is a look at how cost of living in Canada has changed over the years.\n\nAnd here is a look at how Canadian wages, across all industries and types of work, have changed over the years.\n\nPresented below is the number of workdays needed to cover the cost of living. This assumes a workday is 8 hours long (though, it’s often more). This does confirm what most of us know: that a single income for a lot of people simply won’t cover all living expenses. Though this is starting to become a little more feasible, though I don’t know if this is due to some artifact of the data or if feasibility is truly becoming more and more attainable, though still out of reach for most people.\n\nAnother thing to confirm is whether the wages contained in the data are averages or median. I imagine can artificially pull average wage upward. If this is the case, the true situation may in fact be worse. Also, it would be interesting to understand if these trends hold across all industries and work-types."
+  },
+  {
+    "objectID": "book_blog/smartphone_nation_notes.html",
+    "href": "book_blog/smartphone_nation_notes.html",
+    "title": "Smartphone Nation by Dr. Kaitlyn Regehr",
+    "section": "",
+    "text": "Why I’m reading this book\nI wanted to learn more about the effects of this pull that our digital devices have on us. I’m sure we’ve all experienced this not so mild seduction. This is something that affects the health of people on so many levels, and we’re only beginning to understand this. I thought this book might be a good introduction for me into the work done on this.\n\n\nIntroduction\nI thought the Introduction was quite poignant. It described this industry of digital devices and social media as on that profits off of our attention, or the attention economy. Thus far, moderation has been how we have safeguarded our mental faculties. But the author states that we will need a few levels more protection. This includes understanding more about the content and the creators behind the content that pull so effectively at our attention. And finally, regulation.\n\n\nChapter 1: The Digital Supermarket\nThe author expands on the idea that in today’s digital world, people on the internet via browsing, social media and other apps are not the consumer, but rather the product. The true consumers are the advertisers, and our minds, our attentions, are the product. The advertisers spend a tremendous amount of resources to capture our attention. They shape our minds and suggest that we behave in certain ways, perhaps to spend money on something we don’t actually need. The term that’s used to describe us is “users”, and it’s a term used by only one other industry: the illegal drug trade."
+  },
+  {
+    "objectID": "Changing attitudes.html",
+    "href": "Changing attitudes.html",
+    "title": "We all use models. But, epidemiologists write them down. A look at why prevailing attitudes change.",
+    "section": "",
+    "text": "Introduction\nThis is a fun project for me. It’s allowing me to take pieces I learned from risk communication and perception, specifically cognitive maps, and combine them with what I learned from stochastic compartment modeling. I also had a professor, back in the day, say, “We all use models. Epidemiologists write them down”. And so here I am putting my intuition into a mathematical model to describe my experience with why prevailing attitudes change.\nA good example of things changing… I remember when Taylor Swift first hit the scene. She was different and not everyone liked her music. Fast forward to today, she’s a hit across the board. Even I like her!!\nSo, how does my intuition process her rise to stardom? Take a look below.\n\n\nMy cognitive map\n\n\n\n\n\n\n\nMy compartment model output"
   }
 ]
