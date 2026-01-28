@@ -116,14 +116,14 @@
     "href": "book_blog.html",
     "title": "Book Blog",
     "section": "",
-    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpennotes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpennotes"
+    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpennotes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpennotes\n\n\n\n\n\n\n\n\nNoteDesign and Analysis of Clinical Trials Third Edition\n\n\n\nAuthor: Shein-Chung Chow; Jen-Pei Liu\nOpennotes"
   },
   {
     "objectID": "book_blog.html#currently-reading",
     "href": "book_blog.html#currently-reading",
     "title": "Book Blog",
     "section": "",
-    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpennotes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpennotes"
+    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpennotes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpennotes\n\n\n\n\n\n\n\n\nNoteDesign and Analysis of Clinical Trials Third Edition\n\n\n\nAuthor: Shein-Chung Chow; Jen-Pei Liu\nOpennotes"
   },
   {
     "objectID": "learning_blog.html",
@@ -495,5 +495,75 @@
     "title": "We all use models. But, epidemiologists write them down. A look at why prevailing attitudes change.",
     "section": "",
     "text": "Introduction\nThis is a fun project for me. It’s allowing me to take pieces I learned from risk communication and perception, specifically cognitive maps, and combine them with what I learned from stochastic compartment modeling. I also had a professor, back in the day, say, “We all use models. Epidemiologists write them down”. And so here I am putting my intuition into a mathematical model to describe my experience with why prevailing attitudes change.\nA good example of things changing… I remember when Taylor Swift first hit the scene. She was different and not everyone liked her music. Fast forward to today, she’s a hit across the board. Even I like her!!\nSo, how does my intuition process her rise to stardom? Take a look below.\n\n\nMy cognitive map\n\n\n\n\n\n\n\nMy compartment model output"
+  },
+  {
+    "objectID": "book_blog2.html",
+    "href": "book_blog2.html",
+    "title": "Book Blog",
+    "section": "",
+    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpennotes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpennotes\n\n\n\n\n\n\n\n\nNoteDesign and Analysis of Clinical Trials Third Edition\n\n\n\nAuthor: Shein-Chung Chow; Jen-Pei Liu\nOpennotes"
+  },
+  {
+    "objectID": "book_blog2.html#currently-reading",
+    "href": "book_blog2.html#currently-reading",
+    "title": "Book Blog",
+    "section": "",
+    "text": "NoteSmartphone Nation\n\n\n\nAuthor: Dr. Kaitlyn Regehr\nOpennotes\n\n\n\n\n\n\n\n\nNoteThe Mathematics Lover’s Companion\n\n\n\nAuthor: Edward Scheinerman\nOpennotes\n\n\n\n\n\n\n\n\nNoteDesign and Analysis of Clinical Trials Third Edition\n\n\n\nAuthor: Shein-Chung Chow; Jen-Pei Liu\nOpennotes"
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "",
+    "text": "This is a textbook. And what helps me with textbooks is knowing what happens before we get there. In other words, I like spoilers. So this blog will be populated way out of order. There will be two sections. The first will be anchored by date and will record any thoughts or questions that I have while exploring this book. The second will be anchored by sections of the book itself, where I jot down notes for each section. This will, admittedly, be a messier blog. But sometimes learning is messy."
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html#wednesday-january-28-2026",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html#wednesday-january-28-2026",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "Wednesday January 28, 2026",
+    "text": "Wednesday January 28, 2026\nRe: the unique considerations for cancer clinical trials: One thing that stood out to me when I was mapping out the book was that they described clinical trial designs in one chapter, then the following chapter was devoted specifically to cancer clinical trials. I was curious why they made this distinction so I took a closer look at the Cancer Clinical Trials chapter. It states that there are two things to consider with cancer clinical trials.\nThe first thing to consider is the health status of the patient population you are targeting. Cancers are often life-threatening, irreversible and have no cure. Some patients have limited life expectancy as well.\nThe second thing to consider is that the drugs used to treat cancer can be quite dangerous to patients. One might think to use lower doses to mitigate the risk. But, not only are lower doses ineffective, lower doses carry a similar amount of risk as higher doses.\nSubjects’ exposure to these agents should be minimized and figuring out efficacy should be streamlined as much as possible."
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html#part-1-preliminaries",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html#part-1-preliminaries",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "Part 1: Preliminaries",
+    "text": "Part 1: Preliminaries\n\nChapter 1: Introduction\n\n\nChapter 2: Basic Statistical Concepts\n\n\nChapter 3: Basic Design Considerations\n\n\nChapter 4: Randomization and Blinding"
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html#part-ii-designs-and-their-classifications",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html#part-ii-designs-and-their-classifications",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "Part II: Designs and Their Classifications",
+    "text": "Part II: Designs and Their Classifications\n\nChapter 5: Designs for Clinical Trials\n\n5.1 Introduction\n\n\n5.2 Parallel Group Designs\n\n\n5.3 Clustered Randomized Designs\n\n\n5.4 Crossover Designs\n\n\n5.5 Titration Designs\n\n\n5.6 Enrichment Designs\n\n\n5.7 Group Sequential Designs\n\n\n5.8 Placebo-Challenging Designs\n\n\n5.9 Blinded Reader Designs\n\n\n5.10 Discussion\n\n\n\nChapter 6: Designs for Cancer Clinical Trials\n\n6.1 Introduction\n\n\n6.2 General Considerations for Phase I Cancer Clinical Trials\n\n\n6.3 Single-Stage Up-And-Down Phase I Designs\n\n\n6.4 Two-Stage Up-And-Down Phase I Designs\n\n\n6.5 Continual Reassessment Method Phase I Designs\n\n\n6.6 Optimal and Flexible Multiple-Stage Designs\n\n\n6.7 Randomized Phase II Designs\n\n\n6.8 Discussion\n\n\n\nChapter 7: Classification of Clinical Trials"
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html#part-iii-analysis-of-clinical-data",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html#part-iii-analysis-of-clinical-data",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "Part III: Analysis of Clinical Data",
+    "text": "Part III: Analysis of Clinical Data\n\nChapter 8: Analysis of Continuous Data\n\n\nChapter 9: Analysis of Categorical Data\n\n\nChapter 10: Censored Data and Interim Analysis\n\n\nChapter 11: Sample Size Determination"
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html#part-iv-issues-in-evaluation",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html#part-iv-issues-in-evaluation",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "Part IV: Issues in Evaluation",
+    "text": "Part IV: Issues in Evaluation\n\nChapter 12: Issues in Efficacy Evaluation\n\n\nChapter 13: Safety Assessment"
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html#part-v-recent-development",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html#part-v-recent-development",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "Part V: Recent Development",
+    "text": "Part V: Recent Development\n\nChapter 14: Biomarkers and Targeted Clinical Trials\n\n\nChapter 15: Trials for Evaluating Accuracy of Diagnostic Services\n\n\nChapter 16: Statistical Methods in Translational Medicine\n\n\nChapter 17: Adaptive Clinical Trial Designs\n\n\nChapter 18: Traditional Chinese Medicine"
+  },
+  {
+    "objectID": "book_blog/design_analysis_clinical_trials_chow.html#part-vi-conduct-of-clinical-trials",
+    "href": "book_blog/design_analysis_clinical_trials_chow.html#part-vi-conduct-of-clinical-trials",
+    "title": "Design and Analysis of Clinical Trials Third Edition",
+    "section": "Part VI: Conduct of Clinical Trials",
+    "text": "Part VI: Conduct of Clinical Trials\n\nChapter 19: Preparation and Implementation of a Clinical Protocol\n\n\nChapter 20: Data Management of a Clinical Trial"
   }
 ]
