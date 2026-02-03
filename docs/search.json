@@ -565,5 +565,12 @@
     "title": "Design and Analysis of Clinical Trials Third Edition",
     "section": "Part VI: Conduct of Clinical Trials",
     "text": "Part VI: Conduct of Clinical Trials\n\nChapter 19: Preparation and Implementation of a Clinical Protocol\n\n\nChapter 20: Data Management of a Clinical Trial"
+  },
+  {
+    "objectID": "gas_prices/us_gas_prices.html",
+    "href": "gas_prices/us_gas_prices.html",
+    "title": "US gasoline prices",
+    "section": "",
+    "text": "I wanted to understand US gasoline prices a little more. So I found some data from EIA along with consumer price indicesto help adjust for inflation. This is really not my wheelhouse, so there was a lot of learning as I went. One of the things I learned was that the influence of global pressures on US gas prices cannot be ignored. It is the most likely driver of gas prices, even more so than policy. To that end, I also Brent oil prices, a good indicator of these influential global trends."
   }
 ]
