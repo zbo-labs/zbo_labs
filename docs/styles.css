@@ -210,5 +210,6 @@
   max-width: none;      /* CRITICAL — stops auto shrinking */
   width: auto;
   max-height: 65vh;
+  height: auto;
   display: block;
 }
