@@ -208,5 +208,7 @@
 
 .scroll-image img {
   max-width: none;      /* CRITICAL — stops auto shrinking */
+  width: auto;
+  max-height: 65vh;
   display: block;
 }
