@@ -1,1 +1,17 @@
+
 ROutput-RF tuning.csv
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+/.quarto/
+**/*.quarto_ipynb
+
+# RStudio + macOS
+.Rproj.user/
+.DS_Store
+
+# RStudio + macOS
+.Rproj.user/
+.DS_Store

@@ -1,0 +1,27 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "ZBO Labs"
+  navbar:
+    left:
+      - href: index.qmd
+        text: "About"
+      - href: portfolio.qmd
+        text: "Portfolio"
+      - href: lab.qmd
+        text: "Bench"
+      - href: blog.qmd
+        text: "Blogs"
+
+format:
+  html:
+    theme:
+      - cosmo
+      - brand
+    css: styles.css
+    toc: true
+
+editor: visual
+

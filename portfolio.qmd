@@ -1,0 +1,132 @@
+---
+title: "My Portfolio"
+subtitle: "A collection of finished data science projects."
+page-layout: full
+toc: false
+execute:
+  echo: false
+  warning: false
+  message: false
+format:
+  html:
+    theme: cosmo
+    anchor-sections: true
+    smooth-scroll: true
+---
+
+:::::::: portfolio-strip
+::: project-card
+<a class="card-link" href="cahealthexpenditure2025.html" aria-label="View Project 1"></a>
+<h3>[Project 1]{.project-title}<br> [A cursory look into health expenditure in Canada 2025]{.project-subtitle}</h3>
+:::
+
+::: project-card
+<a class="card-link" href="student_lifestyle_data_kaggle.qmd" aria-label="View Project 1"></a>
+<h3>[Project 2]{.project-title}<br> [Student lifestyle factors and school performance]{.project-subtitle}</h3>
+:::
+
+::: project-card
+<a class="card-link" href="rf_tuning_cleveland.qmd" aria-label="View Project 1"></a>
+<h3>[Project 3]{.project-title}<br> [Tuning a machine learning algorithm on Cleveland dataset]{.project-subtitle}</h3>
+:::
+
+::: project-card
+<a class="card-link" href="biomarker_slopes.qmd" aria-label="View Project 1"></a>
+<h3>[Project 4]{.project-title}<br> [Diagnostic performance using generative art]{.project-subtitle}</h3>
+:::
+
+::: project-card
+<a class="card-link" href="tidymodels_overview.qmd" aria-label="View Project 1"></a>
+<h3>[Project 5]{.project-title}<br> [Overview of the tidymodels R-package and sample code]{.project-subtitle}</h3>
+:::
+
+<!-- more cards -->
+::::::::
+
+------------------------------------------------------------------------
+
+```{=html}
+<!---
+:::::::::::::::::: grid
+::::: {.g-col-12 .g-col-md-6}
+:::: card
+::: card-body
+### Project 1 — A cursory look into health expenditure in Canada 2025
+
+**Goal:** Visualizing Canadian expenditure on hospitals, physicians, medications, public health, administration, COVID-1 response and other professionals by provincial, public and private sector.
+
+**Notes:**
+
+-   From [National Health Expenditure](https://www.cihi.ca/en/national-health-expenditure-trends) Trends found on CIHI.
+
+[View output →](cahealthexpenditure2025.qmd)
+:::
+::::
+:::::
+
+::::: {.g-col-12 .g-col-md-6}
+:::: card
+::: card-body
+### Project 2 — Student lifestyle factors and its influence on school performance: A Kaggle dataset.
+
+**Goal:** To provide an exploratory analysis of how student lifestyles affect school performance in Portugal.
+
+**Notes:**
+
+-   Original dataset can be found on [Kaggle](https://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data).
+
+[View results](student_lifestyle_data_kaggle.qmd)[→](project-2.qmd)
+:::
+::::
+:::::
+
+::::: {.g-col-12 .g-col-md-6}
+:::: card
+::: card-body
+### Project 3 — Tuning a machine learning algorithm on Cleveland dataset
+
+**Goal:** Visualize optimal hyperparameter values for a random forest model.
+
+**Notes**:
+
+-   The original dataset can be found at [UC Irvine's Machine Learning Repository](https://archive.ics.uci.edu/dataset/45/heart+disease).
+
+[View results](rf_tuning_cleveland.qmd)[→](https://github.com/YOURNAME/YOURREPO)
+:::
+::::
+:::::
+
+::::: {.g-col-12 .g-col-md-6}
+:::: card
+::: card-body
+### Project 4 — Diagnostic performance using generative art
+
+**Summary:** A reproduction of an analysis inspired by generative art.\
+
+**Notes:** I have found it useful to borrow tools from artists to help describe complex data.
+
+[View output →](biomarker_slopes.qmd)
+:::
+::::
+:::::
+
+::::: {.g-col-12 .g-col-md-6}
+:::: card
+::: card-body
+### Project 5 — Overview of the tidymodels R-package and sample code
+
+**Summary:** The tidymodels package is designed to optimize the prevention of data leakage when training and testing machine learning models. I outline the package here.\
+
+[View output→](tidymodels_overview.qmd)
+:::
+::::
+:::::
+::::::::::::::::::
+
+------------------------------------------------------------------------
+--->
+```
+
+::: {.callout-tip appearance="simple"}
+Email me at zbolabs\@gmail.com if you’d like to collaborate, chat about a project, or ask a question.
+:::

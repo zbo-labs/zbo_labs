@@ -1,0 +1,57 @@
+---
+title: "The Bench"
+subtitle: "A space for works-in-progress."
+page-layout: full
+toc: false
+format:
+  html:
+    anchor-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+------------------------------------------------------------------------
+
+::: {.callout-note .lab-card}
+### Project 1: Modelling changing attitudes
+
+**Status:** Active experimentation\
+**Focus:** Practice with stochastic compartment modelling.
+
+[Open notebook →](Changing%20attitudes.html)
+:::
+
+::: {.callout-note .lab-card}
+### Project 2: Gas prices in Ontario, Canada
+
+**Status:** In progress\
+**Focus:** Generating potential confirmatory insights into public sentiment
+
+[Open notebook →](gas_prices_canada.qmd)
+:::
+
+::: {.callout-note .lab-card}
+### Project 3: Cost of living in Canada
+
+**Status:** In progress\
+**Focus:** Understanding cost-of-living in terms of workdays needed.
+
+[Open notebook →](cost_of_living_ca.qmd)
+:::
+
+::: {.callout-note .lab-card}
+### Project 4: US gas prices
+
+**Status:** In progress\
+**Focus:** Understanding drivers of gas prices.
+
+[Open notebook →](us_gas_prices.qmd)
+:::
+
+------------------------------------------------------------------------
+
+::: {.callout-tip appearance="simple"}
+Email me at zbolabs\@gmail.com if you’d like to collaborate, chat about a project, or ask a question.
+:::

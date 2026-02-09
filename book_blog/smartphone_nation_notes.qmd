@@ -1,0 +1,20 @@
+---
+title: "Smartphone Nation by Dr. Kaitlyn Regehr"
+subtitle: "My notes"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+---
+
+# Why I'm reading this book
+
+I wanted to learn more about the effects of this pull that our digital devices have on us. I'm sure we've all experienced this not so mild seduction. This is something that affects the health of people on so many levels, and we're only beginning to understand this. I thought this book might be a good introduction for me into the work done on this.
+
+# Introduction
+
+I thought the Introduction was quite poignant. It described this industry of digital devices and social media as on that profits off of our attention, or the *attention economy*. Thus far, moderation has been how we have safeguarded our mental faculties. But the author states that we will need a few levels more protection. This includes understanding more about the content and the creators behind the content that pull so effectively at our attention. And finally, regulation.
+
+# Chapter 1: The Digital Supermarket
+
+The author expands on the idea that in today's digital world, people on the internet via browsing, social media and other apps are not the consumer, but rather the product. The true consumers are the advertisers, and our minds, our attentions, are the product. The advertisers spend a tremendous amount of resources to capture our attention. They shape our minds and suggest that we behave in certain ways, perhaps to spend money on something we don't actually need. The term that's used to describe us is "users", and it's a term used by only one other industry: the illegal drug trade.

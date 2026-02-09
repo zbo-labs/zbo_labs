@@ -1,0 +1,125 @@
+---
+title: "We all use models. But, epidemiologists write them down. A look at why prevailing attitudes change."
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+
+# Introduction
+
+This is a fun project for me. It's allowing me to take pieces I learned from risk communication and perception, specifically cognitive maps, and combine them with what I learned from stochastic compartment modeling. I also had a professor, back in the day, say, "We all use models. Epidemiologists write them down". And so here I am putting my intuition into a mathematical model to describe my experience with why prevailing attitudes change.
+
+A good example of things changing... I remember when Taylor Swift first hit the scene. She was different and not everyone liked her music. Fast forward to today, she's a hit across the board. Even I like her!!
+
+So, how does my intuition process her rise to stardom? Take a look below.
+
+# My cognitive map
+
+![](Comportment%20diagram-pop.jpg){fig-align="center"}
+
+# My compartment model output
+
+```{r, include = TRUE, echo = FALSE, warning = FALSE, message = FALSE, fig.width = 12, fig.height = 7}
+library(easypackages)
+
+libraries(
+  c(
+    "ggplot2", 
+    "tidyr", 
+    "tidyverse", 
+    "ggpubr", 
+    "readxl", 
+    "janitor"
+  )
+)
+
+sim = read.csv("Pass001_simulations2_df.csv")
+
+sim2 = 
+  sim %>% 
+  mutate(
+    susceptible = S,
+    fence = L,
+    spreaders = I + C, 
+    non_spreaders = S + R + W
+  ) 
+
+ggplot(
+  sim2
+) + 
+  geom_line(
+    aes(
+      x = time, 
+      y = susceptible, 
+      color = "susceptible"
+    ), 
+    linewidth = 0.5, 
+    linetype = "dotted"
+  ) + 
+  geom_line(
+    aes(
+      x = time, 
+      y = spreaders, 
+      color = "spreaders"
+    ), 
+    linewidth = 1
+  ) + 
+  geom_line(
+    aes(
+      x = time, 
+      y = non_spreaders, 
+      color = "non_spreaders"
+    ), 
+    linewidth = 1
+  ) + geom_line(
+    aes(
+      x = time, 
+      y = fence, 
+      color = "fence"
+    ), 
+    linewidth = 1
+  ) + 
+  scale_color_manual(
+    values = 
+      c(
+        "spreaders" = "red", 
+        "non_spreaders" = "blue", 
+        "fence" = "grey", 
+        "susceptible" = "black"
+      ), 
+    labels = 
+      c(
+        "spreaders" = "fans", 
+        "non_spreaders" = "entrenched", 
+        "fence" = "still considering", 
+        "susceptible" = "never heard of her"
+      )
+  ) +
+  scale_x_continuous(
+    limits = c(0, 20), 
+    breaks = seq(0, 20, 5)
+  ) +
+  scale_y_continuous(
+    limits = c(0, 2000000),
+    breaks = seq(0, 2000000, 200000)
+  ) +
+  labs(
+    x = "Years", 
+    y = "# people", 
+    title = 
+      str_wrap(
+        "My intuition of what happens when a new attitude is dropped into an unexposed population", 
+        75
+        )
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"), 
+    plot.title = element_text(hjust = 0.5), 
+    legend.key = element_blank(), 
+    legend.title = element_blank(),
+    legend.position = "bottom", 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black")
+  )
+```

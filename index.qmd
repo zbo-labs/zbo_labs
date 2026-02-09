@@ -1,0 +1,115 @@
+---
+title: "Ben Ouyang VMD, MSE, MS, BS"
+subtitle: "Biomedical and epidemiological data scientist and visualization specialist"
+page-layout: full
+toc: false
+execute:
+  echo: false
+  warning: false
+  message: false
+format:
+  html:
+    anchor-sections: true
+    smooth-scroll: true
+---
+
+::::: about-wrap
+::: about-photo
+<img src="images/headshot.JPG" alt="Headshot"/>
+:::
+
+::: about-text
+```{=html}
+<!---
+I specialize in designing studies and generating statistical insights by leading teams through an iterative process that resolves cognitive dissonance while remaining true to statistical and scientific rigor.
+
+I specialize in study design and analytical processes that generate insights that appeal to the intuition and resolves cognitive dissonance while remaining true to statistical and scientific rigor.
+
+I lead teams through study design and analytical processes that generate salient insights that appeal to the intuition, resolve cognitive dissonance while remaining true to statistical and scientific rigor.
+
+I lead teams through study design and analytical processes that generate salient insights by appealing to intuition, resolving cognitive dissonance and remaining true to statistical and scientific rigor. 
+
+I unlock the expertise of subject-matter experts by leading teams through study design and analytical processes that appeal to the intuition and resolve cognitive dissonance 
+
+I unlock the expertise of subject-matter experts by generating salient statistical insights through a process that appeals to intuition and resolves cognitive dissonance.
+
+
+I unlock the expertise of subject-matter experts by generating salient statistical insights through a process that appeals to intuition and resolves cognitive dissonance. I work closely with subject-matter experts to design studies and perform analyses relevant to our objectives and prevent protocol drift.
+
+I unlock the expertise of subject-matter experts through accessible and salient st
+--->
+```
+
+### What I do
+
+I generate salient statistical insights to empower health and medical experts by orienting intuition, resolving cognitive dissonance, and aligning findings with scientific knowledge. By synergizing epidemiologic and statistical methodology with subject-matter expertise, I refine intent and motivation into well-defined research objectives that efficiently drive study design and analysis.
+
+### Education
+
+-   **PhD, Epidemiology** — Study design, statistical inference, population health
+-   **MSE, Applied Mathematics & Statistics** — Probability, statistics, modeling, computation, AI/ML
+-   **VMD, Veterinary Medicine** — Clinical reasoning, comparative medicine, outbreak management
+:::
+:::::
+
+### My Background
+
+I have always wanted to contribute to the health of the environment and its denizens. My first experience came as an applied mathematician when I modeled wildfires and the transmission of disease between national parks and adjacent cattle ranches. Wanting to get more direct experience and a broad biomedical and clinical background, I became a veterinarian. Because it's possible to encounter an unfamiliar species at any moment, I became very comfortable with recognizing the limits of my knowledge (saying "I don't know" is very okay) and asking the right questions to learn more. My specialty training was in infection control and biosecurity where I got to use epidemiological tools to manage hospital-associated infections and several outbreaks. Becoming an epidemiologist became the next logical step. Shortly after, I worked in an innovative biotechnology company as a senior biostatistician supporting the development of diagnostic instruments. I found that my blend of epidemiology, statistics, engineering mathematics and veterinary medicine allowed me to collaborate very effectively with a breadth of non-statistical experts, including clinicians, laboratory scientists, engineers and business partners. This is where I learned the value of statistics in empowering and unlocking people's expertise.
+
+## My Lab
+
+This is my online data science laboratory. Please use the links below or at the top of the page to look around.\
+<!---
+- the **Portfolio** is for snapshots of finished work: clean and polished\
+- the **Bench** is for works in progress—drafts, experiments, and ideas taking shape\
+- the **Learning Blog** is where I record what I learn in my explorations
+
+
+------------------------------------------------------------------------
+--->
+
+:::::::::::: grid
+::::: {.g-col-12 .g-col-md-4}
+:::: card
+::: card-body
+### Portfolio
+
+Snapshots of finished projects.
+
+[Step inside →](portfolio.qmd)
+:::
+::::
+:::::
+
+::::: {.g-col-12 .g-col-md-4}
+:::: card
+::: card-body
+### Bench
+
+In-progress projects.
+
+[Take a look →](lab.qmd)
+:::
+::::
+:::::
+
+::::: {.g-col-12 .g-col-md-4}
+:::: card
+::: card-body
+### Learning Blog
+
+A record of things I've learned.
+
+[Read all about it →](blog.qmd)
+:::
+::::
+:::::
+::::::::::::
+
+------------------------------------------------------------------------
+
+::: {.callout-tip appearance="simple"}
+Email me at zbolabs\@gmail.com if you’d like to collaborate, chat about a project, or ask a question.
+:::
+
+------------------------------------------------------------------------

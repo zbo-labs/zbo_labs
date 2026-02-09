@@ -1,0 +1,3910 @@
+---
+title: "A cursory exploration of trends in National Health Expenditure in Canada from 1985 to 2025"
+output: 
+  html_document:
+    toc: TRUE
+    toc_depth: 2
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, include = FALSE, warning = FALSE, message = FALSE)
+
+library(easypackages)
+
+libraries(
+  c(
+    "ggplot2", 
+    "tidyr", 
+    "tidyverse", 
+    "ddply", 
+    "ggpubr", 
+    "janitor", 
+    "stringr", 
+    "readxl", 
+    "scales"
+  )
+)
+```
+
+This page presents a curated set of descriptive visualizations of healthcare spending by sector. Specific expenditures include hospitals, physicians, medications, public health, administration, COVID-19 response and other professionals.
+
+```{r}
+dataA_00 = read_xlsx(
+  path = "ANALYSIS-nhex-open-data-2025-en.xlsx", 
+  sheet = "Table O.1"
+) %>%
+  clean_names() %>%
+  mutate(
+    province = 
+      factor(
+        province, 
+        levels = 
+          c("Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon", "Canada")
+        ), 
+    sector = 
+      factor(
+        sector, levels = c("Private", "Provincial Government", "Territorial Government", "Public")
+      ), 
+    
+    use_of_funds = 
+      factor(
+        use_of_funds
+      ), 
+    
+    current_dollars = current_dollars %>% as.numeric(), 
+    
+    current_dollars_per_capita = current_dollars_per_capita %>% as.numeric()
+  )
+
+
+# dataA_00$year %>% table(useNA = "always")
+# class(dataA_00$year)
+# 
+# 
+# dataA$forecast_category %>% table(useNA = "always")
+# 
+# dataA_00$province %>% table(useNA = "always")
+# class(dataA_00$province)
+# 
+# dataA_00$sector %>% table(useNA = "always")
+# 
+# dataA_00$use_of_funds %>% table(useNA = "always")
+# 
+# dataA_00$current_dollars %>% table(useNA = "always")
+# 
+# dataA_00$current_dollars_per_capita %>% class
+# 
+# dataA_00$constant_2010_dollars
+
+
+dataA = dataA_00 %>%
+  filter(
+    !province %in% c("Yukon", "Northwest Territories", "Nunavut")
+  )
+
+
+
+
+
+
+
+
+dataB_00 = 
+  read_xlsx(path = "ANALYSIS-CA population in thousands.xlsx") %>%
+  clean_names() %>%
+  mutate(
+    nun = nun %>% as.numeric
+  )
+
+dataB_01 = dataB_00 %>%
+  pivot_longer(
+    cols = n_l:canada, 
+    names_to = "province", 
+    values_to = "population"
+  ) %>%
+  group_by(
+    province
+  ) %>%
+  mutate(
+    diff_pop = population - lag(population), 
+    year = year %>% as.numeric()
+  ) %>%
+  ungroup() %>%
+  mutate(
+    province = 
+      plyr::mapvalues(
+        province, 
+        from = 
+          c(
+            "alta", 
+            "b_c", 
+            "man", 
+            "n_b", 
+            "n_l", 
+            "n_s", 
+            "n_w_t", 
+            "ont", 
+            "p_e_i",
+            "y_t",
+            "que", 
+            "sask", 
+            "nun"
+          ), 
+        to = 
+          c(
+            "Alberta", 
+            "British Columbia", 
+            "Manitoba", 
+            "New Brunswick", 
+            "Newfoundland and Labrador", 
+            "Nova Scotia", 
+            "Northwest Territories", 
+            "Ontario", 
+            "Prince Edward Island", 
+            "Yukon",
+            "Quebec", 
+            "Saskatchewan", 
+            "Nunavut"
+          )
+      )
+  )
+
+
+dataB = dataB_01
+
+dataA$sector %>% unique
+dataA$use_of_funds %>% unique
+
+```
+
+# Provincial Government health expenditure {.tabset}
+
+## Total expenditure
+
+```{r provincial gov total health expenditure, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "Total"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Hospitals
+
+```{r provincial gov spending on hospitals, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "Hospitals"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Physicians
+
+```{r provincial gov spending on physicians, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "Physicians"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Medications
+
+```{r provincial gov spending on medications, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "Drugs"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Public Health
+
+```{r provincial gov spending on public health, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "Public Health"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Administration
+
+```{r provincial gov spending on admin, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "Administration"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On COVID-19 Response Funding
+
+```{r provincial gov spending on covid, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "COVID-19 Response Funding"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Other Professionals
+
+```{r provincial gov spending on other professionals, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector ="Provincial Government"
+in_use_of_funds = "Other Professionals"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+# Health expenditure by public sector {.tabset}
+
+## Total expenditure
+
+```{r public total health expenditure, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "Total"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Hospitals
+
+```{r public spending on hospitals, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "Hospitals"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Physicians
+
+```{r public spending on physicians, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "Physicians"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Medications
+
+```{r public spending on medications, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "Drugs"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Public Health
+
+```{r public spending on public health, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "Public Health"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Administration
+
+```{r public spending on admin, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "Administration"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On COVID-19 Response Funding
+
+```{r public spending on covid, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "COVID-19 Response Funding"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Other Professionals
+
+```{r public spending on other professionals, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Public"
+in_use_of_funds = "Other Professionals"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+# Health expenditure by private sector {.tabset}
+
+## Total expenditure
+
+```{r private total health expenditure, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "Total"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Hospitals
+
+```{r private spending on hospitals, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "Hospitals"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Physicians
+
+```{r private spending on physicians, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "Physicians"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Medications
+
+```{r private spending on medications, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "Drugs"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Public Health
+
+```{r private spending on public health, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "Public Health"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Administration
+
+```{r private spending on admin, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "Administration"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On COVID-19 Response Funding
+
+```{r private spending on covid, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "COVID-19 Response Funding"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```
+
+## On Other Professionals
+
+```{r private spending on other professionals, include = TRUE, fig.width = 15, fig.height = 8}
+# Custom formatting function to display "1 x 10^n"
+scientific_10 <- function(x) {
+  parse(text = gsub("e", " %*% 10^", scales::scientific_format()(x)))
+}
+
+
+
+in_sector = "Private"
+in_use_of_funds = "Other Professionals"
+
+p1 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    labels = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Total expenditure", width = 20), 
+    title = "Total"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+p2 = ggplot(
+  dataA %>% filter(sector == in_sector, use_of_funds == in_use_of_funds, province != "Canada"), 
+  aes(
+    x = year, 
+    y = current_dollars_per_capita
+  )
+) + 
+  geom_point() +
+  geom_line() +
+  # geom_smooth(method = "loess", se = FALSE) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    # limits = c(0, 700),
+    # breaks = seq(0, 1000, 100),
+    label = scientific_10
+  ) +
+  # scale_y_log10(
+  #   breaks = trans_breaks("log10", function(x) 10^x), # Define the breaks as powers of 10
+  #   labels = trans_format("log10", math_format(10^.x))  # Format labels as 10^exponent
+  # ) +
+  labs(
+    x = "Year", 
+    y = "Per capita expenditure", 
+    title = "Per capita"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+
+
+
+
+
+
+p3 = ggplot(
+  dataB %>% filter(!province %in% c("Nunavut", "Northwest Territories", "canada", "Yukon") &  year != 2025 ), 
+  aes(
+    x = year, 
+    y = diff_pop
+  )
+) + 
+  geom_line(group = 1) +
+  geom_vline(xintercept = 2020, linetype = "dotted") +
+  geom_point() +
+  # geom_smooth(method = "loess", se = FALSE, color = "black") +
+  scale_x_continuous(
+    limits = c(1985, 2029),
+    breaks = seq(1905, 2030, 20)
+  ) +
+  scale_y_continuous(
+    label = scientific_10
+  ) +
+  labs(
+    x = "Year", 
+    y = str_wrap("Population change from prior year (thousands)", width = 20), 
+    title = "Change in population from previous year"
+  ) +
+  theme(
+    text = element_text(size = 16, face = "bold"),
+    plot.title = element_blank(), 
+    axis.title.x = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1), 
+    panel.background = element_rect(fill = NA, color = "black"),
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) + 
+  facet_wrap(~province, nrow = 1, labeller = label_wrap_gen(width = 15))
+
+
+ggarrange(p1, p2, p3, ncol = 1, align = "v") %>%
+  annotate_figure(
+    # top = 
+    #   text_grob(
+    #     paste0("Expenditure by ", in_sector, " for ", in_use_of_funds, " in current dollars"), 
+    #     size = 18, 
+    #     face = "bold"
+    #     ),
+      
+    bottom = 
+      text_grob(
+        "Year", 
+        size = 14, 
+        face = "bold"
+      )
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        "Dotted vertical lines indicate year 2020.", 
+        size = 12, 
+        face = "bold", 
+        hjust = 2
+      )
+  )
+```

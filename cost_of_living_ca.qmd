@@ -1,0 +1,23 @@
+---
+title: "Cost of living in Canada"
+output: 
+  html_document:
+    toc: TRUE
+    toc_depth: 2
+editor_options: 
+  chunk_output_type: console
+---
+
+This project is a continuation of the gas prices project. It looks at the purchasing power of Canadian wages for cost of living instead of only gas. Below is a look at how cost of living in Canada has changed over the years.
+
+![](images/cost%20of%20living%20CA/household_expenditures.jpg)
+
+And here is a look at how Canadian wages, across all industries and types of work, have changed over the years.
+
+![](images/cost%20of%20living%20CA/wages.jpg)
+
+Presented below is the number of workdays needed to cover the cost of living. This assumes a workday is 8 hours long (though, it's often more). This does confirm what most of us know: that a single income for a lot of people simply won't cover all living expenses. Though this is starting to become a little more feasible, though I don't know if this is due to some artifact of the data or if feasibility is truly becoming more and more attainable, though still out of reach for most people.
+
+![](images/cost%20of%20living%20CA/workdays_v_livingcost.jpg)
+
+Another thing to confirm is whether the wages contained in the data are averages or median. I imagine can artificially pull average wage upward. If this is the case, the true situation may in fact be worse. Also, it would be interesting to understand if these trends hold across all industries and work-types.

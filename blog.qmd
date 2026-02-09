@@ -1,0 +1,19 @@
+---
+title: "Blogs"
+subtitle: "Select the blog you want to see"
+---
+
+::::: book-strip
+::: book-card
+<a class="card-link" href="learning_blog.qmd"></a>
+<h3>Learning Blog</h3>
+<p>A place to record things I learn.</p>
+:::
+
+::: book-card
+<a class="card-link" href="book_blog.qmd"></a>
+<h3>Book Blog</h3>
+<p>Notes on books I read.</p>
+:::
+:::::
+

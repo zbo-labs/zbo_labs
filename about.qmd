@@ -1,0 +1,75 @@
+---
+title: "About Me"
+page-layout: article
+toc: false
+---
+
+::: column-margin
+![](images/headshot.JPG){width="1in"}
+:::
+
+## Hi — I’m Ben
+
+I’m a **biostatistician, epidemiologist, and data scientist** who focuses on making complex data **understandable, honest, and useful** — especially for people who don’t live in statistics every day.
+
+I work at the intersection of **health, science, and decision-making**, where the goal isn’t just a model that runs, but insight someone can actually *use*.
+
+------------------------------------------------------------------------
+
+## How I think about data
+
+I treat data work like a **workshop**:
+
+-   start by understanding the material\
+-   take messy things apart carefully\
+-   rebuild them into something simpler and stronger\
+-   explain the result in plain language
+
+That means transparent assumptions, clear visuals, and an emphasis on *what the results mean* — not just how clever the method was.
+
+------------------------------------------------------------------------
+
+## Credentials (at a glance)
+
+::::: columns
+::: {.column width="50%"}
+**Training** - PhD — Epidemiology\
+- MSc — Applied Mathematics & Statistics\
+- Doctor of Veterinary Medicine (DVM)
+
+**Core methods** - Statistical modeling & inference\
+- Machine learning (applied, not buzzword-driven)\
+- Study design & evaluation
+:::
+
+::: {.column width="50%"}
+**Domains** - Public & population health\
+- Clinical & real-world evidence\
+- Diagnostics & infection control
+
+**Tools** - R, Python, SQL\
+- Quarto, Shiny, GitHub\
+- Reproducible research workflows
+:::
+:::::
+
+------------------------------------------------------------------------
+
+## What you’ll see on this site
+
+-   **Case studies** showing how I approach real problems\
+-   **Explain-it-clearly posts** for tricky concepts\
+-   **Tools & templates** you can reuse\
+-   Occasional experiments and side projects
+
+Everything here is meant to be **practical, readable, and honest**.
+
+------------------------------------------------------------------------
+
+## Get in touch
+
+If something here resonates, or you’d like a walkthrough of a project:
+
+-   📧 Email: your\@email.com\
+-   💻 GitHub: <https://github.com/YOURNAME>\
+-   🔗 LinkedIn: <https://linkedin.com/in/YOURNAME>

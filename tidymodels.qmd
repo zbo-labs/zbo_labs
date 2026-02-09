@@ -1,0 +1,661 @@
+---
+title: "Overview of tidymodels"
+---
+
+I made a summary of how to use tidymodels.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidymodels)
+library(dials)
+library(DiagrammeR)
+set.seed(123)
+```
+
+# End-to-end overview of building a machine learning model
+
+1.  Split data in training and test set.
+    -   split = initial_split(data, prop); train = training(split), test = testing(split)
+2.  Preprocess recipe.
+    -   rec = recipe(formula, data = train) %\>% step_novel(all_nominal_predictors()) %\>% step_dummy(all_nominal_predictors) %\>% step_zv(all_predictors()) %\>% step_normalize(all_continuous_predictors())
+3.  Specify model.
+    -   rf_spec = rand_forest(mtry = tune(), trees = tune()) %\>% set_engine(engine = "ranger") %\>% set_mode("classification)
+4.  Specify workflow.
+    -   wf = workflow() %\>% add_recipe(rec) %\>% add_model(rf_spec)
+5.  Cross-validation/resampling scheme design.
+    -   folds = vfold_cv(data = train, v = 5, strata = outcome)
+6.  Tune hyperparameters.
+    -   rf_parameters = parameters(mtry(range = c(3, 10)), trees(range = c(100, 5000)))
+    -   rf_res = tune_grid(wf, grid = rf_parameters, resamples = folds, metrics = metric_set(accuracy, roc_auc))
+    -   collect_metrics(rf_res); show_best(rf_res, metric = "roc_auc", n = 10)
+7.  Finalize workflow with best parameters.
+    -   best_rf = select_best(rf_res, metric = "roc_auc")
+    -   rf_final_wf = finalize_workflow(rf_wf, best_rf)
+8.  Final test set evaluation.
+    -   rf_last = last_fit(rf_final_wf, split = split, metrics = metric_set(roc_auc, accuracy, sens, spec))
+9.  Fit final model on training data (for interpretation, e.g. variable importance).
+    -   rf_fit = fit(rf_final_wf, data = train)
+    -   Variable importance: rf_engine = extract_fit_parsnip(rf_fit)\$fit; vip::vip(rf_engine, num_features)
+
+# Templates
+
+## Random forest template
+
+```{r, eval = FALSE, include = TRUE, echo = TRUE}
+# ============================================================
+# Random Forest (tidymodels): End-to-End Workflow
+# Using `parameters()` + grid generation (no expand.grid)
+# ============================================================
+
+
+# ------------------------------------------------------------
+# Assumptions
+# ------------------------------------------------------------
+# df      : your data frame
+# outcome : factor outcome variable for classification
+# Event   : second factor level is treated as the "event" by yardstick
+
+# ------------------------------------------------------------
+# 1. Train / Test Split
+# ------------------------------------------------------------
+split <- initial_split(df, prop = 0.80, strata = outcome)
+train <- training(split)
+test  <- testing(split)
+
+# ------------------------------------------------------------
+# 2. Preprocessing Recipe
+# ------------------------------------------------------------
+rf_rec <- recipe(outcome ~ ., data = train) %>%
+  step_novel(all_nominal_predictors()) %>%     # handle unseen levels
+  step_dummy(all_nominal_predictors()) %>%     # one-hot encode factors
+  step_zv(all_predictors())                    # remove zero-variance predictors
+
+# ------------------------------------------------------------
+# 3. Random Forest Model Spec (tunable params declared via tune())
+# ------------------------------------------------------------
+rf_spec <- rand_forest(
+  mtry  = tune(),
+  min_n = tune(),
+  trees = tune()
+) %>%
+  set_engine("ranger", importance = "permutation") %>%
+  set_mode("classification")
+
+# ------------------------------------------------------------
+# 4. Workflow
+# ------------------------------------------------------------
+rf_wf <- workflow() %>%
+  add_recipe(rf_rec) %>%
+  add_model(rf_spec)
+
+# ------------------------------------------------------------
+# 5. Cross-Validation
+# ------------------------------------------------------------
+folds <- vfold_cv(train, v = 5, strata = outcome)
+
+# ------------------------------------------------------------
+# 6. Define parameter ranges with `parameters()`
+# ------------------------------------------------------------
+# NOTE: mtry() is data-dependent (post-recipe predictor count), so tidymodels may
+# finalize it after prepping the recipe. You can optionally set a range too.
+rf_params <- parameters(
+  mtry(range = c(2, 30)),          # adjust upper bound if you expect many dummies
+  min_n(range = c(2, 40)),
+  trees(range = c(500, 2000))
+)
+
+# Build a grid from those parameter definitions
+# Option A: random grid (often better for 3+ params)
+rf_grid <- grid_random(rf_params, size = 25)
+
+# Option B: regular grid (can explode quickly: levels^(#params))
+# rf_grid <- grid_regular(rf_params, levels = 5)
+
+# ------------------------------------------------------------
+# 7. Hyperparameter Tuning
+# ------------------------------------------------------------
+rf_res <- tune_grid(
+  rf_wf,
+  resamples = folds,
+  grid = rf_grid,
+  metrics = metric_set(roc_auc, accuracy),
+  control = control_grid(save_pred = TRUE)
+)
+
+# Examine tuning results
+collect_metrics(rf_res)
+show_best(rf_res, metric = "roc_auc", n = 10)
+
+# ------------------------------------------------------------
+# 8. Finalize Workflow with Best Parameters
+# ------------------------------------------------------------
+best_rf <- select_best(rf_res, metric = "roc_auc")
+rf_final_wf <- finalize_workflow(rf_wf, best_rf)
+
+# ------------------------------------------------------------
+# 9. Final Test-Set Evaluation (honest performance)
+# ------------------------------------------------------------
+rf_last <- last_fit(
+  rf_final_wf,
+  split = split,
+  metrics = metric_set(roc_auc, accuracy, sens, spec)
+)
+
+collect_metrics(rf_last)
+
+rf_test_preds <- collect_predictions(rf_last)
+
+# ROC curve
+rf_test_preds %>%
+  roc_curve(outcome, .pred_2) %>%   # replace .pred_2 with your event class column if needed
+  autoplot()
+
+# ------------------------------------------------------------
+# 10. Fit Final Model on Training Data (for interpretation)
+# ------------------------------------------------------------
+rf_fit <- fit(rf_final_wf, data = train)
+
+# Variable importance (since ranger importance = "permutation")
+rf_engine <- extract_fit_parsnip(rf_fit)$fit
+vip::vip(rf_engine, num_features = 20)
+
+# ------------------------------------------------------------
+# (Optional) Partial Dependence Plot via DALEX (workflow-safe)
+# ------------------------------------------------------------
+library(DALEX)
+library(DALEXtra)
+
+explainer <- explain_tidymodels(
+  rf_fit,
+  data = train,
+  y = train$outcome,
+  verbose = FALSE
+)
+
+model_profile(explainer, variables = "age") %>% plot()
+
+```
+
+## kNN template
+
+```{r, eval = FALSE, include = TRUE, echo = TRUE}
+# ============================================================
+# k-Nearest Neighbors (tidymodels): End-to-End Workflow
+# ============================================================
+
+library(tidymodels)
+set.seed(123)
+
+# ------------------------------------------------------------
+# Assumptions
+# ------------------------------------------------------------
+# df        : your data frame
+# outcome   : factor outcome variable for classification
+# NOTE: k-NN is distance-based -> normalization is essential.
+
+# ------------------------------------------------------------
+# 1. Train / Test Split
+# ------------------------------------------------------------
+split <- initial_split(df, prop = 0.80, strata = outcome)
+train <- training(split)
+test  <- testing(split)
+
+# ------------------------------------------------------------
+# 2. Preprocessing Recipe (important for k-NN!)
+# ------------------------------------------------------------
+knn_rec <- recipe(outcome ~ ., data = train) %>%
+  step_novel(all_nominal_predictors()) %>%     # handle unseen levels
+  step_dummy(all_nominal_predictors()) %>%     # one-hot encode factors
+  step_zv(all_predictors()) %>%                # remove zero-variance predictors
+  step_normalize(all_numeric_predictors())     # SCALE for distances
+
+# ------------------------------------------------------------
+# 3. k-NN Model Specification (with tuning)
+# ------------------------------------------------------------
+knn_spec <- nearest_neighbor(
+  neighbors   = tune(),     # k
+  dist_power  = tune(),     # 1 = Manhattan, 2 = Euclidean
+  weight_func = tune()      # how neighbors are weighted
+) %>%
+  set_engine("kknn") %>%
+  set_mode("classification")
+
+# ------------------------------------------------------------
+# 4. Workflow
+# ------------------------------------------------------------
+knn_wf <- workflow() %>%
+  add_recipe(knn_rec) %>%
+  add_model(knn_spec)
+
+# ------------------------------------------------------------
+# 5. Cross-Validation
+# ------------------------------------------------------------
+folds <- vfold_cv(train, v = 5, strata = outcome)
+
+# ------------------------------------------------------------
+# 6. Parameter Ranges + Grid
+# ------------------------------------------------------------
+knn_params <- parameters(
+  neighbors(range = c(3, 35)),
+  dist_power(range = c(1, 2)),
+  weight_func(values = c("rectangular", "triangular", "gaussian"))
+)
+
+knn_grid <- grid_regular(knn_params, levels = 5)
+# If this is too big (levels^#params), use a random grid instead:
+# knn_grid <- grid_random(knn_params, size = 30)
+
+# ------------------------------------------------------------
+# 7. Hyperparameter Tuning
+# ------------------------------------------------------------
+knn_res <- tune_grid(
+  knn_wf,
+  resamples = folds,
+  grid = knn_grid,
+  metrics = metric_set(roc_auc, accuracy),
+  control = control_grid(save_pred = TRUE)
+)
+
+# Examine tuning results
+collect_metrics(knn_res)
+show_best(knn_res, metric = "roc_auc", n = 10)
+
+# ------------------------------------------------------------
+# 8. Finalize Workflow with Best Parameters
+# ------------------------------------------------------------
+best_knn <- select_best(knn_res, metric = "roc_auc")
+
+knn_final_wf <- finalize_workflow(knn_wf, best_knn)
+
+# ------------------------------------------------------------
+# 9. Final Test-Set Evaluation (honest performance)
+# ------------------------------------------------------------
+knn_last <- last_fit(
+  knn_final_wf,
+  split = split,
+  metrics = metric_set(roc_auc, accuracy, sens, spec)
+)
+
+collect_metrics(knn_last)
+
+knn_test_preds <- collect_predictions(knn_last)
+
+# ROC curve
+knn_test_preds %>%
+  roc_curve(outcome, .pred_2) %>%   # replace .pred_2 with your event class column if needed
+  autoplot()
+
+# ------------------------------------------------------------
+# 10. Fit Final Model on Training Data (for interpretation/usage)
+# ------------------------------------------------------------
+knn_fit <- fit(knn_final_wf, data = train)
+
+# (Optional) Confusion matrix at threshold 0.5
+knn_test_preds %>%
+  mutate(.pred_class = factor(if_else(.pred_2 >= 0.5, levels(train$outcome)[2], levels(train$outcome)[1]),
+                              levels = levels(train$outcome))) %>%
+  conf_mat(outcome, .pred_class)
+
+```
+
+## Neural networks
+
+```{r, eval = FALSE, include = TRUE, echo = TRUE}
+# ============================================================
+# Neural Net (tidymodels): End-to-End Workflow
+# Using `mlp()` + `parameters()` + tuning + test evaluation
+# Engine: nnet (lightweight, good for portfolios)
+# ============================================================
+
+library(tidymodels)
+library(dials)
+library(rlang)
+
+set.seed(123)
+
+# ------------------------------------------------------------
+# Assumptions
+# ------------------------------------------------------------
+# df      : your data frame
+# outcome : factor outcome variable for classification
+# NOTE: Neural nets are scale-sensitive -> normalization is essential.
+
+# ------------------------------------------------------------
+# 1. Train / Test Split
+# ------------------------------------------------------------
+split <- initial_split(df, prop = 0.80, strata = outcome)
+train <- training(split)
+test  <- testing(split)
+
+# Identify the "event" class (tidymodels/yardstick default is the 2nd level)
+event_level <- levels(train$outcome)[2]
+prob_col <- paste0(".pred_", event_level)
+
+# ------------------------------------------------------------
+# 2. Preprocessing Recipe (important for neural nets!)
+# ------------------------------------------------------------
+nn_rec <- recipe(outcome ~ ., data = train) %>%
+  step_novel(all_nominal_predictors()) %>%      # handle unseen levels
+  step_dummy(all_nominal_predictors()) %>%      # one-hot encode factors
+  step_zv(all_predictors()) %>%                 # remove zero-variance predictors
+  step_normalize(all_numeric_predictors())      # SCALE numeric predictors
+
+# ------------------------------------------------------------
+# 3. Neural Net Model Spec (tunable params declared via tune())
+# ------------------------------------------------------------
+# `mlp()` = multilayer perceptron
+# hidden_units: size of hidden layer
+# penalty     : weight decay (regularization)
+# epochs      : training iterations
+nn_spec <- mlp(
+  hidden_units = tune(),
+  penalty      = tune(),
+  epochs       = tune()
+) %>%
+  set_engine("nnet") %>%
+  set_mode("classification")
+
+# ------------------------------------------------------------
+# 4. Workflow
+# ------------------------------------------------------------
+nn_wf <- workflow() %>%
+  add_recipe(nn_rec) %>%
+  add_model(nn_spec)
+
+# ------------------------------------------------------------
+# 5. Cross-Validation
+# ------------------------------------------------------------
+folds <- vfold_cv(train, v = 5, strata = outcome)
+
+# ------------------------------------------------------------
+# 6. Define parameter ranges with `parameters()`
+# ------------------------------------------------------------
+# Notes:
+# - penalty() is on a log10 scale internally (dials handles that)
+# - epochs can be modest; too high can overfit and waste time
+nn_params <- parameters(
+  hidden_units(range = c(1L, 50L)),
+  penalty(range = c(-6, -1)),          # 10^-6 to 10^-1 (log10 scale)
+  epochs(range = c(50L, 400L))
+)
+
+# Random grid is usually better than regular for 3 parameters
+nn_grid <- grid_random(nn_params, size = 25)
+
+# ------------------------------------------------------------
+# 7. Hyperparameter Tuning
+# ------------------------------------------------------------
+nn_res <- tune_grid(
+  nn_wf,
+  resamples = folds,
+  grid = nn_grid,
+  metrics = metric_set(roc_auc, accuracy),
+  control = control_grid(save_pred = TRUE)
+)
+
+# Examine tuning results
+collect_metrics(nn_res)
+show_best(nn_res, metric = "roc_auc", n = 10)
+
+# ------------------------------------------------------------
+# 8. Finalize Workflow with Best Parameters
+# ------------------------------------------------------------
+best_nn <- select_best(nn_res, metric = "roc_auc")
+nn_final_wf <- finalize_workflow(nn_wf, best_nn)
+
+# ------------------------------------------------------------
+# 9. Final Test-Set Evaluation (honest performance)
+# ------------------------------------------------------------
+nn_last <- last_fit(
+  nn_final_wf,
+  split = split,
+  metrics = metric_set(roc_auc, accuracy, sens, spec)
+)
+
+collect_metrics(nn_last)
+
+nn_test_preds <- collect_predictions(nn_last)
+
+# ROC curve (uses the event class probability column dynamically)
+nn_test_preds %>%
+  roc_curve(outcome, !!sym(prob_col)) %>%
+  autoplot()
+
+# Optional: confusion matrix at 0.5 threshold (you can choose a better threshold later)
+nn_test_preds %>%
+  mutate(
+    .pred_class = factor(
+      if_else(!!sym(prob_col) >= 0.5, event_level, levels(train$outcome)[1]),
+      levels = levels(train$outcome)
+    )
+  ) %>%
+  conf_mat(outcome, .pred_class)
+
+# ------------------------------------------------------------
+# 10. Fit Final Model on Training Data (for interpretation/usage)
+# ------------------------------------------------------------
+nn_fit <- fit(nn_final_wf, data = train)
+
+# Inspect finalized model specification
+extract_spec_parsnip(nn_fit)
+
+```
+
+# Reporting Machine Learning Results: Practical Guidelines
+
+Below is a compilation of advice for a practical <!---, reviewer- and hiring-manager-friendly--->framework for reporting machine learning results, with random forest used as a concrete example. <!---This applies equally to RPubs, papers, internal reports, and portfolios.--->
+
+The structure is as follows: - Each section header describes what to report - A discussion of common mistakes - Example text using random forest - Key points people are usually looking for
+
+------------------------------------------------------------------------
+
+# A general template for reporting ML results
+
+Think in terms of questions the reader has.
+
+------------------------------------------------------------------------
+
+## A. Objective & prediction task (always first)
+
+**Answer:**\
+What problem is the model solving?
+
+**Include:** - Outcome definition - Population - Prediction vs explanation - Unit of prediction (patient, visit, image, etc.)
+
+**Example:**\
+“We developed a machine learning model to predict 30-day mortality among hospitalized patients using routinely collected clinical variables.”
+
+🚫 **Don’t start with algorithms. Start with the problem.**
+
+------------------------------------------------------------------------
+
+## B. Data & study design
+
+**Answer:**\
+Where did the data come from, and how were they used?
+
+**Include:** - Sample size - Outcome prevalence - Train/test split - Cross-validation strategy - Any stratification or grouping
+
+**Example:**\
+“The dataset consisted of 4,812 patients, of whom 9.6% experienced the outcome. Data were split into training (80%) and test (20%) sets, stratified by outcome. Hyperparameters were optimized using 5-fold cross-validation on the training data.”
+
+This signals methodological literacy.
+
+------------------------------------------------------------------------
+
+## C. Preprocessing (this matters more than people think)
+
+**Answer:**\
+How was the data prepared, and was leakage avoided?
+
+**Include:** - Handling of categorical variables - Scaling (if applicable) - Missingness handling - Zero-variance filtering - Where preprocessing occurred (inside CV!)
+
+**Example:**\
+“Categorical predictors were dummy-encoded, and predictors with zero variance were removed using a recipe-based preprocessing pipeline. All preprocessing steps were estimated within resampling folds to prevent information leakage.”
+
+That last sentence is very important!
+
+------------------------------------------------------------------------
+
+## D. Model specification & tuning
+
+**Answer:**\
+What model was fit, and how were hyperparameters chosen?
+
+**Include:** - Algorithm - Engine/library - Tuned parameters - Optimization metric
+
+**Random forest example:**\
+“A random forest classifier was implemented using the ranger engine. The number of candidate predictors at each split (mtry) and the minimum node size (min_n) were optimized via grid search, selecting hyperparameters that maximized cross-validated ROC AUC.”
+
+🚫 **Don’t just say “we fit a random forest.”**
+
+------------------------------------------------------------------------
+
+## E. Performance evaluation (this is the core)
+
+**Answer:**\
+How well does the model perform on unseen data?
+
+**Always include:** - Held-out test set results - Primary metric - Secondary metrics - Confidence intervals if possible
+
+**Example:**\
+“On the held-out test set, the model achieved an ROC AUC of 0.82, with sensitivity of 0.74 and specificity of 0.79 at a probability threshold of 0.5.”
+
+**Optional (but impressive):** - Calibration - Decision curves - Class imbalance handling
+
+------------------------------------------------------------------------
+
+## F. Model interpretation (with restraint)
+
+**Answer:**\
+How does the model behave, and what drives predictions?
+
+**Include:** - Variable importance (with caveats) - Partial dependence / ALE / SHAP (if used) - Clear disclaimer about causality
+
+**Example:**\
+“Permutation-based variable importance indicated that age, baseline creatinine, and oxygen saturation contributed most strongly to predictive performance. Partial dependence plots suggested nonlinear risk increases at advanced ages; however, these plots reflect model behavior rather than causal effects.”
+
+This shows statistical maturity.
+
+------------------------------------------------------------------------
+
+## G. Limitations (this builds trust)
+
+**Answer:**\
+What could go wrong or limit generalization?
+
+**Always include:** - Observational data limitations - External validation status - Model interpretability limits
+
+**Example:**\
+“This analysis used retrospective single-source data, and external validation was not performed. Variable importance reflects predictive contribution rather than causal relevance.”
+
+Reviewers expect this.
+
+------------------------------------------------------------------------
+
+## H. Practical implications / next steps
+
+**Answer:**\
+What would you do next if this mattered?
+
+**Example:**\
+“Future work includes external validation, calibration assessment, and comparison with simpler baseline models prior to potential deployment.”
+
+This signals real-world thinking.
+
+------------------------------------------------------------------------
+
+# What NOT to do (very common mistakes)
+
+🚫 Reporting CV performance as final results\
+🚫 Claiming “important variables” are “risk factors”\
+🚫 Omitting preprocessing details\
+🚫 Showing only accuracy for imbalanced outcomes\
+🚫 Treating ML outputs as causal evidence
+
+Avoid these and you already beat many submissions.
+
+------------------------------------------------------------------------
+
+# Full example: concise random forest results section
+
+Here’s a polished, copy-ready example:
+
+> “A random forest classifier was developed to predict 30-day mortality using routinely collected clinical predictors. Data were split into training (80%) and test (20%) sets, stratified by outcome prevalence. Hyperparameters were optimized using 5-fold cross-validation on the training data. Preprocessing included dummy encoding of categorical variables and removal of zero-variance predictors within resampling folds to prevent data leakage.
+>
+> On the held-out test set, the final model achieved an ROC AUC of 0.82, with sensitivity of 0.74 and specificity of 0.79. Permutation-based variable importance identified age, baseline creatinine, and oxygen saturation as key contributors to predictive performance. Partial dependence plots demonstrated nonlinear associations between age and predicted risk; however, these plots describe model behavior and do not imply causal effects.
+>
+> This analysis is limited by the use of retrospective single-source data and the absence of external validation.”
+
+------------------------------------------------------------------------
+
+# What readers look for
+
+When someone reads your report, they want to know if you've addressed the following: - Data leakage - Tuning vs evaluation: make sure these are separate events - Understanding the predictive abilities without overreaching on causal inference - Accessibility to non- or adjacent experts - Generalizability beyond the current dataset
+
+------------------------------------------------------------------------
+
+# TLDR cheat sheet
+
+A good ML report answers:
+
+1.  What was predicted, and why?
+2.  How was the data split and processed?
+3.  How was the model tuned?
+4.  How did it perform on unseen data?
+5.  How should results be interpreted (carefully)?
+6.  What are the limitations?
+
+# End-to-end flowchart (zoom-in required)
+
+```{r, eval = TRUE, include = TRUE, echo = FALSE}
+grViz("
+digraph flow {
+  graph [layout = dot, rankdir = LR, size = '12,4!']
+  node [shape = box, style = rounded]
+
+  A [label = 'Cleaned and preprocessed data']
+  B [label = 'rsplit object']
+  C [label = 'training set']
+  D [label = 'test set']
+  E [label = 'recipe object']
+  EMPTY1 [label = 'Specify model']
+  F [label = 'parsnip model specification object']
+  EMPTY2 [label = 'Start creating workflow object', shape = none]
+  G [label = 'workflow object']
+  H [label = 'Design resampling scheme']
+  I [label = 'rset (resampling set) object']
+  J [label = 'Design tuning scheme']
+  K [label = 'parameters object']
+  L [label = 'tune_grid()', shape = none]
+  M [label = 'tune results object']
+  N [label = 'best results tibble']
+  O [label = 'finalized workflow object']
+  P [label = 'last_fit()', shape = none]
+  Q [label = 'test set results tibble (final)']
+
+  A -> B [label = 'initial_split()']
+  B -> C [label = 'train()']
+  B -> D [label = 'test()']
+  C -> E [label = 'recipe() %>% step_normalize() %>% \nstep_novel() %>% \nstep_dummy()']
+  EMPTY1 -> F [label = 'rand_forest(mtry = tune(), trees = tune()) %>%\nset_engine() %>%\nset_mode()']
+  EMPTY2 -> G [label = 'workflow()']
+  E -> G [label = 'add_recipe()']
+  F -> G [label = 'add_model()']
+  H -> I [label = 'vfold_cv()']
+  J -> K [label = 'parameter()']
+  G -> L [label = '']
+  I -> L [label = '']
+  K -> L [label = '']
+  L -> M [label = '']
+  M -> N [label = 'select_best()']
+  N -> O [label = 'finalize_workflow()']
+  B -> P [label = '']
+  O -> P [label = '']
+  P -> Q [label = '']
+
+}
+")
+
+```

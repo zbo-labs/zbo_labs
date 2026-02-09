@@ -1,0 +1,128 @@
+---
+title: "Design and Analysis of Clinical Trials Third Edition"
+subtitle: "By Shein-Chung Chow and Jen-Pei Liu"
+---
+
+This is a textbook. And what helps me with textbooks is knowing what happens before we get there. In other words, I like spoilers. So this blog will be populated way out of order. There will be two sections. The first will be anchored by date and will record any thoughts or questions that I have while exploring this book. The second will be anchored by sections of the book itself, where I jot down notes for each section. This will, admittedly, be a messier blog. But sometimes learning is messy.
+
+---
+
+# Glossary
+
+DLT: dose-limiting toxicity
+
+MTD: maximum tolerable dose
+
+---
+
+# Notes by date
+
+## Friday February 6, 2026
+Read through Chapter 9: Analysis of Categorical Data. Focused specifically on section 9.5 Combining Categorical Data. Uses the NINDS trial as an example. In the NINDS trial, stratification is based on the length of time between onset of stroke and start of treatment. However, treatment imbalances occur by chance with respect to covariates that were not used as part of the stratification strategy. These are called postrandomization stratified factors. When comparing data within a strata, it is best to adjust for the effects of postrandomization stratified factors. The technique offered for this comparison with the appropriate adjustment is the Mantel-Haenszel (MH) statistic. The MH statistic is most powerful when the direction of treatment effects are consistent across all strata (homegeneous). The MH statistic loses power when the direction of treatment effects are heterogeneous. To be clear, the null hypothesis when using the MH statistic is that there is no difference between the test drug and the placebo.
+
+## Wednesday January 28, 2026
+
+Re: the unique considerations for cancer clinical trials:
+One thing that stood out to me when I was mapping out the book was that they described clinical trial designs in one chapter, then the following chapter was devoted specifically to cancer clinical trials. I was curious why they made this distinction so I took a closer look at the Cancer Clinical Trials chapter. It states that there are two things to consider with cancer clinical trials.
+
+The first thing to consider is the health status of the patient population you are targeting. Cancers are often life-threatening, irreversible and have no cure. Some patients have limited life expectancy as well. 
+
+The second thing to consider is that the drugs used to treat cancer can be quite dangerous to patients. One might think to use lower doses to mitigate the risk. But, not only are lower doses ineffective, lower doses carry a similar amount of risk as higher doses.
+
+Subjects' exposure to these agents should be minimized and figuring out efficacy should be streamlined as much as possible.
+
+
+
+
+---
+
+# Notes by book section
+
+## Part 1: Preliminaries
+
+### Chapter 1: Introduction
+
+### Chapter 2: Basic Statistical Concepts
+
+### Chapter 3: Basic Design Considerations
+
+### Chapter 4: Randomization and Blinding
+
+## Part II: Designs and Their Classifications
+
+### Chapter 5: Designs for Clinical Trials
+
+#### 5.1 Introduction
+
+#### 5.2 Parallel Group Designs
+
+#### 5.3 Clustered Randomized Designs
+
+#### 5.4 Crossover Designs
+
+#### 5.5 Titration Designs
+
+#### 5.6 Enrichment Designs
+
+#### 5.7 Group Sequential Designs
+
+#### 5.8 Placebo-Challenging Designs
+
+#### 5.9 Blinded Reader Designs
+
+#### 5.10 Discussion
+
+### Chapter 6: Designs for Cancer Clinical Trials
+
+#### 6.1 Introduction
+
+#### 6.2 General Considerations for Phase I Cancer Clinical Trials
+
+#### 6.3 Single-Stage Up-And-Down Phase I Designs
+
+#### 6.4 Two-Stage Up-And-Down Phase I Designs
+
+#### 6.5 Continual Reassessment Method Phase I Designs
+
+#### 6.6 Optimal and Flexible Multiple-Stage Designs
+
+#### 6.7 Randomized Phase II Designs
+
+#### 6.8 Discussion
+
+### Chapter 7: Classification of Clinical Trials
+
+## Part III: Analysis of Clinical Data
+
+### Chapter 8: Analysis of Continuous Data
+
+### Chapter 9: Analysis of Categorical Data
+
+
+### Chapter 10: Censored Data and Interim Analysis
+
+### Chapter 11: Sample Size Determination
+
+## Part IV: Issues in Evaluation
+
+### Chapter 12: Issues in Efficacy Evaluation
+
+### Chapter 13: Safety Assessment
+
+## Part V: Recent Development
+
+### Chapter 14: Biomarkers and Targeted Clinical Trials
+
+### Chapter 15: Trials for Evaluating Accuracy of Diagnostic Services
+
+### Chapter 16: Statistical Methods in Translational Medicine
+
+### Chapter 17: Adaptive Clinical Trial Designs
+
+### Chapter 18: Traditional Chinese Medicine
+
+## Part VI: Conduct of Clinical Trials
+
+### Chapter 19: Preparation and Implementation of a Clinical Protocol
+
+### Chapter 20: Data Management of a Clinical Trial

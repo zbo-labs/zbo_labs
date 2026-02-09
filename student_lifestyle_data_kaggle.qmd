@@ -1,0 +1,2362 @@
+---
+title: "Lifestyle factors and their impact on students - Analysis of Kaggle dataset"
+output: 
+  html_document:
+    toc: TRUE
+    toc_depth: 2
+editor_options: 
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, 
+  include = FALSE, 
+  warning = FALSE, 
+  message = FALSE
+  )
+
+library(easypackages)
+
+libraries(
+  c(
+    "ggplot2", 
+    "ggpubr", 
+    "janitor", 
+    "tidyr", 
+    "tidyverse", 
+    "cowplot", 
+    "stringr", 
+    "gghalves", 
+    "nnet", 
+    "MASS", 
+    "GGally", 
+    "quantreg"
+  )
+)
+```
+
+```{r}
+data00_A = 
+  read.csv(
+    paste0(
+      here::here(), "/",
+      "ANALYSIS-student_lifestyle_dataset..csv"
+    )
+  ) %>%
+  clean_names()
+
+data00_B = 
+  data00_A %>%
+  mutate(
+    student_id = factor(student_id), 
+    stress_level = factor(stress_level %>% tolower, levels = c("low", "moderate", "high"), ordered = TRUE), 
+    gender = factor(gender)
+  )
+
+data00 = data00_B
+```
+
+```{r}
+ggplot(
+  data00, 
+  aes(
+    x = student_id
+  )
+) + 
+  geom_bar()
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = study_hours_per_day
+  )
+) + 
+  geom_histogram(binwidth = 0.1)
+
+
+ggplot(
+  data00, 
+  aes(
+    x = study_hours_per_day, 
+    y = ..count..
+  )
+) + 
+  geom_density()
+
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day
+  )
+) + 
+  geom_histogram(binwidth = 0.1)
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = ..count..
+  )
+) + 
+  geom_density()
+
+
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = sleep_hours_per_day
+  )
+) + 
+  geom_histogram(binwidth = 0.25)
+
+ggplot(
+  data00, 
+  aes(
+    x = sleep_hours_per_day, 
+    y = ..count..
+  )
+) + 
+  geom_density()
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = social_hours_per_day, 
+    y = ..count..
+    )
+  ) + 
+  geom_density()
+
+
+ggplot(
+  data00, 
+  aes(
+    x = social_hours_per_day
+  )
+) + 
+  geom_histogram(binwidth = 0.25)
+
+
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = physical_activity_hours_per_day,
+    y = ..count..
+  )
+) + 
+  geom_density()
+
+ggplot(
+  data00, 
+  aes(
+    x = physical_activity_hours_per_day
+  )
+) + 
+  geom_histogram(binwidth = 0.25)
+
+
+
+
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = stress_level
+  )
+) +
+  geom_bar()
+
+
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = gender
+  )
+) + 
+  geom_bar()
+
+
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = grades, 
+    y = ..count..
+  )
+) +
+  geom_density()
+
+
+ggplot(
+  data00, 
+  aes(
+    x = grades, 
+    y = ..count..
+  )
+) +
+  geom_bar()
+
+```
+
+# Introduction
+
+This practice analysis utilized data on lifestyle factors and student performance found on Kaggle.[^1]
+
+[^1]: https://www.kaggle.com/datasets/charlottebennett1234/lifestyle-factors-and-their-impact-on-students/data
+
+<blockquote style="margin-left: 2em; margin-right: 2em; padding: 1em; background: #f9f9f9; border-left: 4px solid #ccc; border-right: 4px solid #ccc; font-style: italic; font-size:0.8em">
+
+This dataset provides a detailed view of student lifestyle patterns and their correlation with academic performance, represented by GPA. It contains 2,000 records of students' daily habits across study, extracurriculars, sleep, socializing, and physical activities. Each student's stress level is derived based on study and sleep hours, offering insights into how lifestyle factors may impact academic outcomes. <br><br> This dataset, contains data from 2,000 students of university collected via a Google Form survey. It includes information on study hours, extracurricular activities, sleep, socializing, physical activity, stress levels, and CGPA. The data covers an academic year from August 2023 to May 2024 and reflects student of Lisboa. This dataset can help analyze the impact of daily habits on academic performance and student well-being.
+
+</blockquote>
+
+The purpose of this analysis was to practice statistical methods through the investigation of potential associations between academic performance (grades) and lifestyle factors. This analysis was financially and resource constrained and was, thus, uninformed by subject matter expertise. Findings were statistical in nature only. Any discussion was purely speculative and should not be taken into consideration without consulting appropriate experts in the field.
+
+# Results
+
+The dataset includes data on lifestyle factors (extracurricular activity, physical activity, sleep, social activity, study time and stress levels), gender and academic performance. Extracurricular activity, physical activity, sleep, social activity and study time were continuous and measured in hours per day. Lifestyle factors measured in hours per day will be referred to collectively as time-based lifestyle activities. Stress levels were indicated by low, medium and high. Gender was recorded as female and male. Grades ranged from 5.6 to 10. The investigator assumed that grades could be as low as zero and as high as 10.
+
+There were 2000 students in the dataset. Of these, 984 (49%) and 1016 (51%) were female and male, respectively. Median grades of all female and male students were 7.78 (IQR: 7.25-8.32), 7.75 (IQR: 7.22-8.3) and 7.8 (IQR: 7.25-8.32), respectively. No significant differences (p = 0.54) were found between the grades of female and male students.
+
+```{r Median and IQR grade  calculations}
+quantile(data00$grades)
+quantile(data00$grades[data00$gender == "Female"])
+quantile(data00$grades[data00$gender == "Male"])
+```
+
+```{r Grade distribution plots for all, female and male students, include = TRUE, fig.align = "center", fig.height = 5, fig.width = 5}
+
+median_grades = median(data00$grades)
+p1 = ggplot(
+  data00, 
+  aes(
+    x = grades, 
+    y = ..count..
+  )
+) + 
+  geom_density() + 
+  geom_vline(
+    xintercept = median_grades, 
+    linetype = "dashed"
+  ) +
+  labs(
+    title = paste0("All students (n = ", dim(data00)[1], ")"), 
+    tag = "A)"
+  ) +
+  annotate(
+    geom = "text", 
+    x = median_grades + 0.2, 
+    y = 300, 
+    label = paste0("median = ", median_grades), 
+    # hjust = -0.1, 
+    angle = 270, 
+    size = 3, 
+    fontface = "bold"
+  ) +
+  theme(
+    text = element_text(face = "bold"),
+    plot.title = element_text(hjust = 0.5, size = 10), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    axis.title = element_blank(), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black"), 
+    # plot.tag.position = "bottom"
+  )
+
+median_grades_female = median(data00$grades[data00$gender == "Female"])
+median_grades_male = median(data00$grades[data00$gender == "Male"])
+
+temp = 
+  data00 %>%
+  mutate(
+    gender_label = 
+      ifelse(gender == "Female", paste0("Female (n = ", sum(data00$gender == "Female"), ")"), paste0("Male (n = ", sum(data00$gender == "Male"), ")"))
+  )
+
+
+facet_data = 
+  data.frame(
+    gender_label = c("Female (n = 984)", "Male (n = 1016)"), 
+    median_grade = c(median_grades_female, median_grades_male)
+  )
+
+p2 = ggplot(
+  temp, 
+  aes(
+    x = grades, 
+    y = ..count..
+  )
+) + 
+  geom_density() + 
+  geom_vline(
+    data = facet_data, 
+    aes(
+      xintercept = median_grade
+    ), 
+    linetype = "dashed"
+  ) +
+  geom_text(
+    data = facet_data, 
+    aes(
+      x = median_grade + 0.2, 
+      y = 200, 
+      label = paste0("median", median_grade)
+    ), 
+    angle = 270, 
+    fontface = "bold", 
+    size = 3
+  ) +
+  labs(
+    tags = "B)"
+  ) +
+  theme(
+    text = element_text(face = "bold"),
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    axis.title = element_blank(), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black"), 
+    # plot.tag.position = "bottom"
+  ) +
+  facet_wrap(~gender_label)
+
+# p2 = 
+#   ggplot(
+#     data00, 
+#     aes(
+#       x = gender, 
+#       y = grades
+#     )
+#   ) + 
+#   geom_boxplot(width = 0.5, outlier.shape = NA) + 
+#   geom_jitter(width = 0.1, alpha = 0.1) +
+#   theme(
+#     text = element_text(face = "bold"),
+#     plot.title = element_text(hjust = 0.5), 
+#     plot.subtitle = element_text(hjust = 0.5), 
+#     axis.title = element_blank(), 
+#     panel.background = element_rect(fill = NA, color = "black"), 
+#     panel.border = element_rect(fill = NA, color = "black"), 
+#     strip.background = element_rect(fill = NA, color = "black")
+#   ) 
+# 
+# p2
+
+pval = t.test(
+  data00$grades[data00$gender == "Female"], 
+  data00$grades[data00$gender == "Male"]
+) $p.value
+
+p_final = ggarrange(
+  p1, p2, nrow = 2
+) %>%
+  annotate_figure(
+    top = text_grob("Grade distribution", face = "bold"), 
+    left = text_grob("Count", hjust = 0.5, rot = 90, face = "bold")
+  ) %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        str_wrap(
+          paste0(
+            "Figure 1. A) The median grade of all students was ", median_grades, 
+            ". B) The median grade of female and male students were ", median_grades_female, " and ", median_grades_male, " respectively. No significant differences (p = ", pval %>% plyr::round_any(0.01), ") in grades between female and male students were found." ), 
+          width = 60
+          ), 
+        # hjust = 0,
+        just = "left",
+        x = 0.15, 
+        face = "bold", 
+        size = 10
+      )
+  )
+
+p_final 
+```
+
+The amount of time spent by students in each time-based lifestyle activity is shown below. Students tended to spend the most time in sleep (median: 7.5; IQR: 6.2-8.8) and study (median: 7.4; IQR: 6.3-8.7), followed by physical (median: 4.1; IQR: 2.4-6.1), social (median: 2.6; IQR: 1.2-4.1) and extracurricular activities (median: 2; IQR: 1-3).
+
+```{r Time-based lifestyle activities distribution, include = TRUE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+temp01 = 
+  data00 %>%
+  pivot_longer(
+    cols = c(
+      study_hours_per_day, 
+      extracurricular_hours_per_day, 
+      sleep_hours_per_day, 
+      social_hours_per_day, 
+      physical_activity_hours_per_day
+    ), 
+    names_to = "time_based_activity", 
+    values_to = "hours_per_day"
+  )
+
+temp02 = 
+  temp01 %>%
+  group_by(time_based_activity) %>%
+  summarise(
+    median_hours = median(hours_per_day), 
+    q25 = quantile(hours_per_day, 0.25), 
+    q75 = quantile(hours_per_day, 0.75)
+  )
+
+temp03 = 
+  temp01 %>%
+  mutate(
+    time_based_activity = 
+      factor(
+        time_based_activity, levels = temp02$time_based_activity[order(temp02$median_hours, decreasing = TRUE)]
+      )
+  )
+
+
+
+
+ggplot(
+  temp03, 
+  aes(
+    x = time_based_activity, 
+    y = hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.01) + 
+  scale_x_discrete(
+    labels = 
+      c(
+        "sleep", 
+        "study", 
+        "physical activity", 
+        "social", 
+        "extracurricular"
+      )
+  ) +
+  scale_y_continuous(
+    limits = c(0, 14), 
+    breaks = seq(0, 14, 2)
+  ) +
+  labs(
+    x = "Activity", 
+    y = "Hours per day", 
+    title = "Time spent by students (n = 2000)\nin time-based lifestyle activities", 
+    caption = 
+      str_wrap(
+        "Time spent by students in time-based lifestyle activities.",
+        width = 60
+        )
+  ) +
+  theme(
+    text = element_text(size = 12, face = "bold"),
+    plot.title = element_text(hjust = 0.5),
+    # plot.title = element_blank(), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    plot.caption = element_text(hjust = 0), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+```
+
+Over half of all students (51.45%; n = 1029) reported experiencing high stress, while 33.7% (n = 674), and 14.85% (n = 297) reported experiencing moderate and low stress, respectively.
+
+```{r Stress levels, include = TRUE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+temp = 
+  data00 %>%
+  group_by(
+    stress_level
+  ) %>%
+  summarise(
+    n = n(), 
+    percent = (n/2000 * 100) %>% plyr::round_any(0.01, round)
+  ) %>%
+  mutate(
+    stress_labels = paste0(stress_level, "\n(", percent, "%; n = ", n, ")")
+  ) %>%
+  mutate(
+    stress_labels = 
+      factor(
+        stress_labels, levels = stress_labels[order(n, decreasing = TRUE)]
+      )
+  )
+  
+
+ggplot(
+  temp, 
+  aes(
+    x = stress_labels, 
+    y = n
+  )
+) + 
+  geom_bar(stat = "identity", width = 0.25, fill = NA, color = "black")  +
+  labs(
+    x = "Stress level", 
+    y = "Count", 
+    title = "Student (n = 2000) stress levels", 
+    # caption = 
+    #   str_wrap(
+    #     "Time spent by students in time-based lifestyle activities.",
+    #     width = 60
+    #     )
+  ) +
+  theme(
+    text = element_text(size = 12, face = "bold"),
+    plot.title = element_text(hjust = 0.5),
+    # plot.title = element_blank(), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    plot.caption = element_text(hjust = 0), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+```
+
+```{r Grades vs. study hours, include = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+model01 = lm(
+  data = data00, 
+  formula = grades ~ study_hours_per_day
+) %>% summary
+
+# model01$coefficients
+slope_grades_v_study = 
+  model01$coefficients[2, 1] %>% plyr::round_any(0.001, round)
+
+intercept_grades_v_study = 
+  model01$coefficients[1, 1] %>% plyr::round_any(0.001, round)
+
+slope_final = slope_grades_v_study
+intercept_final = intercept_grades_v_study
+
+pval_final = 
+  ifelse(
+    model01$coefficients[2, 4] < 0.0001, 
+    "p < 0.0001", 
+    paste0("p = ", format(model01$coefficients[2, 4] %>% plyr::round_any(0.0001, round), scientific = FALSE))
+    )
+
+p1 = 
+  ggplot(
+    data00, 
+    aes(
+      x = study_hours_per_day, 
+      y = grades
+    )
+  ) + 
+  geom_jitter(alpha = 0.1) +
+  annotate(
+    geom = "text", 
+    x = 7.5, 
+    y = 5.25, 
+    label = paste0("slope = ", slope_final, "; int = ", intercept_final, "; ", pval_final), 
+    fontface = "bold", 
+    size = 2.25
+  ) +
+  labs(
+    x = "Hours spent studying", 
+    y = "Grades", 
+    title = "Grades vs. study time among 2000 students"
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 11), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+p_grades_v_study = p1
+
+p1 %>%
+  annotate_figure(
+    bottom = 
+      text_grob(
+        str_wrap(width = 60, string = "Grades appear to increase with study time."), 
+        # hjust = 0,
+        just = "left",
+        x = 0.15, 
+        face = "bold", 
+        size = 10
+      )
+  )
+
+# p_grades_v_study
+```
+
+```{r Grades vs. extracurricular hours, include = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+model01 = lm(
+  data = data00, 
+  formula = grades ~ extracurricular_hours_per_day
+) %>% summary()
+
+slope_grades_v_extra = 
+  model01$coefficients[2, 1] %>% plyr::round_any(0.001, round)
+
+intercept_grades_v_extra = 
+  model01$coefficients[1, 1] %>% plyr::round_any(0.001, round)
+
+slope_final = slope_grades_v_extra
+intercept_final = intercept_grades_v_extra
+
+pval_final = 
+  ifelse(
+    model01$coefficients[2, 4] < 0.0001, 
+    "p < 0.0001", 
+    paste0("p = ", format(model01$coefficients[2, 4] %>% plyr::round_any(0.0001, round), scientific = FALSE))
+    )
+
+p1 = 
+  ggplot(
+    data00, 
+    aes(
+      x = extracurricular_hours_per_day, 
+      y = grades
+    )
+  ) + 
+  geom_jitter(alpha = 0.1) +
+  annotate(
+    geom = "text", 
+    x = 2, 
+    y = 5.25, 
+    label = paste0("slope = ", slope_final, "; int = ", intercept_final, "; ", pval_final), 
+    fontface = "bold", 
+    size = 2.25
+  ) +
+  labs(
+    x = "Hours spent in extracurricular activities", 
+    y = "Grades", 
+    title = "Grades vs. study time among 2000 students"
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 11), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+p_grades_v_extra = p1
+# p_grades_v_extra = 
+#   p1 %>%
+#   annotate_figure(
+#     bottom = 
+#       text_grob(
+#         str_wrap(width = 60, string = "Grades do not appear to vary with hours spent in extracurricular activities."), 
+#         # hjust = 0,
+#         just = "left",
+#         x = 0.15, 
+#         face = "bold", 
+#         size = 10
+#       )
+#   )
+```
+
+```{r Grades vs. sleep hours, include = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+model01 = lm(
+  data = data00, 
+  formula = grades ~ sleep_hours_per_day
+) %>% summary()
+
+
+slope_grades_v_sleep = 
+  model01$coefficients[2, 1] %>% plyr::round_any(0.001, round)
+
+intercept_grades_v_sleep = 
+  model01$coefficients[1, 1] %>% plyr::round_any(0.001, round)
+
+
+slope_final = slope_grades_v_sleep
+intercept_final = intercept_grades_v_sleep
+
+pval_final = 
+  ifelse(
+    model01$coefficients[2, 4] < 0.0001, 
+    "p < 0.0001", 
+    paste0("p = ", format(model01$coefficients[2, 4] %>% plyr::round_any(0.0001, round), scientific = FALSE))
+    )
+
+p1 = 
+  ggplot(
+    data00, 
+    aes(
+      x = sleep_hours_per_day, 
+      y = grades
+    )
+  ) + 
+  geom_jitter(alpha = 0.1) +
+  annotate(
+    geom = "text", 
+    x = 7.5, 
+    y = 5.25, 
+    label = paste0("slope = ", slope_final, "; int = ", intercept_final, "; ", pval_final), 
+    fontface = "bold", 
+    size = 2.25
+  ) +
+  labs(
+    x = "Hours spent sleeping", 
+    y = "Grades", 
+    title = "Grades vs. time spent sleeping among 2000 students"
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 11), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+p_grades_v_sleep = p1
+
+# p_grades_v_sleep = p1 %>%
+#   annotate_figure(
+#     bottom = 
+#       text_grob(
+#         str_wrap(width = 60, string = "Grades do not appear to be affected by hours spent sleeping."), 
+#         # hjust = 0,
+#         just = "left",
+#         x = 0.15, 
+#         face = "bold", 
+#         size = 10
+#       )
+#   )
+```
+
+```{r Grades vs. social hours, include = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+model01 = lm(
+  data = data00, 
+  formula = grades ~ social_hours_per_day
+) %>% summary()
+
+slope_grades_v_social = 
+  model01$coefficients[2, 1] %>% plyr::round_any(0.001, round)
+
+intercept_grades_v_social = 
+  model01$coefficients[1, 1] %>% plyr::round_any(0.001, round)
+
+slope_final = slope_grades_v_social
+intercept_final = intercept_grades_v_social
+
+pval_final = 
+  ifelse(
+    model01$coefficients[2, 4] < 0.0001, 
+    "p < 0.0001", 
+    paste0("p = ", format(model01$coefficients[2, 4] %>% plyr::round_any(0.0001, round), scientific = FALSE))
+    )
+
+p1 = 
+  ggplot(
+    data00, 
+    aes(
+      x = social_hours_per_day, 
+      y = grades
+    )
+  ) + 
+  geom_jitter(alpha = 0.1) +
+  annotate(
+    geom = "text", 
+    x = 3, 
+    y = 5.25, 
+    label = paste0("slope = ", slope_final, "; int = ", intercept_final, "; ", pval_final), 
+    fontface = "bold", 
+    size = 2.25
+  ) +
+  labs(
+    x = "Hours spent socializing", 
+    y = "Grades", 
+    title = str_wrap("Grades vs. time spent socializing among 2000 students", width = 60)
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 11), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+p_grades_v_social = p1
+
+# p_grades_v_social = p1 %>%
+#   annotate_figure(
+#     bottom = 
+#       text_grob(
+#         str_wrap(width = 50, string = "Grades appear to decrease with hours spent socializing"), 
+#         # hjust = 0,
+#         just = "left",
+#         x = 0.15, 
+#         face = "bold", 
+#         size = 10
+#       )
+#   )
+```
+
+```{r Grades vs. physical activity hours, include = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+model01 = lm(
+  data = data00, 
+  formula = grades ~ physical_activity_hours_per_day
+) %>% summary()
+
+slope_grades_v_physical = 
+  model01$coefficients[2, 1] %>% plyr::round_any(0.001, round)
+
+intercept_grades_v_physical = 
+  model01$coefficients[1, 1] %>% plyr::round_any(0.001, round)
+
+
+slope_final = slope_grades_v_physical
+intercept_final = intercept_grades_v_physical
+
+pval_final = 
+  ifelse(
+    model01$coefficients[2, 4] < 0.0001, 
+    "p < 0.0001", 
+    paste0("p = ", format(model01$coefficients[2, 4] %>% plyr::round_any(0.0001, round), scientific = FALSE))
+    )
+
+p1 = 
+  ggplot(
+    data00, 
+    aes(
+      x = physical_activity_hours_per_day, 
+      y = grades
+    )
+  ) + 
+  geom_jitter(alpha = 0.1) +
+  annotate(
+    geom = "text", 
+    x = 7.5, 
+    y = 5.25, 
+    label = paste0("slope = ", slope_final, "; int = ", intercept_final, "; ", pval_final), 
+    fontface = "bold", 
+    size = 2.25
+  ) +
+  labs(
+    x = "Hours spent socializing", 
+    y = "Grades", 
+    title = str_wrap("Grades vs. time spent in physical activity among 2000 students", width = 50)
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 11), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+
+p_grades_v_physical = p1
+
+# p_grades_v_physical = p1 %>%
+#   annotate_figure(
+#     bottom = 
+#       text_grob(
+#         str_wrap(width = 60, string = "Grades appear to decrease with hours spent in physical activity"), 
+#         # hjust = 0,
+#         just = "left",
+#         x = 0.15, 
+#         face = "bold", 
+#         size = 10
+#       )
+#   )
+```
+
+```{r Grades vs. stress levels, include = FALSE, fig.width = 5, fig.height = 4, fig.align = "center"}
+
+
+grades_v_stress_iqr = data00 %>% 
+  group_by(stress_level) %>%
+  summarize(
+    median_grade = median(grades), 
+    lower25q = quantile(grades, 0.25), 
+    upper25q = quantile(grades, 0.75)
+  )
+
+model01 = aov(
+  data = data00, 
+  formula = grades ~ stress_level
+) 
+
+# model01 %>% summary()
+
+# TukeyHSD(model01)
+
+p1 = 
+  ggplot(
+    data00, 
+    aes(
+      x = stress_level, 
+      y = grades
+    )
+  ) + 
+  geom_jitter(width = 0.1, alpha = 0.05)  +
+  annotate(
+    geom = "text",
+    x = 3,
+    y = 5.25,
+    label = "p < 0.0001",
+    fontface = "bold", 
+    size = 3
+  ) +
+  labs(
+    x = "Stress levels", 
+    y = "Grades", 
+    title = str_wrap("Grades vs. stress levels among 2000 students", width = 50)
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 11), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+p_grades_v_stress = p1
+
+# p_grades_v_stress = p1 %>%
+#   annotate_figure(
+#     bottom = 
+#       text_grob(
+#         str_wrap(width = 60, string = "Grades appear to increase with stress levels (p < 0.0001). "), 
+#         # hjust = 0,
+#         just = "left",
+#         x = 0.15, 
+#         face = "bold", 
+#         size = 10
+#       )
+#   )
+```
+
+```{r Grades vs. gender summary statistics}
+data00 %>% filter(gender == "Female") %$% grades %>% quantile(probs = c(0, 0.25, 0.5, 0.75, 1))
+
+data00 %>% filter(gender == "Male") %$% grades %>% quantile(probs = c(0, 0.25, 0.5, 0.75, 1))
+```
+
+```{r Grades vs. gender plots, include = FALSE, fig.align = "center", fig.height = 3, fig.width = 4}
+
+logistic_model = glm(
+  data = data00, 
+  formula = grades ~ gender
+) %>% summary
+
+pval = logistic_model$coefficients[2, 4] %>% plyr::round_any(accuracy = 0.001, f = round)
+
+n_female = sum(data00$gender == "Female")
+n_male = sum(data00$gender == "Male")
+
+p2 = ggplot(
+  data00, 
+  aes(
+    x = gender, 
+    y = grades
+  )
+) + 
+  geom_boxplot(width = .5, outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.05) +
+  scale_x_discrete(
+    labels = 
+      c(
+        paste0("Female\n(n = ", n_female, ")"), 
+        paste0("Male\n(n = ", n_male, ")")
+      )
+  ) +
+  # scale_y_continuous(
+  #   limits = c(0, 10),
+  #   breaks = seq(0, 10)
+  # ) +
+  annotate(
+    geom = "text", 
+    x = 2.3, 
+    y = 5.25, 
+    label = paste0("p = ", pval), 
+    fontface = "bold", 
+    size = 3
+  ) +
+  labs(
+    x = "Gender", 
+    y = "Grades", 
+    title = "Grades vs. gender among 2000 students"
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 11), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+# p2 
+
+p_grades_v_gender = p2
+```
+
+Hours spent studying (p \< 0.0001) and stress levels (p \< 0.0001) were associated with higher grades. For every hour spent studying, grades increased 0.385 points. The median grade for low, moderate and high level stress groups were 7.05 (IQR: 6.7-7.38), 7.55 (IQR: 7.18-7.95) and 8.18 (IQR: 7.72-8.65), respectively. Significant differences in grades between low and moderate (p \< 0.0001), moderate and high (p \< 0.0001) and low and high (p \< 0.0001) stress levels were detected. Time spent in social (p = 0.0001) and physical activities (p \< 0.0001) were found to negatively affect grades. For every hour spent in social and physical activities, there was a 0.038 and 0.101 decrease in grades, respectively. Time spent in extracurricular activities (p = 0.1516) and sleep (p = 0.8491) had no effect on grades. The median grade of female and male students were 7.75 (IQR: 7.22-8.3) and 7.8 (IQR: 7.25-8.32), respectively. No associations existed between grades and gender (p = 0.542).
+
+```{r Output: Univariable comparison of all lifestyle factors with grades, include = TRUE, fig.align = "center", fig.height = 5, fig.width = 7}
+ggarrange(
+  p_grades_v_study + 
+    scale_y_continuous(limits = c(5, 10.5)) + 
+    labs(x = "Study") + 
+    theme(
+      text = element_text(size = 8),  
+      plot.title = element_blank(), 
+      axis.title.y = element_blank()
+    ), 
+  p_grades_v_extra + 
+    scale_y_continuous(limits = c(5, 10.5)) + 
+    labs(x = "Extracurricular") +
+    theme(
+      text = element_text(size = 8),
+      plot.title = element_blank(), 
+      axis.title.y = element_blank()
+    ), 
+  p_grades_v_sleep + 
+    scale_y_continuous(limits = c(5, 10.5)) + 
+    labs(x = "Sleep") +
+    theme(
+      text = element_text(size = 8),  
+      plot.title = element_blank(), 
+      axis.title.y = element_blank()
+    ), 
+  p_grades_v_social + 
+    scale_y_continuous(limits = c(5, 10.5)) + 
+    labs(x = "Social") +
+    theme(
+      text = element_text(size = 8),  
+      plot.title = element_blank(), 
+      axis.title.y = element_blank()
+    ), 
+  p_grades_v_physical + 
+    scale_y_continuous(limits = c(5, 10.5)) + 
+    labs(x = "Physical activity") +
+    theme(
+      text = element_text(size = 8),  
+      plot.title = element_blank(), 
+      axis.title.y = element_blank()
+    ), 
+  p_grades_v_stress + 
+    scale_y_continuous(limits = c(5, 10.5)) + 
+    labs(x = "Stress") +
+    theme(
+      text = element_text(size = 8),  
+      plot.title = element_blank(), 
+      axis.title.y = element_blank()
+    ), 
+  p_grades_v_gender + 
+    scale_y_continuous(limits = c(5, 10.5)) + 
+    labs(x = "Gender") +
+    theme(
+      text = element_text(size = 8),  
+      plot.title = element_blank(), 
+      axis.title.y = element_blank()
+    )
+) %>%
+  annotate_figure(
+    left = text_grob(
+      "Grades", 
+      rot = 90, 
+      size = 10, 
+      face = "bold"
+    ), 
+    bottom = text_grob("Hours in activity", size = 10, face = "bold")
+  )
+
+```
+
+```{r}
+
+temp = 
+  data00 %>% 
+  mutate(
+    stress_level = factor(as.character(stress_level))
+    )
+lm(
+  data = temp, 
+  formula = 
+    grades ~ 
+    study_hours_per_day + 
+    extracurricular_hours_per_day + 
+    # sleep_hours_per_day + 
+    # physical_activity_hours_per_day +
+    # social_hours_per_day +
+    stress_level  
+    # gender
+) %>% summary()
+```
+
+```{r Grades vs. gender - special plots}
+p_special_1 = ggplot(
+  data00, 
+  aes(
+    x = gender, 
+    y = grades
+  )
+) + 
+  geom_half_boxplot(width = .25, outlier.shape = NA, side = "r") +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  ) +
+  labs(
+    x = "Gender", 
+    y = "Grades", 
+    title = "Grades vs. gender"
+  ) +
+  theme(
+    text = element_text(face = "bold"), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  )
+
+p_special_1
+
+
+
+
+p_special_2 = ggplot(
+  data00, 
+  aes(
+    x = grades, 
+    y = ..count..
+  )
+) + 
+  geom_density() + 
+  labs(
+    x = "Grades", 
+    y = "Count", 
+    title = "Count distribution vs. grades by gender"
+  ) +
+  theme(
+    text = element_text(face = "bold", size = 12), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) +
+  facet_wrap(
+    ~gender, 
+    nrow = 2
+  ) 
+
+p_special_2
+```
+
+```{r Statistical comparison between social hours and stress levels}
+model01 = aov(
+  data = data00, 
+  formula = social_hours_per_day ~ stress_level
+)
+
+summary(model01)
+
+TukeyHSD(model01)
+```
+
+```{r Social activity vs. stress levels, include = FALSE, fig.align = "center", fig.height = 5, fig.width = 7}
+
+social_v_stress_iqr = data00 %>%
+  group_by(stress_level) %>%
+  summarise(
+    median_social = median(social_hours_per_day), 
+    lower25q = quantile(social_hours_per_day, 0.25),
+    upper25q = quantile(social_hours_per_day, 0.75)
+  )
+
+p_social_v_stress = ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = social_hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(
+    width = 0.1, 
+    alpha = 0.1
+    ) +
+  scale_y_continuous(
+    limits = c(0, 6), 
+    breaks = seq(0, 6, 1)
+  ) +
+  labs(
+    x = "Stress level", 
+    y = "Hours in social activity"
+  ) + 
+  theme(
+    text = element_text(face = "bold", size = 12), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) 
+```
+
+```{r Statistical comparison between physical activity hours and stress levels}
+model01 = aov(
+  data = data00, 
+  formula = physical_activity_hours_per_day ~ stress_level
+)
+
+summary(model01)
+
+TukeyHSD(model01)
+```
+
+```{r Physical activity vs. stress levels, include = FALSE, fig.align = "center", fig.height = 5, fig.width = 7}
+
+physical_v_stress_iqr = data00 %>%
+  group_by(stress_level) %>%
+  summarise(
+    median_social = median(physical_activity_hours_per_day), 
+    lower25q = quantile(physical_activity_hours_per_day, 0.25),
+    upper25q = quantile(physical_activity_hours_per_day, 0.75)
+  )
+
+p_physical_v_stress = ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = physical_activity_hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(
+    width = 0.1, 
+    alpha = 0.1
+    ) +
+  scale_y_continuous(
+    limits = c(0, 13), 
+    breaks = seq(0, 13, 2)
+  ) +
+  labs(
+    x = "Stress level", 
+    y = "Hours in physical activity"
+  ) + 
+  theme(
+    text = element_text(face = "bold", size = 12), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) 
+```
+
+```{r Sleep vs stress levels}
+model01 = aov(
+  data = data00, 
+  formula = sleep_hours_per_day ~ stress_level
+)
+
+summary_model01 = 
+  summary(model01)
+
+tukeymodel01 = 
+  TukeyHSD(model01)
+
+
+iqr_sleep_v_stress = data00 %>%
+  group_by(
+    stress_level
+  ) %>%
+  summarise(
+    median_sleep = median(sleep_hours_per_day), 
+    q25 = quantile(sleep_hours_per_day, 0.25),
+    q75 = quantile(sleep_hours_per_day, 0.75)
+  )
+
+p_sleep_v_stress = ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = sleep_hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(
+    width = 0.1, 
+    alpha = 0.1
+    ) +
+  scale_y_continuous(
+    limits = c(0, 13), 
+    breaks = seq(0, 13, 2)
+  ) +
+  labs(
+    x = "Stress level", 
+    y = "Hours sleeping"
+  ) + 
+  theme(
+    text = element_text(face = "bold", size = 12), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) 
+```
+
+```{r Study vs stress}
+model01 = aov(
+  data = data00, 
+  formula = study_hours_per_day ~ stress_level
+)
+
+summary_model01 = 
+  summary(model01)
+
+tukeymodel01 = 
+  TukeyHSD(model01)
+
+
+iqr_study_v_stress = data00 %>%
+  group_by(
+    stress_level
+  ) %>%
+  summarise(
+    median_study = median(study_hours_per_day), 
+    q25 = quantile(study_hours_per_day, 0.25),
+    q75 = quantile(study_hours_per_day, 0.75)
+  )
+
+p_study_v_stress = ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = study_hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(
+    width = 0.1, 
+    alpha = 0.1
+    ) +
+  scale_y_continuous(
+    limits = c(0, 13), 
+    breaks = seq(0, 13, 2)
+  ) +
+  labs(
+    x = "Stress level", 
+    y = "Hours studying"
+  ) + 
+  theme(
+    text = element_text(face = "bold", size = 12), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) 
+```
+
+```{r Extracurricular vs stress}
+model01 = aov(
+  data = data00, 
+  formula = extracurricular_hours_per_day ~ stress_level
+)
+
+summary_model01 = 
+  summary(model01)
+
+tukeymodel01 = 
+  TukeyHSD(model01)
+
+
+iqr_extra_v_stress = data00 %>%
+  group_by(
+    stress_level
+  ) %>%
+  summarise(
+    median_study = median(extracurricular_hours_per_day), 
+    q25 = quantile(extracurricular_hours_per_day, 0.25),
+    q75 = quantile(extracurricular_hours_per_day, 0.75)
+  )
+
+p_extra_v_stress = ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = extracurricular_hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(
+    width = 0.1, 
+    alpha = 0.1
+    ) +
+  scale_y_continuous(
+    limits = c(0, 13), 
+    breaks = seq(0, 13, 2)
+  ) +
+  labs(
+    x = "Stress level", 
+    y = "Hours in extracurricular"
+  ) + 
+  theme(
+    text = element_text(face = "bold", size = 12), 
+    plot.title = element_text(hjust = 0.5), 
+    plot.subtitle = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA, color = "black"), 
+    panel.border = element_rect(fill = NA, color = "black"), 
+    strip.background = element_rect(fill = NA, color = "black")
+  ) 
+```
+
+Median hours spent studying among low, moderate and high stress groups were 5.5 (IQR: 5.2-5.7), moderate 7 (IQR: 6.4-7.4) and 8.7 (IQR: 8-9.3). Median hours spent in extracurricular activities were 2 (IQR: 0.9-3), 2 (IQR: 1.1-3) and 2 (IQR: 1-3), respectively. Median hours spent sleeping were 8 (IQR: 7.1-9.1), 7.9 (IQR: 6.9-8.98) and 6.8 (IQR: 5.6-8.4), respectively. Median hours spent in social activity were 3 (IQR: 1.4-4.2), 2.6 (IQR: 1.3-4.2) and 2.4 (IQR: 1.2-4), respectively. Median hours spent in physical activity were 5.3 (IQR: 4-7.4), 4.25 (IQR: 2.6-6) and 3.6 (IQR: 1.8-5.7), respectively. Hours spent studying increased with stress levels (p \< 0.0001). Significant differences between study hours were detected among all stress groups (p \< 0.0001). Hours in sleep (p \< 0.0001), social activity (p = 0.0489) and physical activity (p \< 0.0001) decreased with higher stress levels. No differences in extracurricular hours were detected among stress groups (p = 0.898). Significant differences in sleep hours among all stress levels was detected (p \< 0.0001). Significant differences between hours spent in social activities were detected between high and low stress groups (p = 0.0472), but not between moderate and low (p = 0.402) and high and moderate (p = 0.374) groups. Significant differences in physical activity hours were detected between moderate and low (p \< 0.0001), high and low (p \< 0.0001) and high and moderate (p = 0.00574) stress groups.
+
+```{r Output - Activities vs. stress levels, include = TRUE, fig.align = "center", fig.height = 4, fig.width = 8, message = FALSE, warning = FALSE}
+
+
+
+# temp = data00 %>% mutate(stress_level = stress_level %>% factor(levels = c("high", "moderate", "low")) %>% ordered())
+# model01 <- polr(stress_level ~ social_hours_per_day + physical_activity_hours_per_day, data = temp, Hess = TRUE)
+# 
+# coefs <- summary(model01)$coefficients
+# p_values <- 2 * (1 - pnorm(abs(coefs[, "t value"])))
+# p_values
+
+
+# model = multinom(
+#   stress_level ~ 
+#     social_hours_per_day + 
+#     physical_activity_hours_per_day + 
+#     study_hours_per_day, 
+#   data = temp
+# )
+
+# summary(model)
+
+# summary_model <- summary(model)
+# coefs <- summary_model$coefficients    
+# std_errs <- summary_model$standard.errors  
+# 
+# z_values <- coefs / std_errs
+# p_values <- 2 * (1 - pnorm(abs(z_values)))
+
+# p_values
+
+ggarrange(
+  p_study_v_stress + 
+    scale_y_continuous(limits = c(0, 12), breaks = seq(0, 12, 2)) +
+    theme(
+      text = element_text(size = 10),
+      axis.title.x = element_blank()
+    ),
+  p_extra_v_stress + 
+    scale_y_continuous(limits = c(0, 12), breaks = seq(0, 12, 2)) +
+    theme(
+      text = element_text(size = 10),
+      axis.title.x = element_blank()
+    ),
+  p_sleep_v_stress + 
+    scale_y_continuous(limits = c(0, 12), breaks = seq(0, 12, 2)) +
+    theme(
+      text = element_text(size = 10),
+      axis.title.x = element_blank()
+    ),
+  p_social_v_stress + 
+    scale_y_continuous(limits = c(0, 12), breaks = seq(0, 12, 2)) +
+    theme(
+      text = element_text(size = 10),
+      axis.title.x = element_blank()
+    ), 
+  p_physical_v_stress + 
+    scale_y_continuous(limits = c(0, 12), breaks = seq(0, 12, 2)) +
+    theme(
+      text = element_text(size = 10),
+      axis.title.x = element_blank()
+    )
+) %>%
+  annotate_figure(
+    bottom = text_grob("Stress levels", face = "bold", size = 10)
+  )
+```
+
+```{r sleep vs study}
+ggplot(
+  data00, 
+  aes(
+    x = sleep_hours_per_day, 
+    y = study_hours_per_day
+  )
+) + 
+  geom_jitter() + 
+  scale_x_continuous(limits = c(0, 12)) + 
+  scale_y_continuous(limits = c(0, 12))
+```
+
+```{r quantile regression: study vs. extracurricular}
+model_study_v_extra_q25 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ extracurricular_hours_per_day, 
+    tau = 0.25
+    )
+summary(model_study_v_extra_q25)
+
+model_study_v_extra_q50 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ extracurricular_hours_per_day, 
+    tau = 0.50
+    )
+summary(model_study_v_extra_q50)
+
+
+model_study_v_extra_q75 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ extracurricular_hours_per_day, 
+    tau = 0.75
+    )
+summary(model_study_v_extra_q75)
+
+model_study_v_extra_all = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ extracurricular_hours_per_day, 
+    tau = c(0, 0.25, 0.5, 0.75, 1)
+    )
+summary(model_study_v_extra_all, se = "boot", R = 500)
+plot(model_study_v_extra_all)
+```
+
+```{r quantile regression: study vs. sleep}
+model_study_v_sleep_q25 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ sleep_hours_per_day, 
+    tau = 0.25
+    )
+summary(model_study_v_sleep_q25)
+
+model_study_v_sleep_q50 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ sleep_hours_per_day, 
+    tau = 0.50
+    )
+summary(model_study_v_sleep_q50)
+
+
+model_study_v_sleep_q75 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ sleep_hours_per_day, 
+    tau = 0.75
+    )
+summary(model_study_v_sleep_q75)
+
+model_study_v_sleep_all = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ sleep_hours_per_day, 
+    tau = c(0.25, 0.5, 0.75)
+    )
+summary(model_study_v_sleep_all)
+plot(model_study_v_sleep_all)
+```
+
+```{r quantile regression: study vs. social}
+model_study_v_social_q25 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ social_hours_per_day, 
+    tau = 0.25
+    )
+summary(model_study_v_social_q25)
+
+
+
+model_study_v_social_q25
+
+preds <- data.frame(
+      social_hours_per_day = 
+        seq(
+          min(data00$social_hours_per_day),
+          max(data00$social_hours_per_day), 
+          length.out = 100
+          )
+    )
+
+preds$y <- predict(model_study_v_social_q25, newdata = preds)
+    preds$tau <- 0.25
+    preds
+    
+ggplot(
+  data = preds, 
+  aes(
+    x = tau, 
+    y = y
+  )
+)  +
+  geom_point()
+
+
+
+
+
+
+
+model_study_v_social_q50 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ social_hours_per_day, 
+    tau = 0.50
+    )
+summary(model_study_v_social_q50)
+
+
+model_study_v_social_q75 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ social_hours_per_day, 
+    tau = 0.75
+    )
+summary(model_study_v_social_q75)
+
+model_study_v_social_all = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ social_hours_per_day, 
+    tau = seq(0.1, 0.9, 0.1)
+    )
+summary(model_study_v_social_all)
+plot(model_study_v_social_all)
+
+
+```
+
+```{r quantile regression: study vs. physical}
+model_study_v_physical_q25 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ social_hours_per_day, 
+    tau = 0.25
+    )
+summary(model_study_v_physical_q25)
+
+model_study_v_physical_q50 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ physical_activity_hours_per_day, 
+    tau = 0.50
+    )
+summary(model_study_v_physical_q50)
+
+
+model_study_v_physical_q75 = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ physical_activity_hours_per_day, 
+    tau = 0.75
+    )
+summary(model_study_v_physical_q75)
+
+model_study_v_physical_all = 
+  rq(
+    data = data00, 
+    formula = 
+      study_hours_per_day ~ physical_activity_hours_per_day, 
+    tau = seq(0, 1, 0.1)
+    )
+
+plot(model_study_v_physical_all)
+
+summary(model_study_v_physical_all, se = "boot", R = 500)
+```
+
+```{r Visualization: study vs. extracurricular}
+
+p1 = ggplot(
+  data00 %>% filter(grades <= median(grades)), 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(0, 4)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades <= median"
+  )
+
+
+p2 = ggplot(
+  data00 %>% filter(grades > median(grades)), 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(0, 4)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades > median"
+  )
+
+
+ggarrange(p1, p2, nrow = 1)
+
+
+```
+
+```{r}
+model01 = lm(
+  data = data00, 
+  formula = 
+   study_hours_per_day ~ 
+    physical_activity_hours_per_day + 
+    grades +
+    (physical_activity_hours_per_day * grades)
+)
+
+summary(model01)
+```
+
+```{r Visualization: study vs. sleep}
+
+p1 = ggplot(
+  data00 %>% filter(grades <= median(grades)), 
+  aes(
+    x = sleep_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(5, 10)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades <= median"
+  )
+
+
+p2 = ggplot(
+  data00 %>% filter(grades > median(grades)), 
+  aes(
+    x = sleep_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(5, 10)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades > median"
+  )
+
+
+ggarrange(p1, p2, nrow = 1)
+```
+
+```{r Visualization: study vs. social}
+p1 = ggplot(
+  data00 %>% filter(grades <= median(grades)), 
+  aes(
+    x = social_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(0, 6)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades <= median"
+  )
+
+
+p2 = ggplot(
+  data00 %>% filter(grades > median(grades)), 
+  aes(
+    x = social_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(0, 6)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades > median"
+  )
+
+
+ggarrange(p1, p2, nrow = 1)
+```
+
+```{r Visualization: study vs. physical}
+
+p1 = ggplot(
+  data00 %>% filter(grades <= median(grades)), 
+  aes(
+    x = physical_activity_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(0, 6)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades <= median"
+  )
+
+
+p2 = ggplot(
+  data00 %>% filter(grades > median(grades)), 
+  aes(
+    x = physical_activity_hours_per_day, 
+    y = study_hours_per_day, 
+    # color = gender, 
+    # color = grades
+  )
+) + 
+  geom_jitter() + 
+  geom_smooth(method = "lm", se = FALSE) + 
+  scale_x_continuous(limits = c(0, 6)) + 
+  scale_y_continuous(limits = c(0, 10)) + 
+  labs(
+    title = "Grades > median"
+  )
+
+
+ggarrange(p1, p2, nrow = 1)
+```
+
+# Limitations
+
+The investigator lacked the necessary background on educational practices in Lisboa to understand grade calculation and notation. Specifically, grades in the dataset ranged from 5.6 to 10. The investigator, insular in view, was unfamiliar with this type of grade notation. In order to proceed with the analysis, for the sake of practice, the investigator assumed that grades were on a scale between zero and 10, with zero being the lowest and 10 the highest.
+
+No other assumptions about the data were knowingly made by the investigator. However, the investigator acknowledges that there were likely assumptions that were unknowingly in effect.
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = grades
+  )
+) + 
+  geom_boxplot(width = 0.5, outlier.shape = NA) +
+  geom_jitter(width = 0.1, alpha = 0.1)
+
+
+lm(
+  data = data00, 
+  formula = grades ~ extracurricular_hours_per_day
+) %>% summary()
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = grades
+  )
+) + 
+  geom_point() + 
+  geom_smooth(
+    method = "lm", 
+    se = FALSE
+  ) 
+
+aov(
+  data = data00, 
+  formula = extracurricular_hours_per_day ~ stress_level
+) %>% 
+  summary()
+
+ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = extracurricular_hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.1, alpha = 0.1)
+
+ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = extracurricular_hours_per_day
+  )
+) + 
+  geom_boxplot(width = 0.5) +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  facet_wrap(~gender)
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = sleep_hours_per_day
+  )
+) +
+  
+  geom_smooth(method = "lm", se = FALSE) 
+
+
+lm(
+  data = data00, 
+  formula = social_hours_per_day ~ extracurricular_hours_per_day
+) %>% summary()
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = social_hours_per_day
+  )
+) + 
+  geom_jitter(width = 0.1, alpha = 0.1) +
+  geom_smooth(method = "lm")
+
+
+lm(
+  data = data00, 
+  formula = social_hours_per_day ~ extracurricular_hours_per_day + gender
+) %>% summary()
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = social_hours_per_day
+  )
+) + 
+  geom_jitter(width = 0.1, alpha = 0.1)  + 
+  geom_smooth(method = "lm") +
+  facet_wrap(~gender)
+
+
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = physical_activity_hours_per_day
+  )
+) + 
+  geom_jitter(width = 0.1, alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE)
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = physical_activity_hours_per_day
+  )
+) + 
+  geom_jitter(width = 0.1, alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE) + 
+  facet_wrap(~gender)
+
+
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = study_hours_per_day
+  )
+) + 
+  geom_jitter(width = 0.1, alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE)
+
+lm(
+  data = data00, 
+  formula = study_hours_per_day ~ extracurricular_hours_per_day + gender
+) %>% summary()
+
+lm(
+  data = data00 %>% filter(gender == "Male"), 
+  formula = study_hours_per_day ~ extracurricular_hours_per_day 
+) %>% summary()
+
+lm(
+  data = data00 %>% filter(gender == "Female"), 
+  formula = study_hours_per_day ~ extracurricular_hours_per_day 
+) %>% summary()
+ggplot(
+  data00, 
+  aes(
+    x = extracurricular_hours_per_day, 
+    y = study_hours_per_day
+  )
+) + 
+  geom_jitter(width = 0.1, alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE) + 
+  facet_wrap(~gender)
+
+```
+
+```{=html}
+<!---
+# Supplemental figures
+--->
+```
+
+<!--# Study hours per day vs. gender-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = gender, 
+    y = study_hours_per_day
+  )
+) + 
+  geom_half_boxplot(width = 0.25, side = "r") +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+
+```
+
+<!--# Extracurricular hours per day vs. gender-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = gender, 
+    y = extracurricular_hours_per_day
+  )
+) + 
+  geom_half_boxplot(width = 0.25, side = "r") +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+
+```
+
+<!--# Sleep hours per day vs. gender-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = gender, 
+    y = sleep_hours_per_day
+  )
+) + 
+  geom_half_boxplot(width = 0.25, side = "r") +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+
+```
+
+<!--# Social hours per day vs. gender-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = gender, 
+    y = social_hours_per_day
+  )
+) + 
+  geom_half_boxplot(width = 0.25, side = "r") +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+
+```
+
+<!--# Stress levels vs. gender-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = stress_level
+  )
+) + 
+  geom_bar() + 
+  facet_wrap(~gender)
+
+```
+
+<!--# Physical activity levels vs. gender-->
+
+```{r}
+ggplot(
+  data00, 
+  aes(
+    x = gender, 
+    y = physical_activity_hours_per_day
+  )
+) + 
+  geom_half_boxplot(width = 0.25, side = "r", outlier.shape = NA) +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+```
+
+<!--# Social hours per day vs. stress levels-->
+
+```{r}
+ggplot(
+  data00, 
+  aes(
+    x = social_hours_per_day,
+    y = ..count..
+  )
+) + 
+  geom_density() + 
+  facet_wrap(~stress_level)
+
+
+ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = social_hours_per_day
+  )
+) + 
+  geom_half_boxplot(width = 0.25, side = "r") +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+```
+
+<!--# Physical activity hours per day vs. stress levels-->
+
+```{r}
+ggplot(
+  data00, 
+  aes(
+    x = physical_activity_hours_per_day,
+    y = ..count..
+  )
+) + 
+  geom_density() + 
+  facet_wrap(~stress_level)
+
+
+ggplot(
+  data00, 
+  aes(
+    x = stress_level, 
+    y = physical_activity_hours_per_day
+  )
+) + 
+  geom_half_boxplot(width = 0.25, side = "r", outlier.shape = NA) +
+  geom_half_violin(width = 0.25, side = "l") +
+  geom_jitter(width = 0.1, alpha = 0.1) + 
+  theme(
+    plot.title = element_text(hjust = 0.5), 
+    panel.background = element_rect(fill = NA),
+    panel.border = element_rect(color = "black", fill = NA)
+  )
+```
+
+<!--# PHysical activity hours vs. grades-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = physical_activity_hours_per_day, 
+    y = ..count..
+  )
+) + 
+  geom_density() +
+  facet_wrap(~gender, nrow = 2)
+
+ggplot(
+  data00, 
+  aes(
+    x = physical_activity_hours_per_day, 
+    y = grades
+  )
+) + 
+  geom_point() +
+  geom_smooth(
+    method = "lm"
+  )
+
+
+ggplot(
+  data00, 
+  aes(
+    x = physical_activity_hours_per_day, 
+    y = grades
+  )
+) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_x_continuous(
+    limits = c(0, 12)
+  ) +
+  scale_y_continuous(
+    limits = c(0, 50)
+  ) +
+  facet_wrap(~gender)
+
+
+
+
+ggplot(
+  data00 %>% filter(physical_activity_hours_per_day >= 0.5, physical_activity_hours_per_day < 1), 
+  aes(
+    x = physical_activity_hours_per_day, 
+    y = grades
+  )
+) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  scale_x_continuous(
+    limits = c(0, 1.5)
+  ) +
+  scale_y_continuous(
+    limits = c(0, 20)
+  ) +
+  facet_wrap(~gender)
+
+```
+
+<!--# Physical activity vs. social levels-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = social_hours_per_day, 
+    y = physical_activity_hours_per_day, 
+    # color = grades < 8
+  )
+) +
+  geom_point() + 
+  facet_wrap(~gender + (grades<8))
+
+```
+
+<!--# Social activity hours vs. grades-->
+
+```{r}
+
+ggplot(
+  data00, 
+  aes(
+    x = social_hours_per_day, 
+    y = grades
+  )
+) + 
+  geom_point() +
+  geom_smooth(
+    method = "lm"
+  )
+
+
+ggplot(
+  data00, 
+  aes(
+    x = social_hours_per_day, 
+    y = grades
+  )
+) + 
+  geom_point() +
+  geom_smooth(family = "lm") +
+  facet_wrap(~gender)
+
+```
