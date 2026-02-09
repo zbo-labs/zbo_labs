@@ -15,3 +15,6 @@ ROutput-RF tuning.csv
 # RStudio + macOS
 .Rproj.user/
 .DS_Store
+
+# Large outputs
+ROutput-RF tuning.csv
