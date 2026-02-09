@@ -26,3 +26,13 @@ ROutput-RF tuning.csv
 *.csv
 *.xlsx
 *.xls
+*.rds
+*.parquet
+
+# Models
+*.rda
+*.model
+
+# Logs
+*.log
+
