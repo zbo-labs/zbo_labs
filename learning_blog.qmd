@@ -3,7 +3,7 @@ title: "Learning blog"
 subtitle: "A space to record the things I learn"
 ---
 
-# 2026.02.06 Friday
+# Friday February 6, 2026
 
 Things I learned this week:
 
@@ -15,7 +15,7 @@ Things I learned this week:
 
 I'm also learning a lot more about git as I'm trying to upgrade my skills with git to production-level. Right now I'm learning about personal access tokens vs. SSH keys.
 
-# 2026.01.15 Thursday
+# Thursday January 15, 2026
 
 (09:00 am) Spent some time learning about file naming systems. These are super important if you want your work to be reproducible or utilized. I have been very lucky to be a part of organizations that valued innovation in every aspect of the job. That even included file naming systems that scaled beyond our team, several levels wider into our ecosystem.
 
@@ -25,6 +25,6 @@ A cool tool I discovered in R today is the "[targets](https://books.ropensci.org
 
 (10:20 am) I was able to run one of the examples provided in the targets package user manual. It is impressive. Basically, targets allows you to specify what you are trying to track. It will then track any changes made to these targets and provide an illustration or a list of objects that need to be updated. It also provides a diagram of the lineage of these tracked objects. I think it's a very handy tool.
 
-# 2026.01.14 Wednesday
+# Wednesday January 14, 2026
 
 Over and over again, I find that the biggest barrier to learning new things is not what I don't know, but what I do know. The closer I get to mastering something (and I don't have to get that close), the more it impedes my learning of new things. For example, I've known about parquets in R for a long time because I needed them a long time ago. But I never took the time to learn how to use them. Why? Because I already had ways of dealing with large datasets, clunky as they may be. While it's true that it would have taken more time to learn how to use parquets than implementing my clunky methods, the payoff long term would have been much higher. I guess it's important to remind ourselves to take the time and to take the risk (make sure you do a risk analysis first, obviously), to abandon what we know, temporarily and even permanently, to learn new and better ways of doing things.
