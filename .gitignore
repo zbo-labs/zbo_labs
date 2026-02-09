@@ -20,3 +20,9 @@ ROutput-RF tuning.csv
 ROutput-RF tuning.csv
 ROutput-RF tuning.csv
 .DS_Store
+
+
+# Data files
+*.csv
+*.xlsx
+*.xls
