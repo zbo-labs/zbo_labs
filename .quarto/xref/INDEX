@@ -1,0 +1,77 @@
+{
+  "index.qmd": {
+    "index.html": "96c5d76f"
+  },
+  "about.qmd": {
+    "about.html": "bd7e36f8"
+  },
+  "tidymodels.qmd": {
+    "tidymodels.html": "608ec64e"
+  },
+  "CA_health_expenditure.Rmd": {
+    "CA_health_expenditure.html": "255bc6e8"
+  },
+  "portfolio.qmd": {
+    "portfolio.html": "6e02ac18"
+  },
+  "cahealthexpenditure2025.qmd": {
+    "cahealthexpenditure2025.html": "a8e104f2"
+  },
+  "lab.qmd": {
+    "lab.html": "927712cb"
+  },
+  "student_lifestyle_data_kaggle.Rmd": {
+    "student_lifestyle_data_kaggle.html": "8e8ebb8a"
+  },
+  "student_lifestyle_data_kaggle.qmd": {
+    "student_lifestyle_data_kaggle.html": "6a726d6a"
+  },
+  "rf_tuning_cleveland.qmd": {
+    "rf_tuning_cleveland.html": "0e55ea90"
+  },
+  "biomarker_slopes.qmd": {
+    "biomarker_slopes.html": "5f4c8898"
+  },
+  "tidymodels_overview.qmd": {
+    "tidymodels_overview.html": "87b0cbe1"
+  },
+  "Changing attitudes.qmd": {
+    "Changing attitudes.html": "cee7b2e2"
+  },
+  "blog.qmd": {
+    "blog.html": "4662f250"
+  },
+  "gas_prices_canada.qmd": {
+    "gas_prices_canada.html": "c0612bd5"
+  },
+  "cost_of_living_ca.qmd": {
+    "cost_of_living_ca.html": "a3d49f4a"
+  },
+  "book_blog.qmd": {
+    "book_blog.html": "44a22fa5"
+  },
+  "smartphone_nation_notes.qmd": {
+    "smartphone_nation_notes.html": "a9d01cc8"
+  },
+  "learning_blog.qmd": {
+    "learning_blog.html": "0bc33bec"
+  },
+  "book_blog/smartphone_nation_notes.qmd": {
+    "smartphone_nation_notes.html": "c6b1306d"
+  },
+  "book_blog/mathematics_lovers.qmd": {
+    "mathematics_lovers.html": "d5f37ee4"
+  },
+  "book_blog/design_analysis_clinical_trials_chow.qmd": {
+    "design_analysis_clinical_trials_chow.html": "3d97900e"
+  },
+  "book_blog2.qmd": {
+    "book_blog2.html": "54d7f42c"
+  },
+  "gas_prices/us_gas_prices.qmd": {
+    "us_gas_prices.html": "a3e4a70b"
+  },
+  "us_gas_prices.qmd": {
+    "us_gas_prices.html": "bfdb3fc6"
+  }
+}

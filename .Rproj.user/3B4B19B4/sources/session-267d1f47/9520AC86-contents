@@ -1,0 +1,9 @@
+---
+title: "US gasoline prices"
+---
+
+I wanted to understand US gasoline prices a little more. So I found some [data from EIA](https://www.eia.gov/petroleum/gasdiesel/) along with [consumer price indices](https://fred.stlouisfed.org/series/CPIAUCSL)to help adjust for inflation. This is really not my wheelhouse, so there was a lot of learning as I went. One of the things I learned was that the influence of global pressures on US gas prices cannot be ignored. It is the most likely driver of gas prices, even more so than policy. To that end, I also [Brent oil prices](https://www.eia.gov/dnav/pet/pet_pri_spt_s1_d.htm), a good indicator of these influential global trends. 
+
+::: {.scroll-image}
+![](/images/gas_prices/US_gas_and_brent_oil_prices.jpg)
+:::

@@ -1,0 +1,17 @@
+{
+  "hash": "74b0e45efcb0034357cef131cfbf600d",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"Grid search accuracy results for random forest hyperparameters fit on Cleveland dataset\"\noutput: \n  html_document:\neditor_options: \n  chunk_output_type: console\n---\n\n\n\n\n\nThe figure illustrates accuracies for differing values of the major hyperparameters (through grid search) of the random forest method: number of trees and number of variables to sample.\n\n\n::: {.cell layout-align=\"center\"}\n::: {.cell-output-display}\n![](rf_tuning_cleveland_files/figure-html/unnamed-chunk-2-1.png){fig-align='center' width=1536}\n:::\n:::\n\n",
+    "supporting": [
+      "rf_tuning_cleveland_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

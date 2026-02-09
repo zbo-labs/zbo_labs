@@ -1,0 +1,17 @@
+{
+  "hash": "a77fb9287493078f373f2967d28b5b2c",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"We all use models. But, epidemiologists write them down. A look at why prevailing attitudes change.\"\nformat: html\neditor: visual\neditor_options: \n  chunk_output_type: console\n---\n\n# Introduction\n\nThis is a fun project for me. It's allowing me to take pieces I learned from risk communication and perception, specifically cognitive maps, and combine them with what I learned from stochastic compartment modeling. I also had a professor, back in the day, say, \"We all use models. Epidemiologists write them down\". And so here I am putting my intuition into a mathematical model to describe my experience with why prevailing attitudes change.\n\nA good example of things changing... I remember when Taylor Swift first hit the scene. She was different and not everyone liked her music. Fast forward to today, she's a hit across the board. Even I like her!!\n\nSo, how does my intuition process her rise to stardom? Take a look below.\n\n# My cognitive map\n\n![](Comportment%20diagram-pop.jpg){fig-align=\"center\"}\n\n# My compartment model output\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](Changing-attitudes_files/figure-html/unnamed-chunk-1-1.png){width=1152}\n:::\n:::\n\n",
+    "supporting": [
+      "Changing-attitudes_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
